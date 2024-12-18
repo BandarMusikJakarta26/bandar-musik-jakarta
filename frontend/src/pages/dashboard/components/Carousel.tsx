@@ -33,7 +33,6 @@ export default function Carousel(){
             autoplay={{ delay: 3000, disableOnInteraction: false }}
             pagination={{clickable: true}}
             loop={true}
-            navigation
         >
             {/* <SliderCarousel/> */}
             <SwiperSlide>
