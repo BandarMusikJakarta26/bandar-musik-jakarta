@@ -2,11 +2,9 @@ import axios, { AxiosResponse } from "axios"
 import { useEffect, useState } from "react"
 import { host } from '../../../libs/config'
 import { FaRegPlusSquare } from "react-icons/fa";
-import { useNavigate } from "react-router";
 
 export default function GetBrand(){
     const [ brands, setBrand ] = useState<any[]>([])
-    const navigate = useNavigate()
 
     useEffect(()=>{
         async function brandFetch(){

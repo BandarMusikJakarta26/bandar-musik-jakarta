@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from "react"
 import { loginSchema, loginSchemaType } from '../../libs/schema/login.schema'
-import { redirect, useNavigate } from "react-router"
+import { useNavigate } from "react-router"
 import isAuth from "../middleware/auth.middleware"
 
 export default function Login(){
@@ -23,6 +23,7 @@ export default function Login(){
     ]
     
     const navigate = useNavigate()
+    console.log(setLoading)
 
     useEffect(()=>{
         isAuth(navigate)

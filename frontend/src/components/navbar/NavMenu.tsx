@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import NavLink from "./NavLink"
 import NavSearch from "./NavSearch"
 import BMJLogo from '/utils/BMJLogo.png'

@@ -1,6 +1,3 @@
-import { useEffect } from "react"
-import { useNavigate } from "react-router"
-import isAuth from "../../middleware/auth.middleware"
 import Carousel from "./components/Carousel"
 import Deskripsi from "./components/Deskripsi"
 import Terbaru from "./components/Terbaru"

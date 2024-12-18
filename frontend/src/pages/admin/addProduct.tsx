@@ -30,7 +30,7 @@ export default function AddProduct(){
     async function onUploadForm(){
         const upload = new FormData(document.querySelector('form')!)
         upload.append('file', file!)
-        const response = await axios.post(`${host}/admin/tambah/produk`, upload)
+        await axios.post(`${host}/admin/tambah/produk`, upload)
     }
 
     function changeCategory(e:any){ getCategory(e.target.value) }
