@@ -40,6 +40,9 @@ class Routes {
         this.#postRoute()
     }
     #getRoute(){
+        this.router.get('/', (req,res)=>{
+            return res.json({ msg: 'Hello World!' })
+        })
         this.router.get('/home', validateToken, async(req,res)=>{
             return res.json({ msg: 'Hello World!', akun: req.akun || 'kosong' })
         })
