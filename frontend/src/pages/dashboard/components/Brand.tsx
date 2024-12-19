@@ -16,7 +16,7 @@ export default function Brand(){
         return brands.map((brand: { name: string, image: string }, index: number)=>{
             return (
                 <div className="gambar-brand w-full h-[100px] flex items-center justify-center opacity-50 hover:opacity-100 transition-all hover:scale-105" key={index}>
-                <a href={`/brand/${brand.name}`}><img src={`${host}/images/brand/${brand.image}`} width={180} height={100} alt="logobrand"/></a>
+                <a href={`/brand/${brand.name}`}><img src={`${host}/images/brand/${brand.image}`} width={180} height={100} alt={brand.name}/></a>
                 </div>
             )
         })
