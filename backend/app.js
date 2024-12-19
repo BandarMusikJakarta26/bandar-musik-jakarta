@@ -1,5 +1,5 @@
 import express from 'express'
-import router from './routes/router.js'
+// import router from './routes/router.js'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
@@ -17,7 +17,10 @@ class App {
         this.app.use(express.urlencoded({ extended: true }))
         this.app.use(cors({ origin: 'https://bandarmusikjakarta.vercel.app', credentials: true }))
         this.app.use(cookieParser(process.env.COOKIE_SECRET))
-        this.app.use(router)
+        this.app.get('/', (req,res)=>{
+            return res.stattus(200).json({ nama: "HALO DUNIA!" })
+        })
+        // this.app.use(router)
     }
     #connection(){
         this.app.listen(5000, ()=>console.log('Menjalankan Server!'))
