@@ -17,10 +17,7 @@ class App {
         this.app.use(express.urlencoded({ extended: true }))
         this.app.use(cors({ origin: 'https://bandarmusikjakarta.vercel.app', credentials: true }))
         this.app.use(cookieParser(process.env.COOKIE_SECRET))
-        this.app.get('/', (req,res)=>{
-            return res.status(200).json({ nama: "HALO DUNIA!" })
-        })
-        // this.app.use(router)
+        this.app.use(router)
     }
     #connection(){
         this.app.listen(process.env.PORT, ()=>console.log('Menjalankan Server!'))
