@@ -18,7 +18,7 @@ class App {
         this.app.use(cors({ origin: 'https://bandarmusikjakarta.vercel.app', credentials: true }))
         this.app.use(cookieParser(process.env.COOKIE_SECRET))
         this.app.get('/', (req,res)=>{
-            return res.stattus(200).json({ nama: "HALO DUNIA!" })
+            return res.status(200).json({ nama: "HALO DUNIA!" })
         })
         // this.app.use(router)
     }
