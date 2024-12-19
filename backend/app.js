@@ -1,5 +1,5 @@
 import express from 'express'
-// import router from './routes/router.js'
+import router from './routes/router.js'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
