@@ -23,7 +23,7 @@ class App {
         // this.app.use(router)
     }
     #connection(){
-        this.app.listen(5000, ()=>console.log('Menjalankan Server!'))
+        this.app.listen(process.env.PORT, ()=>console.log('Menjalankan Server!'))
     }
 }
 
