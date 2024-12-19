@@ -8,10 +8,10 @@ dotenv.config()
 class App {
     constructor(){
         this.app = express()
-        this.#middleware()
-        this.#connection()
+        this.middleware()
+        this.connection()
     }
-    #middleware(){
+    middleware(){
         this.app.use(express.json())
         this.app.use(express.static("public"))
         this.app.use(express.urlencoded({ extended: true }))
@@ -19,7 +19,7 @@ class App {
         this.app.use(cookieParser(process.env.COOKIE_SECRET))
         this.app.use(router)
     }
-    #connection(){
+    connection(){
         this.app.listen(process.env.PORT, ()=>console.log('Menjalankan Server!'))
     }
 }
