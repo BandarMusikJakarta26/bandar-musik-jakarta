@@ -1,1 +1,1 @@
-export const host = "https://bandarmusikjakarta-server.vercel.app"
+export const host = "https://bandarmusikjakartaserver.vercel.app"
