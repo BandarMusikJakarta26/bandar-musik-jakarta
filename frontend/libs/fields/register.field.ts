@@ -7,7 +7,7 @@ export type TypeField = {
     name: string, type: string, placeholder: string, icon: IconType
 }
 
-export const fields: TypeField[] = [
+export const registerFields: TypeField[] = [
     {  name: 'username', type: 'text', placeholder: 'username', icon: FaUser },
     {  name: 'email', type: 'text', placeholder: 'username@gmail.com', icon: MdOutlineAlternateEmail },
     {  name: 'password', type: 'password', placeholder: '******', icon: RiLockPasswordFill },

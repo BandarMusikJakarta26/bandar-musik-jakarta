@@ -1,7 +1,7 @@
-import { BrowserRouter, Routes, Route } from 'react-router'
+import { BrowserRouter, Routes, Route, useLocation, Navigate, useNavigate } from 'react-router'
 import { useEffect, useState } from 'react'
 
-import Login from './pages/login.tsx'
+import Login from './pages/login/login.tsx'
 import Register from './pages/register/register.tsx'
 
 import Footer from './components/footer/FooterMenu.tsx'
@@ -20,16 +20,22 @@ import AllBrand from './pages/allBrand/AllBrand.tsx'
 import BlankPage from './pages/blank.tsx'
 
 import axios from 'axios'
-import { checkAdmin } from './middleware/auth.services.ts'
+import { checkAdmin, isLogin } from './action/auth.action.ts'
+
 axios.defaults.withCredentials = true
 
 export default function App() {
-  const [ admin, isAdmin ] = useState<boolean>() 
-
-  async function adminValidation() { isAdmin(await checkAdmin()) }
+  const [ login, setLogin ] = useState<boolean>(false) 
+  const [ admin, isAdmin ] = useState<boolean>(false) 
   
-  useEffect(()=>{ adminValidation() }, [])
-
+  async function adminValidation() { isAdmin(await checkAdmin()) }
+  async function checkUserLogin() { setLogin(await isLogin()) }
+  
+  useEffect(()=>{
+    adminValidation()
+    checkUserLogin()
+  }, [])
+  
   return (
     <div className='w-full bg-primary text-third'> 
       <BrowserRouter>

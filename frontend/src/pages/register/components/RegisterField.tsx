@@ -1,7 +1,9 @@
-import { fields } from '../../../../libs/fields/register.field'
+import { UseFormRegister } from 'react-hook-form'
+import { registerFields } from '../../../../libs/fields/register.field'
+import { registerSchemaType } from '../../../../libs/schema/register.schema'
 
-export default function RegisterField({ register, errors }: any){
-    return fields.map((field, index)=>{
+export default function RegisterField({ register, errors }: { register: UseFormRegister<registerSchemaType>, errors: any  }){
+    return registerFields.map((field, index)=>{
         return (
             <div className="input-field relative" key={index}>
                 <field.icon size={21} className='absolute top-[47px] left-2 opacity-50'/>

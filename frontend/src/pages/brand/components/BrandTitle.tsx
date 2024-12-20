@@ -1,10 +1,11 @@
-import { host } from "../../../../libs/config"
+import { AdvancedImage } from "@cloudinary/react";
+import { cloudSDK } from "../../../../libs/config";
 
 export default function BrandTitle({ brand }: any){
     return (
         <div className="brand">
             <div className="atas flex items-center gap-x-6">
-                <img src={`${host}/images/brand/${brand.image}`} alt={brand.name} width={500}/>
+                <AdvancedImage cldImg={cloudSDK.image(brand.image)}/>
                 <div className="tulisan">
                     <div className="tulisan-atas">
                         <h1 className="text-[48px] font-bold">{brand.name}</h1>

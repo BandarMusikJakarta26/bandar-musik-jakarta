@@ -6,7 +6,7 @@ import validateToken from "../middleware/validate.token.middleware.js"
 import getToken from "../services/auth/get.token.service.js"
 import logout from "../services/auth/logout.service.js"
 import addBrandService from "../services/admin/add.brand.service.js"
-import multer, { MulterError, diskStorage } from "multer";
+import multer, { diskStorage } from "multer";
 import path from "path"
 import getBrandService from "../services/admin/get.brand.service.js"
 import isAdmin from "../services/auth/isAdmin.service.js"
@@ -15,6 +15,7 @@ import getBrandByIdService from "../services/brand/get.brand.by.id.service.js"
 import getCategoryService from "../services/brand/get.category.service.js"
 import addProductService from "../services/admin/add.product.service.js"
 import getProductByBrand from "../services/produk/get.product.by.brand.js"
+import { cloudinaryStorage } from "../config.js"
 
 const storage = diskStorage({
     destination: (req, file, cb)=>{
@@ -24,7 +25,16 @@ const storage = diskStorage({
     }
 })
 
-const upload = multer({ storage, limits: { fileSize: 3000000 }, fileFilter: function(req, file, cb){
+// const upload = multer({ storage, limits: { fileSize: 3000000 }, fileFilter: function(req, file, cb){
+//     const imageExt = ['png', 'jpg', 'jpeg']
+//     const ext = file.mimetype.split('/')[1]
+//     const checkExt = imageExt.filter(exist=>ext === exist)
+//     if(checkExt.length == 0){
+//         cb(new Error('File bukan gambar!'))
+//     } else cb(null, true)
+// }})
+
+const upload = multer({ storage: cloudinaryStorage, limits: { fileSize: 3000000 }, fileFilter: function(req, file, cb){
     const imageExt = ['png', 'jpg', 'jpeg']
     const ext = file.mimetype.split('/')[1]
     const checkExt = imageExt.filter(exist=>ext === exist)

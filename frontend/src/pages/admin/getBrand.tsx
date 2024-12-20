@@ -1,7 +1,8 @@
 import axios, { AxiosResponse } from "axios"
 import { useEffect, useState } from "react"
-import { host } from '../../../libs/config'
+import { cloudSDK, host } from '../../../libs/config'
 import { FaRegPlusSquare } from "react-icons/fa";
+import { AdvancedImage } from "@cloudinary/react";
 
 export default function GetBrand(){
     const [ brands, setBrand ] = useState<any[]>([])
@@ -34,7 +35,7 @@ export default function GetBrand(){
             return brands.map((brand, index)=>{
             return (
                 <div className="brandfield flex flex-col shadow-lg items-center" key={index+1}>
-                    <img src={`${host}/images/brand/${brand.image}`} width={300} height={200} alt={brand.name}/>
+                    <AdvancedImage cldImg={cloudSDK.image(brand.image)}/>
                     <div className="nama-brand p-5 flex flex-col items-center gap-y-2">
                         <h1 className="text-[24px] font-semibold">{brand.name}</h1>
                         <button className="bg-red-600 text-primary font-semibold rounded-full py-1 hover:brightness-90 w-[70px] text-[14px]" onClick={()=>deleteBrand(brand.id)}>Delete</button>

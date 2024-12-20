@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios"
-import { host } from "../../../../libs/config"
+import { cloudSDK, host } from "../../../../libs/config"
 import { useEffect, useState } from "react"
+import { AdvancedImage } from "@cloudinary/react"
 
 export default function Brand(){
     const [ brands, setBrands ] = useState<any[]>([])
@@ -16,7 +17,7 @@ export default function Brand(){
         return brands.map((brand: { name: string, image: string }, index: number)=>{
             return (
                 <div className="gambar-brand w-full h-[100px] flex items-center justify-center opacity-50 hover:opacity-100 transition-all hover:scale-105" key={index}>
-                <a href={`/brand/${brand.name}`}><img src={`${host}/images/brand/${brand.image}`} width={180} height={100} alt={brand.name}/></a>
+                <a href={`/brand/${brand.name}`}><AdvancedImage cldImg={cloudSDK.image(brand.image)}/></a>
                 </div>
             )
         })
