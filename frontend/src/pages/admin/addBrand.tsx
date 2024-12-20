@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useState } from "react"
 import { useNavigate } from "react-router"
+import { host } from "../../../libs/config"
 
 export default function AddBrand(){
     const [ brand, setBrand ] = useState<File | null>(null)
@@ -13,7 +14,7 @@ export default function AddBrand(){
         const form = new FormData()
         form.append('name', name)
         form.append('file', brand!)
-        const response = await axios.post('http://localhost:5000/admin/tambah/brand', form)
+        const response = await axios.post(`${host}/admin/tambah/brand`, form)
         setLoading(false)
         if(response.data.success) return navigate('/admin/brand')
     }
