@@ -5,6 +5,7 @@ import NavSearch from "./NavSearch"
 import BMJLogo from '/utils/BMJLogo.png'
 import axios from "axios"
 import { useNavigate } from "react-router"
+import { host } from "../../../libs/config"
 
 export default function NavMenu(){
     const [ auth, setAuth ] = useState<boolean>(false)
@@ -12,14 +13,14 @@ export default function NavMenu(){
 
     
     async function getToken(){
-        const response = await axios.get('http://localhost:5000/token')
+        const response = await axios.get(`${host}/token`)
         return setAuth(response.data.accessToken ? true :  false)
     }
     getToken()
 
 
     async function doLogout(){
-        await axios.get('http://localhost:5000/user/logout')
+        await axios.get(`${host}/user/logout`)
         return navigate(0)
     }
 
