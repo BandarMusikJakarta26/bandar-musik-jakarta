@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation, Navigate, useNavigate } from 'react-router'
+import { BrowserRouter, Routes, Route } from 'react-router'
 import { useEffect, useState } from 'react'
 
 import Login from './pages/login/login.tsx'
@@ -31,6 +31,8 @@ export default function App() {
   async function adminValidation() { isAdmin(await checkAdmin()) }
   async function checkUserLogin() { setLogin(await isLogin()) }
   
+  console.log(login)
+
   useEffect(()=>{
     adminValidation()
     checkUserLogin()
