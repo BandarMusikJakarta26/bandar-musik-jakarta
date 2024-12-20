@@ -6,8 +6,7 @@ import validateToken from "../middleware/validate.token.middleware.js"
 import getToken from "../services/auth/get.token.service.js"
 import logout from "../services/auth/logout.service.js"
 import addBrandService from "../services/admin/add.brand.service.js"
-import multer, { diskStorage } from "multer";
-import path from "path"
+import multer from "multer";
 import getBrandService from "../services/admin/get.brand.service.js"
 import isAdmin from "../services/auth/isAdmin.service.js"
 import deleteBrandService from "../services/admin/delete.brand.service.js"
