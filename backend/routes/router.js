@@ -17,13 +17,13 @@ import addProductService from "../services/admin/add.product.service.js"
 import getProductByBrand from "../services/produk/get.product.by.brand.js"
 import { cloudinaryStorage } from "../config.js"
 
-const storage = diskStorage({
-    destination: (req, file, cb)=>{
-        return cb(null, './public/images/brand')
-    }, filename: (req, file, cb)=>{
-        return cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
-    }
-})
+// const storage = diskStorage({
+//     destination: (req, file, cb)=>{
+//         return cb(null, './public/images/brand')
+//     }, filename: (req, file, cb)=>{
+//         return cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
+//     }
+// })
 
 // const upload = multer({ storage, limits: { fileSize: 3000000 }, fileFilter: function(req, file, cb){
 //     const imageExt = ['png', 'jpg', 'jpeg']
