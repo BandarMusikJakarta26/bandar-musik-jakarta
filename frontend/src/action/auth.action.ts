@@ -7,7 +7,7 @@ import { registerSchemaType } from "../../libs/schema/register.schema"
 
 async function doAuthAction(route: string, data: registerSchemaType | loginSchemaType, setLoading: SetStateAction<any>, setError: any, navigate: NavigateFunction){
     setLoading(true)
-    const response = await axios.post('http://localhost:5000/user/' + route, data) as AxiosResponse
+    const response = await axios.post(`${host}/user/` + route, data) as AxiosResponse
     setLoading(false)
     if(response.data.status === 400) return setError(response.data.error)
     if(route === "register") return navigate('/user/login')
@@ -29,7 +29,7 @@ export async function checkAdmin(): Promise<boolean>{
 }
 
 export async function isLogin(){
-    const response = await axios.get('http://localhost:5000/token') as AxiosResponse
+    const response = await axios.get(`${host}/token`) as AxiosResponse
     if(response.data.accessToken) return true
     else return false
 }
