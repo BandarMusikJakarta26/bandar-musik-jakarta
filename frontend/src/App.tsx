@@ -20,22 +20,22 @@ import AllBrand from './pages/allBrand/AllBrand.tsx'
 import BlankPage from './pages/blank.tsx'
 
 import axios from 'axios'
-import { checkAdmin, isLogin } from './action/auth.action.ts'
+import { checkAdmin } from './action/auth.action.ts'
 
 axios.defaults.withCredentials = true
 
 export default function App() {
-  const [ login, setLogin ] = useState<boolean>(false) 
+  // const [ login, setLogin ] = useState<boolean>(false) 
   const [ admin, isAdmin ] = useState<boolean>(false) 
   
   async function adminValidation() { isAdmin(await checkAdmin()) }
-  async function checkUserLogin() { setLogin(await isLogin()) }
+  // async function checkUserLogin() { setLogin(await isLogin()) }
   
-  console.log(login)
+  // console.log(login)
 
   useEffect(()=>{
     adminValidation()
-    checkUserLogin()
+    // checkUserLogin()
   }, [])
   
   return (
