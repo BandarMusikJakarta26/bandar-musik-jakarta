@@ -2,12 +2,19 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="/utils/BMJ.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
+    <title>Bandar Musik Jakarta</title>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+        let current = document.location.pathname
+        current === "/terbaru" ? document.title = "Baru Dari Bandar Musik Jakarta" : false
+        current === "/about" ? document.title = "Tentang Bandar Musik Jakarta" : false
+        current === "/kategori" ? document.title = "Kategori Yang Tersedia" : false
+        current === "/brand" ? document.title = "Brand Yang Tersedia" : false
+      </script>
   </body>
 </html>
