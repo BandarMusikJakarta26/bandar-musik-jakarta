@@ -29,7 +29,6 @@ axios.defaults.withCredentials = true
 export default function App() {
   // const [ login, setLogin ] = useState<boolean>(false) 
   const [ admin, isAdmin ] = useState<boolean>(false) 
-  const [screen, setScreen] = useState<number>(0)
   
   async function adminValidation() { isAdmin(await checkAdmin()) }
   // async function checkUserLogin() { setLogin(await isLogin()) }
@@ -38,7 +37,6 @@ export default function App() {
 
   useEffect(()=>{
     adminValidation()
-    setScreen(window.innerWidth)
     // checkUserLogin()
   }, [])
   
