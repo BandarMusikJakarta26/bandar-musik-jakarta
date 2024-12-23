@@ -17,6 +17,15 @@
   scroll-behavior: smooth;
 }
 
+::-webkit-scrollbar{
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 40px;
+  background: #ccc;
+}
+
 a {
   font-weight: 500;
   text-decoration: inherit;
