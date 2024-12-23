@@ -1,37 +1,26 @@
 import { Router } from "express"
+
 import registerService from "../services/auth/register.service.js"
 import loginService from "../services/auth/login.service.js"
 import initToken from "../services/auth/init.token.service.js"
-import validateToken from "../middleware/validate.token.middleware.js"
 import getToken from "../services/auth/get.token.service.js"
 import logout from "../services/auth/logout.service.js"
-import addBrandService from "../services/admin/add.brand.service.js"
-import multer from "multer";
-import getBrandService from "../services/admin/get.brand.service.js"
 import isAdmin from "../services/auth/isAdmin.service.js"
-import deleteBrandService from "../services/admin/delete.brand.service.js"
-import getBrandByIdService from "../services/brand/get.brand.by.id.service.js"
-import getCategoryService from "../services/brand/get.category.service.js"
+
+import addBrandService from "../services/admin/add.brand.service.js"
 import addProductService from "../services/admin/add.product.service.js"
+import addCategoryService from "../services/admin/add.category.service.js"
+
+import getBrandService from "../services/brand/get.brand.service.js"
+import getBrandByNameService from "../services/brand/get.brand.by.name.service.js"
+import getCategoryService from "../services/kategori/get.category.service.js"
 import getProductByBrand from "../services/produk/get.product.by.brand.js"
+
+import deleteBrandService from "../services/admin/delete.brand.service.js"
+
 import { cloudinaryStorage } from "../config.js"
-
-// const storage = diskStorage({
-//     destination: (req, file, cb)=>{
-//         return cb(null, './public/images/brand')
-//     }, filename: (req, file, cb)=>{
-//         return cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
-//     }
-// })
-
-// const upload = multer({ storage, limits: { fileSize: 3000000 }, fileFilter: function(req, file, cb){
-//     const imageExt = ['png', 'jpg', 'jpeg']
-//     const ext = file.mimetype.split('/')[1]
-//     const checkExt = imageExt.filter(exist=>ext === exist)
-//     if(checkExt.length == 0){
-//         cb(new Error('File bukan gambar!'))
-//     } else cb(null, true)
-// }})
+import multer from "multer";
+import getSearchByName from "../services/get.search.by.name.service.js"
 
 const upload = multer({ storage: cloudinaryStorage, limits: { fileSize: 3000000 }, fileFilter: function(req, file, cb){
     const imageExt = ['png', 'jpg', 'jpeg']
@@ -49,17 +38,13 @@ class Routes {
         this.#postRoute()
     }
     #getRoute(){
-        this.router.get('/', (req,res)=>{
-            return res.json({ msg: 'Hello World!' })
-        })
-        this.router.get('/home', validateToken, async(req,res)=>{
-            return res.json({ msg: 'Hello World!', akun: req.akun || 'kosong' })
-        })
         this.router.get('/token', getToken)
         this.router.get('/user/logout', logout)
 
-        // this.router.get('/brand/name', getBrandOnlyName)
-        this.router.get('/brand/:name', getBrandByIdService)
+        this.router.get('/search', getSearchByName)
+        this.router.get('/search/:keyword', getSearchByName)
+
+        this.router.get('/brand/:name', getBrandByNameService)
 
         this.router.get('/produk/:brand', getProductByBrand)
         // this.router.get('/produk/:kategori', getProductByKategori)
@@ -69,15 +54,15 @@ class Routes {
         this.router.get('/admin/brand/:limit', getBrandService)
         this.router.get('/admin/hapus/brand/:id', deleteBrandService)
 
-        this.router.get('/admin/category', getCategoryService)
+        this.router.get('/admin/kategori', getCategoryService)
     }
     #postRoute(){
-        this.router.post('/user/register', registerService ,(req,res)=>{
-            return res.status(200).json({ msg: 'Berhasil!' })
-        })
+        this.router.post('/user/register', registerService)
         this.router.post('/user/login', loginService, initToken)
+
         this.router.post('/admin/tambah/brand', upload.single('file'), addBrandService)
         this.router.post('/admin/tambah/produk', upload.single('file'), addProductService)
+        this.router.post('/admin/tambah/kategori', upload.single('file'), addCategoryService)
     }
 }
 

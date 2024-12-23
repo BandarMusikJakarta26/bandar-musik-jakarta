@@ -5,15 +5,18 @@ import { host } from "../../../libs/config"
 export default function AllBrand(){
     const [brands, setBrands] = useState<any[]>([])
     const [filter, setFilter] = useState<string>('Semua')
+    const [loading, setLoading] = useState<boolean>(true)
     const alphabets = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-
 
     async function getAllBrand(){
         const response = await axios.get(`${host}/admin/brand?name=true`)
         setBrands(response.data.brands.map((brand:{name: string})=>brand.name))
     }
 
-    useEffect(()=>{ getAllBrand() }, [])
+    useEffect(()=>{
+        getAllBrand()
+        setLoading(false)
+    }, [])
 
     function getSelectedBrand(e: any){
         return setFilter(e.target.innerText)
@@ -62,22 +65,31 @@ export default function AllBrand(){
         })
     }
 
-    return (
-        <div className="flex flex-col gap-y-6">
-            <div className="title flex justify-between items-center">
-
-                <h1 className="text-[60px] font-bold tracking-tight">Daftar Brand</h1>
-                <div className="filter flex mt-3">
-                    <div className={`${filter === document.querySelector('.semua')?.innerHTML ? 'font-bold opacity-100' : 'font-semibold opacity-70'} semua text-[18px] hover:cursor-pointer h-[40px] text-center leading-[39px] px-2 hover:font-bold hover:opacity-100 transition-all`} onClick={getSelectedBrand}>Semua</div>
-                    <SelectOptions/>
+    function ShowElement(){
+        return (
+            <div className="flex flex-col gap-y-6">
+                <div className="title flex justify-between items-center">
+    
+                    <h1 className="text-[60px] font-bold tracking-tight">Daftar Brand</h1>
+                    <div className="filter flex mt-3">
+                        <div className={`${filter === document.querySelector('.semua')?.innerHTML ? 'font-bold opacity-100' : 'font-semibold opacity-70'} semua text-[18px] hover:cursor-pointer h-[40px] text-center leading-[39px] px-2 hover:font-bold hover:opacity-100 transition-all`} onClick={getSelectedBrand}>Semua</div>
+                        <SelectOptions/>
+                    </div>
+    
                 </div>
-
+    
+                <div className="list flex flex-col gap-y-8">
+                    <BrandGroup/>
+                </div>
+    
             </div>
+        )
+    }
 
-            <div className="list flex flex-col gap-y-8">
-                <BrandGroup/>
-            </div>
+    function LoadingPage(){
+        return <h1>Loading</h1>
+    }
 
-        </div>
-    )
+    if(loading) return <LoadingPage/>
+    else return <ShowElement/>
 }

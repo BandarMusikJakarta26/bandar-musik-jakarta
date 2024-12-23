@@ -33,3 +33,8 @@ export async function isLogin(){
     if(response.data.accessToken) return true
     else return false
 }
+
+export async function doLogout(navigate: NavigateFunction){
+    await axios.get(`${host}/user/logout`)
+    return navigate(0)
+}

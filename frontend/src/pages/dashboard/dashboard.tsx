@@ -4,9 +4,10 @@ import Terbaru from "./components/Terbaru"
 import Kategori from "./components/Kategori"
 import Brand from "./components/Brand"
 import { motion } from 'framer-motion'
+import { useState } from "react"
 
 export default function Dashboard(){
-    
+
     function explore(): void{
         const terbaru = document.querySelector('.deskripsi')!
         terbaru.scrollIntoView()

@@ -1,55 +1,38 @@
 "use client"
 
 import { Swiper, SwiperSlide } from 'swiper/react'
-import SwiperCore, { EffectCoverflow } from 'swiper'
+import SwiperCore, { Autoplay, EffectCoverflow } from 'swiper'
 
 import "swiper/swiper-bundle.css";
 import "swiper/components/effect-coverflow";
 
-import kategori from '../../../../public/utils/GitarKoleksi.png'
+import { useEffect, useState } from 'react';
+import { ShowKategori } from './ShowKategori';
+import { getCategories } from '../../../action/kategori.action';
 
-SwiperCore.use([EffectCoverflow]);
+SwiperCore.use([EffectCoverflow, Autoplay]);
 
 export default function KategoriSlides(){
-    return ( <>
+    const [ categories, setCategories ] = useState<any[]>([])
+
+    useEffect(()=>{ getCategories(setCategories) }, [])
+
+    return (
         <div className="kategori-slide mt-6">
-            <Swiper
-            effect={'coverflow'}
-            slidesPerView={3}
-            grabCursor={true}
-            centeredSlides={true}
-            coverflowEffect={{rotate: 0, stretch: -50, depth: 150, modifier: 2.5, slideShadows: false}}
-            loop={true}
-        >
-
-            <SwiperSlide>
-                <a className='w-full h-[260px]' href={'/terbaru'}>
-                    <img src={kategori} alt='gitar' className='relative -z-10' width={500} height="auto"/>
-                </a>
-            </SwiperSlide>
-            <SwiperSlide>
-                <a className='w-full h-[260px]' href={'/terbaru'}>
-                    <img src={kategori} alt='gitar' className='relative -z-10' width={500} height="auto"/>
-                </a>
-            </SwiperSlide>
-            <SwiperSlide>
-                <a className='w-full h-[260px]' href={'/terbaru'}>
-                    <img src={kategori} alt='gitar' className='relative -z-10' width={500} height="auto"/>
-                </a>
-            </SwiperSlide>
-            <SwiperSlide>
-                <a className='w-full h-[260px]' href={'/terbaru'}>
-                    <img src={kategori} alt='gitar' className='relative -z-10' width={500} height="auto"/>
-                </a>
-            </SwiperSlide>
-            <SwiperSlide>
-                <a className='w-full h-[260px]' href={'/terbaru'}>
-                    <img src={kategori} alt='gitar' className='relative -z-10' width={500} height="auto"/>
-                </a>
-            </SwiperSlide>
-            </Swiper>
+            { categories.length > 0 ?
+               <Swiper
+               effect={'coverflow'}
+               slidesPerView={3}
+               grabCursor={true}
+               centeredSlides={true}
+               coverflowEffect={{rotate: 0, stretch: -50, depth: 150, modifier: 2.5, slideShadows: true}}
+               loop={true}
+               autoplay={{ delay: 2000 }} >
+                  { categories.map((category, index)=>{
+                    return <SwiperSlide tabIndex={index}><ShowKategori category={category}/></SwiperSlide>
+                  }) }
+               </Swiper> : <h1>Gada Kategori!</h1>
+            }
         </div>
-        </>
-
     )
 }

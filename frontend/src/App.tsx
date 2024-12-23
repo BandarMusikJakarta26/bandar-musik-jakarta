@@ -21,12 +21,15 @@ import BlankPage from './pages/blank.tsx'
 
 import axios from 'axios'
 import { checkAdmin } from './action/auth.action.ts'
+import AddCategory from './pages/admin/addCategory.tsx'
+import GetCategory from './pages/admin/getCategory.tsx'
 
 axios.defaults.withCredentials = true
 
 export default function App() {
   // const [ login, setLogin ] = useState<boolean>(false) 
   const [ admin, isAdmin ] = useState<boolean>(false) 
+  const [screen, setScreen] = useState<number>(0)
   
   async function adminValidation() { isAdmin(await checkAdmin()) }
   // async function checkUserLogin() { setLogin(await isLogin()) }
@@ -35,9 +38,12 @@ export default function App() {
 
   useEffect(()=>{
     adminValidation()
+    setScreen(window.innerWidth)
     // checkUserLogin()
   }, [])
   
+  // if(screen === 480)
+
   return (
     <div className='w-full bg-primary text-third'> 
       <BrowserRouter>
@@ -55,8 +61,10 @@ export default function App() {
 
               <Route path="/admin/dashboard" element={admin ? <AdminDashboard/> : <BlankPage/>}/>
               <Route path="/admin/brand" element={admin ? <GetBrand/> : <BlankPage/>}/>
+              <Route path="/admin/kategori" element={admin ? <GetCategory/> : <BlankPage/>}/>
               <Route path="/admin/tambah/brand" element={admin ? <AddBrand/> : <BlankPage/> }/>
               <Route path="/admin/tambah/produk" element={admin ? <AddProduct/> : <BlankPage/> }/>
+              <Route path="/admin/tambah/kategori" element={admin ? <AddCategory/> : <BlankPage/> }/>
 
               <Route path='*' element={<BlankPage/>}/>
             </Routes>
