@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { host } from "../../../libs/config"
 import axios, { AxiosResponse } from "axios"
+import { useNavigate } from "react-router"
 
 export default function AddProduct(){
     const [ brands, setBrand ] = useState<any[]>([])
@@ -8,6 +9,7 @@ export default function AddProduct(){
     const [ file, setFile ] = useState<File | null>(null)
     const [ checkCategory, getCategory ] = useState<any>(null)
     const [ checkBrand, getBrand ] = useState<any>(null)
+    const navigate = useNavigate()
 
     async function getBrands(){
         const response = await axios.get(`${host}/admin/brand`) as AxiosResponse
@@ -15,7 +17,7 @@ export default function AddProduct(){
     }
 
     async function getCategories(){
-        const response = await axios.get(`${host}/admin/category`) as AxiosResponse
+        const response = await axios.get(`${host}/admin/kategori`) as AxiosResponse
         response.data.categories.length > 0 ? setCategories(response.data.categories) : setCategories([])
     }
 
@@ -31,6 +33,7 @@ export default function AddProduct(){
         const upload = new FormData(document.querySelector('form')!)
         upload.append('file', file!)
         await axios.post(`${host}/admin/tambah/produk`, upload)
+        return navigate(0)
     }
 
     function changeCategory(e:any){ getCategory(e.target.value) }
@@ -43,7 +46,7 @@ export default function AddProduct(){
 
                 <div className="form flex flex-col gap-y-6 relative h-[500px]">
 
-                    <form className="flex flex-col gap-y-6">
+                    <form className="flex flex-col gap-y-6" onSubmit={(e)=>e.preventDefault()}>
 
                     <div className="input-top grid grid-cols-[2fr_1fr] gap-x-20">
                     <input type="text" name="name" placeholder="Masukkan nama produk..." className="name"/>

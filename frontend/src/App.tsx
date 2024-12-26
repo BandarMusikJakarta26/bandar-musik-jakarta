@@ -23,6 +23,8 @@ import axios from 'axios'
 import { checkAdmin } from './action/auth.action.ts'
 import AddCategory from './pages/admin/addCategory.tsx'
 import GetCategory from './pages/admin/getCategory.tsx'
+import Kategori from './pages/kategori/kategori.tsx'
+import AllKategori from './pages/allKategori/AllKategori.tsx'
 
 axios.defaults.withCredentials = true
 
@@ -53,6 +55,8 @@ export default function App() {
               <Route path="/" element={<Dashboard/>}/>
               <Route path="/brand" element={<AllBrand/>}/>
               <Route path="/brand/:name" element={<Brand/>}/>
+              <Route path="/kategori" element={<AllKategori/>}/>
+              <Route path="/kategori/:name" element={<Kategori/>}/>
 
               <Route path="/user/login" element={<Login/>}/>
               <Route path="/user/register" element={<Register/>}/>

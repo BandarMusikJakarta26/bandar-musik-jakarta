@@ -45,6 +45,7 @@ model Kategori{
   id String @id @default(uuid())
   name String @unique
   image String
+  brands String[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

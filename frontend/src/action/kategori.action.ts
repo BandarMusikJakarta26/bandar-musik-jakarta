@@ -6,3 +6,8 @@ export async function getCategories(setCategories: React.SetStateAction<any[] | 
     const response = await axios.get(`${host}/admin/kategori`)
     setCategories(response.data.categories)
 }
+
+export async function getCategoryByName(setCategory: React.SetStateAction<any[] | any>, name: string){
+    const response = await axios.get(`${host}/kategori/${name}`)
+    return setCategory(response.data.category)
+}

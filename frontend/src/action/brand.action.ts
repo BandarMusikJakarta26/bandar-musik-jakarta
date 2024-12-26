@@ -13,4 +13,14 @@ export async function getBrandByName(setBrand: React.SetStateAction<any[] | any>
     setLoading(false)
     return setBrand(response.data.brand)
 }
+
+export async function getBrands(setBrands: React.SetStateAction<any[] | any>){
+    const response = await axios.get(`${host}/admin/brand/30`) as AxiosResponse
+    return setBrands(response.data.brands)
+}
+
+export async function getCategories(setCategories: React.SetStateAction<any[] | any>){
+    const response = await axios.get(`${host}/admin/kategori`) as AxiosResponse
+    return setCategories(response.data.categories)
+}
     
