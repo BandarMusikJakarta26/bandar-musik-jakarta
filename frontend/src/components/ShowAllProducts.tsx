@@ -2,6 +2,7 @@ import { AdvancedImage } from "@cloudinary/react"
 import { cloudSDK } from "../../libs/config"
 
 export default function ShowAllProducts({ products, according }: { products: any[], according: string }){
+    console.log(according)
     return products.map((product, index)=>{
         return (
             <a className="group card shadow-xl p-6 relative flex flex-col gap-y-3"key={index} href={product.tokopedia} target="_blank">

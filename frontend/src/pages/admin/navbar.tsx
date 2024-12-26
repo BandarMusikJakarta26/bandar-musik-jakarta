@@ -8,15 +8,16 @@ const navs = [
 ]
 
 export default function NavAdmin(){
+    
     function ShowMenu(){
         const {pathname} = useLocation()
         return navs.map((nav, index)=>{
-            return <a href={nav.url} key={index} className={`${nav.url === pathname ? 'opacity-100' : 'opacity-60 hover:opacity-100 transition-all'} py-3 px-9`}>{nav.name}</a>
+            return <a href={nav.url} key={index} className={`${nav.url === pathname ? 'opacity-100' : 'opacity-70 hover:opacity-100 transition-all'} py-3 px-9`}>{nav.name}</a>
         })
     }
-
-    return (
-        <div className="nav-admin fixed top-[180px] left-0 bg-third text-[20px] text-primary flex flex-col z-30">
+    
+    return ( 
+        <div className={`nav-admin fixed top-[138px] left-0 bg-second text-[20px] text-third flex justify-center z-30 w-full drop-shadow-xl`}>
             <ShowMenu/>
         </div>
     )

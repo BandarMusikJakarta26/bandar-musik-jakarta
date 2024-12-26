@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router'
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router'
 import { useEffect, useState } from 'react'
 
 import Login from './pages/login/login.tsx'
@@ -29,26 +29,17 @@ import AllKategori from './pages/allKategori/AllKategori.tsx'
 axios.defaults.withCredentials = true
 
 export default function App() {
-  // const [ login, setLogin ] = useState<boolean>(false) 
   const [ admin, isAdmin ] = useState<boolean>(false) 
   
   async function adminValidation() { isAdmin(await checkAdmin()) }
-  // async function checkUserLogin() { setLogin(await isLogin()) }
-  
-  // console.log(login)
-
-  useEffect(()=>{
-    adminValidation()
-    // checkUserLogin()
-  }, [])
-  
-  // if(screen === 480)
+  adminValidation()
+  useEffect(()=>{ admin && location.reload() },[])
 
   return (
     <div className='w-full bg-primary text-third'> 
       <BrowserRouter>
         <NavMenu/>
-        { admin && <NavAdmin/> }
+        { admin && <NavAdmin/>}
           <div className="main mx-auto w-[84%] pt-[150px] box-border overflow-hidden">
             <Routes>
 
