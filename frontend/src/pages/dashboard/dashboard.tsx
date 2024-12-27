@@ -15,16 +15,19 @@ export default function Dashboard(){
     return (
         <>
             <Carousel/>
-            <Deskripsi explore={explore}/>
-            <motion.div initial={{ opacity: 0, y: 200 }} whileInView={{ opacity: 1, y: 0, transition: { duration: 0.5 } }} viewport={{ once: true }}>
-                <Terbaru/>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, y: 200 }} whileInView={{ opacity: 1, y: 0, transition: { duration: 0.5 } }} viewport={{ once: true }}>
-                <Kategori/>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, y: 200 }} whileInView={{ opacity: 1, y: 0, transition: { duration: 0.5 } }} viewport={{ once: true }}>
-                <Brand/>
-            </motion.div>
+            <div className="content w-[86%] mx-auto md:w-full">
+                <Deskripsi explore={explore}/>
+                <motion.div initial={{ opacity: 0, y: 200 }} whileInView={{ opacity: 1, y: 0, transition: { duration: 0.5 } }} viewport={{ once: true }}>
+                    <Terbaru/>
+                </motion.div>
+                <motion.div initial={{ opacity: 0, y: 200 }} whileInView={{ opacity: 1, y: 0, transition: { duration: 0.5 } }} viewport={{ once: true }}>
+                    <Kategori/>
+                </motion.div>
+                <motion.div initial={{ opacity: 0, y: 200 }} whileInView={{ opacity: 1, y: 0, transition: { duration: 0.5 } }} viewport={{ once: true }}>
+                    <Brand/>
+                </motion.div>
+            </div>
+           
         </>
     )
 }
