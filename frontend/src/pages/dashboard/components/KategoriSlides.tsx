@@ -9,7 +9,6 @@ import "swiper/components/effect-coverflow";
 import { useEffect, useState } from 'react';
 import { ShowKategori } from './ShowKategori';
 import { getCategories } from '../../../action/kategori.action';
-import { useNavigate } from 'react-router';
 import responsivePage from '../../../action/screen.action';
 
 SwiperCore.use([EffectCoverflow, Autoplay, Pagination]);
