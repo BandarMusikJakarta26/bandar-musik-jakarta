@@ -17,11 +17,10 @@ SwiperCore.use([EffectCoverflow, Autoplay, Pagination]);
 export default function KategoriSlides(){
     const [ categories, setCategories ] = useState<any[]>([])
     const [screen, setScreen] = useState<number>(window.innerWidth)
-    const navigate = useNavigate()
 
     useEffect(()=>{
         getCategories(setCategories)
-        responsivePage(setScreen, navigate)
+        responsivePage(setScreen)
      }, [])
 
     return (
