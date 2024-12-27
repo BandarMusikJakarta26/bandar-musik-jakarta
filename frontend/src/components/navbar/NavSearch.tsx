@@ -27,7 +27,7 @@ export default function NavSearch(){
                 <div className="relative">
                     <button className="absolute top-[13px] left-[20px]"><FaSearch size={'22px'} color="gray"/></button>
                 </div>
-                <input type="text" name="search" placeholder="Cari Kebutuhanmu...." className="bg-white px-4 py-3 rounded-full w-full text-[16px] indent-10 border-2 border-primary placeholder:text-gray-500 focus:border-none" value={search} onChange={(e)=>{setSearch(e.target.value)}}/>
+                <input type="text" name="search" placeholder="Cari Kebutuhanmu...." className="bg-white px-4 md:py-3 rounded-full w-full text-[14px] md:text-[16px] indent-10 border-2 border-primary placeholder:text-gray-500 focus:border-none" value={search} onChange={(e)=>{setSearch(e.target.value)}}/>
                 <div className="relative">
                     { search !== '' ? <TabPencarian result={result}/> : false }
                 </div>
