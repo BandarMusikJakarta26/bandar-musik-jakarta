@@ -39,7 +39,7 @@ export default function NavMenu(){
                     else return showPages(true)
                 }}><GiHamburgerMenu size={40}/></button> }
             </div>
-            <div className={`${!pages ? 'hidden' : 'flex'} links gap-x-6 absolute flex-col top-[170px] left-0 bg-third w-full text-primary md:flex-row md:static md:flex md:bg-primary md:text-third md:items-center`}>
+            <div className={`${!pages ? 'hidden' : 'flex'} links gap-x-6 absolute flex-col top-[146px] left-0 bg-third w-full text-primary md:flex-row md:static md:flex md:bg-primary md:text-third md:items-center`}>
                 <NavLink isAuth={auth}/>
             </div>
             { auth && <LogoutButton/>}
