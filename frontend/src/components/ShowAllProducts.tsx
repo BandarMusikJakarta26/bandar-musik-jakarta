@@ -44,7 +44,7 @@ function MobileUI({ products }: { products: any[] }){
 
 export default function ShowAllProducts({ products, according }: { products: any[], according: string }){
     const [ screen, setScreen ] = useState<number>(window.innerWidth)
-    
+    console.log(according)
     useEffect(()=>{ responsivePage(setScreen) })
 
     if(screen <= 768 ) return (
