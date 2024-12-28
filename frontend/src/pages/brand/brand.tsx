@@ -18,8 +18,10 @@ export default function Brand(){
         if(!loading && !brand) return ( <BlankPage/> )
         else return (
             <>
-                <BrandTitle brand={brand}/>
-                <ProductList brand={brand.name} />
+                <div className="mobile px-6 md:px-0 flex flex-col gap-y-8">
+                    <BrandTitle brand={brand}/>
+                    <ProductList brand={brand.name} />
+                </div>
             </>
         )
 }
