@@ -3,9 +3,11 @@ import { useEffect, useState } from "react"
 import { cloudSDK, host } from '../../../libs/config'
 import { FaRegPlusSquare } from "react-icons/fa";
 import { AdvancedImage } from "@cloudinary/react";
+import responsivePage from "../../action/screen.action";
 
 export default function GetBrand(){
     const [ brands, setBrand ] = useState<any[]>([])
+    const [ screen, setScreen ] = useState<number>(window.innerWidth)
 
     useEffect(()=>{
         async function brandFetch(){
@@ -13,6 +15,7 @@ export default function GetBrand(){
             response.data.brands.length > 0 ? setBrand(response.data.brands) : setBrand([])
         }
         brandFetch()
+        responsivePage(setScreen)
     }, [])
 
     function BrandKosong(){
@@ -35,10 +38,12 @@ export default function GetBrand(){
             return brands.map((brand, index)=>{
             return (
                 <div className="brandfield flex flex-col shadow-lg items-center" key={index+1}>
-                    <AdvancedImage cldImg={cloudSDK.image(brand.image)}/>
-                    <div className="nama-brand p-5 flex flex-col items-center gap-y-2">
-                        <h1 className="text-[24px] font-semibold">{brand.name}</h1>
-                        <button className="bg-red-600 text-primary font-semibold rounded-full py-1 hover:brightness-90 w-[70px] text-[14px]" onClick={()=>deleteBrand(brand.id)}>Delete</button>
+                    <div className="gambar md:p-0 p-3">
+                        <AdvancedImage cldImg={cloudSDK.image(brand.image)}/>
+                    </div>
+                    <div className="nama-brand p-4 md:p-5 flex flex-col items-center gap-y-2">
+                        <h1 className="md:text-[24px] font-semibold">{brand.name}</h1>
+                        <button className="bg-red-600 text-primary font-semibold rounded-full py-[2px] md:py-1 hover:brightness-90 w-[60px] md:w-[70px] text-[10px] md:text-[14px]" onClick={()=>deleteBrand(brand.id)}>Delete</button>
                     </div>
                 </div>
                 )
@@ -48,19 +53,19 @@ export default function GetBrand(){
         return (
             <>  
                 <div className="headbrand flex justify-between">
-                    <h1 className="text-[50px] font-bold tracking-tight">Daftar Brand</h1>
+                    <h1 className="text-[30px] md:text-[50px] font-bold tracking-tight">Daftar Brand</h1>
                 </div>
-                <div className="showbrand grid grid-cols-5 gap-x-8 gap-y-6 ">
+                <div className="showbrand grid grid-cols-3 md:grid-cols-5 gap-x-4 md:gap-x-8 gap-y-6 ">
                     <ShowBrand/>
-                    <a href="/admin/tambah/brand" className="opacity-80 hover:opacity-100 transition-all"><FaRegPlusSquare size={260}/></a>
+                    <a href="/admin/tambah/brand" className="opacity-80 hover:opacity-100 transition-all self-center justify-self-center"><FaRegPlusSquare size={ screen <= 768 ? 70 : 260 }/></a>
                 </div>
             </>
         )
     }
 
     return (
-        <div className="w-full box-border p-10">
-            <div className="brandList w-full pl-[80px]">
+        <div className="w-full box-border py-[80px] px-5 md:p-10">
+            <div className="brandList w-full">
                 { !brands ? <BrandKosong/> : <DataBrand/> }
             </div>
         </div>

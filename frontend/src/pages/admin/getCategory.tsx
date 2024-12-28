@@ -3,9 +3,11 @@ import { useEffect, useState } from "react"
 import { cloudSDK, host } from '../../../libs/config'
 import { FaRegPlusSquare } from "react-icons/fa";
 import { AdvancedImage } from "@cloudinary/react";
+import responsivePage from "../../action/screen.action";
 
 export default function GetCategory(){
     const [ categories, setCategory ] = useState<any[]>([])
+    const [ screen, setScreen ] = useState<number>(window.innerWidth)
 
     useEffect(()=>{
         async function getCategories(){
@@ -28,6 +30,7 @@ export default function GetCategory(){
         const response = await axios.get(`${host}/admin/hapus/kategori/${id}`)
         if(!response.data.success) return true
         setCategory(response.data.brands)
+        responsivePage(setScreen)
     }
 
     function DataCategory(){
@@ -37,8 +40,8 @@ export default function GetCategory(){
                 <div className="brandfield flex flex-col shadow-lg items-center" key={index+1}>
                     <AdvancedImage cldImg={cloudSDK.image(category.image)}/>
                     <div className="nama-brand p-5 flex flex-col items-center gap-y-2">
-                        <h1 className="text-[24px] font-semibold">{category.name}</h1>
-                        <button className="bg-red-600 text-primary font-semibold rounded-full py-1 hover:brightness-90 w-[70px] text-[14px]" onClick={()=>deleteCategory(category.id)}>Delete</button>
+                        <h1 className="text-[13px] md:text-[24px] font-semibold">{category.name}</h1>
+                        <button className="bg-red-600 text-primary font-semibold rounded-full py-[2px] md:py-1 hover:brightness-90 w-[60px] md:w-[70px] text-[10px] md:text-[14px]" onClick={()=>deleteCategory(category.id)}>Delete</button>
                     </div>
                 </div>
                 )
@@ -48,19 +51,19 @@ export default function GetCategory(){
         return (
             <>  
                 <div className="headbrand flex justify-between">
-                    <h1 className="text-[50px] font-bold tracking-tight">Daftar Category</h1>
+                    <h1 className="text-[28px] md:text-[50px] font-bold tracking-tight">Daftar Category</h1>
                 </div>
-                <div className="showbrand grid grid-cols-2 gap-x-8 gap-y-6 items-center">
+                <div className="showbrand grid grid-cols-2 gap-x-4 md:gap-x-8 gap-y-6 items-center">
                     <ShowCategory/>
-                    <a href="/admin/tambah/brand" className="opacity-80 hover:opacity-100 justify-self-center transition-all"><FaRegPlusSquare size={260}/></a>
+                    <a href="/admin/tambah/brand" className="opacity-80 hover:opacity-100 justify-self-center transition-all"><FaRegPlusSquare size={ screen <= 768 ? 70 : 260 }/></a>
                 </div>
             </>
         )
     }
 
     return (
-        <div className="w-full box-border p-10">
-            <div className="brandList w-full pl-[80px]">
+        <div className="w-full box-border pt-12 px-5 md:p-10">
+            <div className="brandList w-full">
                 { categories.length == 0 ? <CategoryKosong/> : <DataCategory/> }
             </div>
         </div>

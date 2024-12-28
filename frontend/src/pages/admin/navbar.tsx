@@ -12,12 +12,12 @@ export default function NavAdmin(){
     function ShowMenu(){
         const {pathname} = useLocation()
         return navs.map((nav, index)=>{
-            return <a href={nav.url} key={index} className={`${nav.url === pathname ? 'opacity-100' : 'opacity-70 hover:opacity-100 transition-all'} py-3 px-9`}>{nav.name}</a>
+            return <a href={nav.url} key={index} className={`${nav.url === pathname ? 'opacity-100' : 'opacity-70 hover:opacity-100 transition-all'} md:py-3 md:px-9`}>{nav.name}</a>
         })
     }
     
     return ( 
-        <div className={`nav-admin fixed top-[138px] left-0 bg-second text-[20px] text-third flex justify-center z-30 w-full drop-shadow-xl`}>
+        <div className={`nav-admin fixed top-[138px] left-0 bg-second text-[11px] md:text-[20px] text-third flex justify-center z-30 w-full drop-shadow-xl gap-x-5 py-2`}>
             <ShowMenu/>
         </div>
     )
