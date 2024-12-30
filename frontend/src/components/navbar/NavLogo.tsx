@@ -9,7 +9,7 @@ export default function NavLogo(){
 
     return (
         <a href={'/'} className="w-full flex items-center justify-center">
-            <img src={BMJLogo} width={screen <= 768 ? 150 : 200} alt="bandarmusikjakartalogo"/>
+            <img src={BMJLogo} width={screen <= 768 ? 120 : 200} alt="bandarmusikjakartalogo"/>
         </a>
     )
 }

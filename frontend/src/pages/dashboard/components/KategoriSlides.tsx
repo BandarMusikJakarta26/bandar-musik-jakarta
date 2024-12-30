@@ -37,7 +37,7 @@ export default function KategoriSlides(){
                   { categories.map((category, index)=>{
                     return <SwiperSlide tabIndex={index}><ShowKategori category={category}/></SwiperSlide>
                   }) }
-               </Swiper> : <h1>Gada Kategori!</h1>
+               </Swiper> : false
             }
         </div>
     )
