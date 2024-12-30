@@ -10,3 +10,8 @@ export async function getProductByCategory(setProductByCategory: React.SetStateA
     const response = await axios.get(`${host}/produk/kategori/${category}`) as AxiosResponse
     return setProductByCategory(response.data.produk)
 }
+
+export async function getProducts(setProducts: React.SetStateAction<any[] | any>){
+    const response = await axios.get(`${host}/admin/produk`) as AxiosResponse
+    return setProducts(response.data.produk)
+}

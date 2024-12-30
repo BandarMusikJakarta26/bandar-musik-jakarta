@@ -25,6 +25,7 @@ import { cloudinaryStorage } from "../config.js"
 import multer from "multer";
 import getSearchByName from "../services/get.search.by.name.service.js"
 import getProductByCategory from "../services/produk/get.product.by.category.js"
+import getProductsService from "../services/produk/get.product.service.js"
 
 const upload = multer({ storage: cloudinaryStorage, limits: { fileSize: 3000000 }, fileFilter: function(req, file, cb){
     const imageExt = ['png', 'jpg', 'jpeg']
@@ -60,6 +61,8 @@ class Routes {
         this.router.get('/admin/hapus/brand/:id', deleteBrandService)
 
         this.router.get('/admin/kategori', getCategoryService)
+
+        this.router.get('/admin/produk', getProductsService)
     }
     #postRoute(){
         this.router.post('/user/register', registerService)

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getBrands, getCategories } from "../../action/brand.action";
+import { getBrandsWithLimit, getCategories } from "../../action/brand.action";
 
 import SosmedInformation from "./components/SosmedInformation";
 import ShopInformation from "./components/ShopInformation";
@@ -13,7 +13,7 @@ export default function Footer(){
     const [ categories, setCategories ] = useState<any[]>([])
 
     useEffect(()=>{
-        getBrands(setBrands) 
+        getBrandsWithLimit(setBrands, 30) 
         getCategories(setCategories) 
     }, [])
 

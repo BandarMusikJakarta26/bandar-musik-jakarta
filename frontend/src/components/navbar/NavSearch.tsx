@@ -19,7 +19,7 @@ export default function NavSearch(){
     },[search])
 
     function OverlayPage(){
-        return <div className=" operle absolute w-full top-[140px] h-[100vh] bg-black -z-10 left-0 opacity-70"></div>
+        return <div className=" operle absolute w-full top-[130px] h-[100vh] bg-black -z-10 left-0 opacity-70"></div>
     }
 
     return (

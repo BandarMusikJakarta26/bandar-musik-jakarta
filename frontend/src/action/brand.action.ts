@@ -2,8 +2,8 @@ import axios, { AxiosResponse } from "axios"
 import React from "react"
 import { host } from "../../libs/config"
 
-export async function getBrandWithLimit(setBrands: React.SetStateAction<any[] | any>){
-    const response = await axios.get(`${host}/admin/brand/20`) as AxiosResponse
+export async function getBrandsWithLimit(setBrands: React.SetStateAction<any[] | any>, limit: number){
+    const response = await axios.get(`${host}/admin/brand/${limit}`) as AxiosResponse
     return setBrands(response.data.brands)
 }
 
@@ -15,7 +15,7 @@ export async function getBrandByName(setBrand: React.SetStateAction<any[] | any>
 }
 
 export async function getBrands(setBrands: React.SetStateAction<any[] | any>){
-    const response = await axios.get(`${host}/admin/brand/30`) as AxiosResponse
+    const response = await axios.get(`${host}/admin/brand`) as AxiosResponse
     return setBrands(response.data.brands)
 }
 

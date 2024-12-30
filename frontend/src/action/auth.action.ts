@@ -5,7 +5,7 @@ import { host } from "../../libs/config"
 import { NavigateFunction } from "react-router"
 import { registerSchemaType } from "../../libs/schema/register.schema"
 
-async function doAuthAction(route: string, data: registerSchemaType | loginSchemaType, setLoading: SetStateAction<any>, setError: any, navigate: NavigateFunction, check?: SetStateAction<boolean | any>){
+async function doAuthAction(route: string, data: registerSchemaType | loginSchemaType, setLoading: SetStateAction<any>, setError: any, navigate: NavigateFunction){
     setLoading(true)
     const response = await axios.post(`${host}/user/` + route, data) as AxiosResponse
     setLoading(false)
