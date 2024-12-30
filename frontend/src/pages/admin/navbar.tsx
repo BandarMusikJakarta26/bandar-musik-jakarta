@@ -17,7 +17,7 @@ export default function NavAdmin(){
     }
     
     return ( 
-        <div className={`nav-admin fixed top-[138px] left-0 bg-second text-[11px] md:text-[20px] text-third flex justify-center z-30 w-full drop-shadow-xl gap-x-5 py-2`}>
+        <div className={`nav-admin fixed top-[135px] left-0 bg-second text-[11px] md:text-[20px] text-third flex justify-center w-full drop-shadow-xl gap-x-5 py-2 z-20`}>
             <ShowMenu/>
         </div>
     )
