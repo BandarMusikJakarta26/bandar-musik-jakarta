@@ -13,14 +13,14 @@ import { FaRegWindowClose } from "react-icons/fa";
 import responsivePage from "../../action/screen.action"
 
 export default function NavMenu(){
-    const [ auth, setAuth ] = useState<boolean>(false)
     const [ screen, setScreen ] = useState<number>(window.innerWidth)
     const [ pages, showPages ] = useState<boolean>(false)
     const navigate = useNavigate()
-
+    
+    const [ auth, setAuth ] = useState<boolean>(false)
     async function getToken(){
         const response = await axios.get(`${host}/token`)
-        return setAuth(response.data.accessToken ? true :  false)
+        return setAuth(response.data.refreshToken ? true :  false)
     }
 
     getToken()

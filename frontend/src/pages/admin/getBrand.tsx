@@ -4,8 +4,14 @@ import { cloudSDK, host } from '../../../libs/config'
 import { FaRegPlusSquare } from "react-icons/fa";
 import { AdvancedImage } from "@cloudinary/react";
 import responsivePage from "../../action/screen.action";
+import { checkAdmin } from "../../action/auth.action";
+import BlankPage from "../blank";
 
 export default function GetBrand(){
+    const [ admin, isAdmin ] = useState<boolean>(false) 
+    async function adminValidation() { return await isAdmin(await checkAdmin()) }
+    adminValidation()
+
     const [ brands, setBrand ] = useState<any[]>([])
     const [ screen, setScreen ] = useState<number>(window.innerWidth)
 
@@ -63,7 +69,8 @@ export default function GetBrand(){
         )
     }
 
-    return (
+    if(!admin) return <BlankPage/>
+    else return (
         <div className="w-full box-border py-[80px] px-5 md:p-10">
             <div className="brandList w-full">
                 { !brands ? <BrandKosong/> : <DataBrand/> }

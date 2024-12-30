@@ -7,6 +7,5 @@ export default async function logout(req, res){
     if(!searchAkun) return res.status(200).json({ success: false })
     await db.akun.update({ where: { id: searchAkun.id }, data: { refreshToken: '' } })
     res.clearCookie('refreshToken')
-    res.clearCookie('accessToken')
     return res.status(200).json({ success: true })
 }

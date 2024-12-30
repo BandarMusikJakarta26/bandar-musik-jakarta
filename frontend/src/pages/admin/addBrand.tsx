@@ -2,8 +2,14 @@ import axios from "axios"
 import { useState } from "react"
 import { useNavigate } from "react-router"
 import { host } from "../../../libs/config"
+import { checkAdmin } from "../../action/auth.action"
+import BlankPage from "../blank"
 
 export default function AddBrand(){
+    const [ admin, isAdmin ] = useState<boolean>(false) 
+    async function adminValidation() { return await isAdmin(await checkAdmin()) }
+    adminValidation()
+
     const [ brand, setBrand ] = useState<File | null>(null)
     const [ name, setName ] = useState<string>('')
     const [ loading, setLoading ] = useState<boolean>(false)
@@ -19,8 +25,8 @@ export default function AddBrand(){
         if(response.data.success) return navigate('/admin/brand')
     }
 
-    return (
-   
+    if(!admin) return <BlankPage/>
+    else return (
         <div className="form">
             <input type="text" name="nama" onChange={(e)=>{ setName(e.target.value) }} value={name} required/>
             <input type="file" name="brand" onChange={(e)=>{ setBrand(e.target.files![0]) }} className="gambar" required/>

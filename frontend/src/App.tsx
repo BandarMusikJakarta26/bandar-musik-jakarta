@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from 'react-router'
-import { useEffect, useState } from 'react'
 
 import Login from './pages/login/login.tsx'
 import Register from './pages/register/register.tsx'
@@ -20,7 +19,6 @@ import AllBrand from './pages/allBrand/AllBrand.tsx'
 import BlankPage from './pages/blank.tsx'
 
 import axios from 'axios'
-import { checkAdmin } from './action/auth.action.ts'
 import AddCategory from './pages/admin/addCategory.tsx'
 import GetCategory from './pages/admin/getCategory.tsx'
 import Kategori from './pages/kategori/kategori.tsx'
@@ -29,17 +27,12 @@ import AllKategori from './pages/allKategori/AllKategori.tsx'
 axios.defaults.withCredentials = true
 
 export default function App() {
-  const [ admin, isAdmin ] = useState<boolean>(false) 
-  
-  async function adminValidation() { isAdmin(await checkAdmin()) }
-  adminValidation()
-  useEffect(()=>{ admin && location.reload() },[])
-
+      
   return (
     <div className='w-full bg-primary text-third'> 
       <BrowserRouter>
         <NavMenu/>
-        { admin && <NavAdmin/>}
+        {<NavAdmin/>}
           <div className="main mx-auto md:w-[84%] pt-[136px] md:pt-[150px] box-border overflow-hidden">
             <Routes>
 
@@ -52,12 +45,12 @@ export default function App() {
               <Route path="/user/login" element={<Login/>}/>
               <Route path="/user/register" element={<Register/>}/>
 
-              <Route path="/admin/dashboard" element={admin ? <AdminDashboard/> : <BlankPage/>}/>
-              <Route path="/admin/brand" element={admin ? <GetBrand/> : <BlankPage/>}/>
-              <Route path="/admin/kategori" element={admin ? <GetCategory/> : <BlankPage/>}/>
-              <Route path="/admin/tambah/brand" element={admin ? <AddBrand/> : <BlankPage/> }/>
-              <Route path="/admin/tambah/produk" element={admin ? <AddProduct/> : <BlankPage/> }/>
-              <Route path="/admin/tambah/kategori" element={admin ? <AddCategory/> : <BlankPage/> }/>
+              <Route path="/admin/dashboard" element={<AdminDashboard/>}/>
+              <Route path="/admin/brand" element={<GetBrand/>}/>
+              <Route path="/admin/kategori" element={<GetCategory/>}/>
+              <Route path="/admin/tambah/brand" element={<AddBrand/>}/>
+              <Route path="/admin/tambah/produk" element={<AddProduct/>}/>
+              <Route path="/admin/tambah/kategori" element={<AddCategory/>}/>
 
               <Route path='*' element={<BlankPage/>}/>
             </Routes>

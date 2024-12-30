@@ -6,8 +6,8 @@ dotenv.config()
 
 export default async function isAdmin(req, res){
     try{
-        const accessToken = await getAccessToken(req, res)
-        const { id } = jwt.verify(accessToken, process.env.JWT_SECRET)
+        const refreshToken = await getAccessToken(req, res)
+        const { id } = jwt.verify(refreshToken, process.env.JWT_SECRET)
         if(!id) return res.status(200).json({ success: false })
         const user = await db.akun.findUnique({ where: { id } })
         if(!user) return res.status(200).json({ success: false })

@@ -2,8 +2,14 @@ import { useEffect, useState } from "react"
 import { host } from "../../../libs/config"
 import axios, { AxiosResponse } from "axios"
 import { useNavigate } from "react-router"
+import BlankPage from "../blank"
+import { checkAdmin } from "../../action/auth.action"
 
 export default function AddProduct(){
+    const [ admin, isAdmin ] = useState<boolean>(false) 
+    async function adminValidation() { return await isAdmin(await checkAdmin()) }
+    adminValidation()
+
     const [ brands, setBrand ] = useState<any[]>([])
     const [ categories, setCategories ] = useState<any[]>([])
     const [ file, setFile ] = useState<File | null>(null)
@@ -39,7 +45,8 @@ export default function AddProduct(){
     function changeCategory(e:any){ getCategory(e.target.value) }
     function changeBrand(e:any){ getBrand(e.target.value) }
 
-    return (
+    if(!admin) return <BlankPage/>
+    else return (
         <div className="addProduct px-16 mt-[6px]">
             <div className="w-full ml-[60px] shadow-xl px-[50px] flex flex-col gap-y-2">
                 <h1 className="text-[48px] font-bold tracking-tight ">Tambah Produk</h1>

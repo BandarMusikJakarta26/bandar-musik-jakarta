@@ -16,14 +16,16 @@ import LayoutAuthError from "../../components/auth/LayoutAuthError"
 import LayoutSubmitAuth from "../../components/auth/LayoutSubmitAuth"
 import Unregister from "./components/Unregister"
 
-export default function Login(){
+export default function Login({ isLogin }: { isLogin: React.SetStateAction<boolean | any> }){
     const navigate = useNavigate()
 
     const { register, handleSubmit, formState: { errors } } = useForm<loginSchemaType>({ resolver: zodResolver(loginSchema) })
     const [ loading, setLoading ] = useState<boolean>(false)
     const [ error, setError ] = useState<string | null>(null)
 
-    function onLoginSubmit(data: loginSchemaType){ return loginAction(data, setLoading, setError, navigate) }
+    function onLoginSubmit(data: loginSchemaType){ 
+        return loginAction(data, setLoading, setError, navigate, isLogin)
+    }
 
     return (
         <LayoutAuth>

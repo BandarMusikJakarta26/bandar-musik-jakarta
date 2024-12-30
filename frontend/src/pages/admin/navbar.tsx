@@ -1,4 +1,7 @@
-import { useLocation } from "react-router"
+import { useEffect, useState } from "react"
+import { useLocation, useNavigate } from "react-router"
+import { checkAdmin } from "../../action/auth.action"
+import BlankPage from "../blank"
 
 const navs = [
     { name: "Dashboard", url: "/admin/dashboard" },
@@ -8,6 +11,12 @@ const navs = [
 ]
 
 export default function NavAdmin(){
+    const [ admin, isAdmin ] = useState<boolean>(false) 
+    const navigate = useNavigate()
+    async function adminValidation() { return await isAdmin(await checkAdmin()) }
+    adminValidation()
+
+    useEffect(()=>{admin && navigate(0)}, [])
     
     function ShowMenu(){
         const {pathname} = useLocation()
@@ -16,8 +25,9 @@ export default function NavAdmin(){
         })
     }
     
-    return ( 
-        <div className={`nav-admin fixed top-[135px] left-0 bg-second text-[11px] md:text-[20px] text-third flex justify-center w-full drop-shadow-xl gap-x-5 py-2 z-20`}>
+    if(!admin) return false
+    else return ( 
+        <div className={`nav-admin fixed top-[135px] md:top-[130px] left-0 bg-second text-[11px] md:text-[20px] text-third flex justify-center w-full drop-shadow-xl gap-x-5 py-2 z-20`}>
             <ShowMenu/>
         </div>
     )
