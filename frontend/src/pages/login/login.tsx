@@ -16,7 +16,7 @@ import LayoutAuthError from "../../components/auth/LayoutAuthError"
 import LayoutSubmitAuth from "../../components/auth/LayoutSubmitAuth"
 import Unregister from "./components/Unregister"
 
-export default function Login({ isLogin }: { isLogin: React.SetStateAction<boolean | any> }){
+export default function Login(){
     const navigate = useNavigate()
 
     const { register, handleSubmit, formState: { errors } } = useForm<loginSchemaType>({ resolver: zodResolver(loginSchema) })
@@ -24,7 +24,7 @@ export default function Login({ isLogin }: { isLogin: React.SetStateAction<boole
     const [ error, setError ] = useState<string | null>(null)
 
     function onLoginSubmit(data: loginSchemaType){ 
-        return loginAction(data, setLoading, setError, navigate, isLogin)
+        return loginAction(data, setLoading, setError, navigate)
     }
 
     return (
