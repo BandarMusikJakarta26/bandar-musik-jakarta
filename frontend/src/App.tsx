@@ -24,6 +24,8 @@ import GetCategory from './pages/admin/getCategory.tsx'
 import Kategori from './pages/kategori/kategori.tsx'
 import AllKategori from './pages/allKategori/AllKategori.tsx'
 import GetProduct from './pages/admin/getProduct.tsx'
+import AllTerbaru from './pages/allNewest/AllTerbaru.tsx'
+import About from './pages/about/About.tsx'
 
 axios.defaults.withCredentials = true
 
@@ -42,6 +44,8 @@ export default function App() {
               <Route path="/brand/:name" element={<Brand/>}/>
               <Route path="/kategori" element={<AllKategori/>}/>
               <Route path="/kategori/:name" element={<Kategori/>}/>
+              <Route path="/terbaru" element={<AllTerbaru/>}/>
+              <Route path="/about" element={<About/>}/>
 
               <Route path="/user/login" element={<Login/>}/>
               <Route path="/user/register" element={<Register/>}/>

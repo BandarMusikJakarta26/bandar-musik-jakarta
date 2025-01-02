@@ -1,12 +1,11 @@
-export default function Terbaru(){
+export default function AllTerbaru(){
     return (
-        <div className="terbaru mt-[70px] mb-[-30px] md:mb-[170px]">
+        <div className="terbaru mt-1 px-6">
         <div className="terbaru-text mb-8 flex flex-col items-center md:block">
-          <h1 className="text-[26px] md:text-[36px] uppercase font-light italic tracking-tight">Apa Yang</h1>
-          <h1 className="text-[60px] md:text-[72px] uppercase font-black tracking-tight -mt-[26px] md:-mt-[30px]">Terbaru?</h1>
-          <a href={`/terbaru`} className="text-[20px] md:text-[24px] border-2 border-third px-10 py-1 md:py-2 hover:bg-third hover:text-primary transition-all">Lihat Semua Terbaru</a>
+          <h1 className="text-[60px] md:text-[72px] uppercase font-black tracking-tight">Terbaru</h1>
+          <h1 className="text-[16px] md:text-[30px] font-light italic mt-[-14px]">Info terbaru dari Bandar Musik Jakarta</h1>
         </div>
-        <div className="terbaru-list md:h-[400px] grid grid-cols-2 gap-x-8  md:gap-x-16">
+        <div className="terbaru-list grid grid-cols-2 md:grid-cols-3 gap-x-8 md:gap-x-16">
           <a href="/brand" className="group w-full">
             <img src="/utils/GitarKoleksi.png" alt="" className="md:rounded-[32px] group-hover:brightness-90 transition-all"/>
             <div className="text-blog pt-2">
