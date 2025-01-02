@@ -78,7 +78,7 @@ export default function AllBrand(){
                     </div>
 
                     <div className={`grid grid-cols-12 filter gap-y-1 md:gap-0 items-center md:flex md:flex-row mt-8 md:mt-3 top-[200px] right-[75px] bg-primary`}>
-                        <div className={`${filter === document.querySelector('.semua')?.innerHTML ? 'font-bold opacity-100' : 'font-semibold opacity-70'} ${screen <= 768 ? 'absolute top-[216px] left-[158px]' : 'block'} semua text-[16px] md:text-[18px] hover:cursor-pointer h-[40px] text-center leading-[39px] px-2 hover:font-bold hover:opacity-100 transition-all`} onClick={getSelectedBrand}>Semua</div>
+                        <div className={`${filter === document.querySelector('.semua')?.innerHTML ? 'font-bold opacity-100' : 'font-semibold opacity-70'} ${screen <= 768 ? 'absolute top-[207px] left-[142px]' : 'block'} semua text-[16px] md:text-[18px] hover:cursor-pointer h-[40px] text-center leading-[39px] px-2 hover:font-bold hover:opacity-100 transition-all`} onClick={getSelectedBrand}>Semua</div>
                         <SelectOptions/>
                     </div>
     

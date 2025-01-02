@@ -7,6 +7,7 @@ const navs = [
     { name: "Daftar Brand", url: "/admin/brand" },
     { name: "Daftar Kategori", url: "/admin/kategori" },
     { name: "Daftar Produk", url: "/admin/produk" },
+    { name: "Daftar Terbaru", url: "/admin/terbaru" },
 ]
 
 export default function NavAdmin(){
@@ -26,7 +27,7 @@ export default function NavAdmin(){
     
     if(!admin) return false
     else return ( 
-        <div className={`nav-admin fixed top-[130px] left-0 bg-second text-[11px] md:text-[20px] text-third flex justify-center w-full drop-shadow-xl gap-x-5 py-2 z-20`}>
+        <div className={`nav-admin fixed top-[130px] left-0 bg-second text-[8px] md:text-[20px] text-third flex justify-center w-full drop-shadow-xl gap-x-4 md:gap-x-5 py-2 z-20`}>
             <ShowMenu/>
         </div>
     )

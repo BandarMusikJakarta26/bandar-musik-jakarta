@@ -14,8 +14,9 @@ export async function getBrandByName(setBrand: React.SetStateAction<any[] | any>
     return setBrand(response.data.brand)
 }
 
-export async function getBrands(setBrands: React.SetStateAction<any[] | any>){
+export async function getBrands(setBrands?: React.SetStateAction<any[] | any>){
     const response = await axios.get(`${host}/admin/brand`) as AxiosResponse
+    if(!setBrands) return response.data.brands.length
     return setBrands(response.data.brands)
 }
 

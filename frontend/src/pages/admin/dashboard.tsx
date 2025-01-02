@@ -12,28 +12,26 @@ const dataSet= [
 ]
 
 export default function AdminDashboard(){
-    const [ dataGroup, setDataGroup ] = useState<typeof dataSet>([])
+    const [ dataGroup, setDataGroup ] = useState<typeof dataSet | any[]>(dataSet)
     const [ admin, isAdmin ] = useState<boolean>(false) 
-    const [ brands, setBrands ] = useState<any[]>([])
-    const [ categories, setCategories ] = useState<any[]>([])
-    const [ products, setProducts ] = useState<any[]>([])
-    
+
     async function adminValidation() { return await isAdmin(await checkAdmin()) }
     adminValidation()
 
     async function getTotalData(){
-        await getBrands(setBrands)
-        await getCategories(setCategories)
-        await getProducts(setProducts)
+        const jumlahBrand = await getBrands()
+        const jumlahKategori = await getCategories()
+        const jumlahProduk = await getProducts()
         
         return setDataGroup([
-            { data: 'Brand', jumlah: brands.length },
-            { data: 'Kategori', jumlah: categories.length },
-            { data: 'Produk', jumlah: products.length },
+            { data: 'Brand', jumlah: jumlahBrand },
+            { data: 'Kategori', jumlah: jumlahKategori },
+            { data: 'Produk', jumlah: jumlahProduk },
         ])
     }
 
     useEffect(()=>{ getTotalData() },[])
+
 
     function DisplayData(){
         return dataGroup.map((satuan, index)=>{

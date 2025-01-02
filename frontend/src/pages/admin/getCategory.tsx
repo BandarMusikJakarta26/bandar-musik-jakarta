@@ -61,7 +61,7 @@ export default function GetCategory(){
                 </div>
                 <div className="showbrand grid grid-cols-2 gap-x-4 md:gap-x-8 gap-y-6 items-center">
                     <ShowCategory/>
-                    <a href="/admin/tambah/brand" className="opacity-80 hover:opacity-100 justify-self-center transition-all"><FaRegPlusSquare size={ screen <= 768 ? 70 : 260 }/></a>
+                    <a href="/admin/tambah/kategori" className="opacity-80 hover:opacity-100 justify-self-center transition-all"><FaRegPlusSquare size={ screen <= 768 ? 70 : 260 }/></a>
                 </div>
             </>
         )

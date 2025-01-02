@@ -9,7 +9,7 @@ async function doAuthAction(route: string, data: registerSchemaType | loginSchem
     setLoading(true)
     const response = await axios.post(`${host}/user/` + route, data) as AxiosResponse
     setLoading(false)
-    if(response.data.status === 400) return setError(response.data.error)
+    if(response.data.error) return setError(response.data.error)
     if(response.data.status === 200 && route === "login"){
         return navigate('/')
     } 
