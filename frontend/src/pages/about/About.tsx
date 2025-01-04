@@ -35,7 +35,7 @@ export default function About(){
                                 <div className="tulisan mt-2 md:mt-0">
                                     <h1 className="text-[18px] md:text-[24px] font-bold">Hubungi Admin</h1>
                                     <p className="mb-3 text-[14px] md:text-[16px] md:text-justify h-[90px] md:h-auto">untuk menanyakan informasi produk, pemesanan, komplain dan sebagainya</p>
-                                    <a href="#" className="bg-green-700 text-primary px-8 py-[6px] rounded-3xl hover:brightness-75 text-[12px] md:text-[14px]">Whatsapp</a>
+                                    <a href="https://wa.me/62081929290560" target="_blank" className="bg-green-700 text-primary px-8 py-[6px] rounded-3xl hover:brightness-75 text-[12px] md:text-[14px]">Whatsapp</a>
                                 </div>
                             </div>
 
@@ -44,7 +44,7 @@ export default function About(){
                                 <div className="tulisan mt-2 md:mt-0">
                                     <h1 className="text-[18px] md:text-[24px] font-bold">Kunjungi Toko</h1>
                                     <p className="mb-3 text-[14px] md:text-[16px] h-[90px] md:h-auto">untuk melakukan cek fisik barang dan pembelian secara langsung</p>
-                                    <a href="#" className="bg-teal-600 text-primary px-8 py-[6px] rounded-3xl hover:brightness-75 text-[14px]">Lokasi</a>
+                                    <a href="https://www.google.com/maps/place/Bandar+Musik+Jakarta/@-6.1467131,106.837832,17z/data=!3m1!4b1!4m6!3m5!1s0x2e69f52291955f13:0xa50788e55fe5c9e9!8m2!3d-6.1467131!4d106.837832!16s%2Fg%2F11jr5fpj51?entry=ttu&g_ep=EgoyMDI0MTIxMS4wIKXMDSoASAFQAw%3D%3D" target="_blank" className="bg-teal-600 text-primary px-8 py-[6px] rounded-3xl hover:brightness-75 text-[14px]">Lokasi</a>
                                 </div>
                             </div>
                          

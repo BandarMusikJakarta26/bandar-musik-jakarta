@@ -31,13 +31,13 @@ a {
   text-decoration: inherit;
 }
 
-input {
+input, textarea{
   background-color: none;
   padding: 10px 20px;
   text-indent: 30px;
   font-size: 18px;
 }
 
-input:focus, input:active {
+input:focus, textarea:focus, input:active, textarea:active {
   outline: none;
 }

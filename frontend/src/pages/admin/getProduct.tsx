@@ -7,9 +7,11 @@ export default function GetProduct(){
     useEffect(()=>{ getProducts(setProducts) }, [])
 
     return ( 
-        <div className="base-products px-4 flex flex-col gap-y-3 pt-12">
-            <h1 className="text-[26px] font-bold tracking-tight text-center">Daftar Produk</h1>
-            <ShowAllProducts products={products} according="produk"/>
+        <div className="base-products px-4 flex flex-col pt-16">
+            <h1 className="text-[26px] font-bold tracking-tight text-center mb-6">Daftar Produk</h1>
+            <div className="products flex flex-col md:grid md:grid-cols-4 gap-8">
+                <ShowAllProducts products={products} according="produk"/>
+            </div>
         </div>
     )
 }

@@ -26,6 +26,7 @@ import AllKategori from './pages/allKategori/AllKategori.tsx'
 import GetProduct from './pages/admin/getProduct.tsx'
 import AllTerbaru from './pages/allNewest/AllTerbaru.tsx'
 import About from './pages/about/About.tsx'
+import AddTerbaru from './pages/admin/addTerbaru.tsx'
 
 axios.defaults.withCredentials = true
 
@@ -57,6 +58,7 @@ export default function App() {
               <Route path="/admin/tambah/brand" element={<AddBrand/>}/>
               <Route path="/admin/tambah/produk" element={<AddProduct/>}/>
               <Route path="/admin/tambah/kategori" element={<AddCategory/>}/>
+              <Route path="/admin/tambah/terbaru" element={<AddTerbaru/>}/>
 
               <Route path='*' element={<BlankPage/>}/>
             </Routes>
