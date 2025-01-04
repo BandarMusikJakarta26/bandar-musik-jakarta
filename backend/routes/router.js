@@ -26,6 +26,8 @@ import multer from "multer";
 import getSearchByName from "../services/get.search.by.name.service.js"
 import getProductByCategory from "../services/produk/get.product.by.category.js"
 import getProductsService from "../services/produk/get.product.service.js"
+import addTerbaruService from "../services/admin/add.terbaru.service.js"
+import getTerbaruService from "../services/terbaru/get.terbaru.service.js"
 
 const upload = multer({ storage: cloudinaryStorage, limits: { fileSize: 3000000 }, fileFilter: function(req, file, cb){
     const imageExt = ['png', 'jpg', 'jpeg']
@@ -63,6 +65,9 @@ class Routes {
         this.router.get('/admin/kategori', getCategoryService)
 
         this.router.get('/admin/produk', getProductsService)
+
+        this.router.get('/admin/terbaru', getTerbaruService)
+        this.router.get('/admin/terbaru/:limit', getTerbaruService)
     }
     #postRoute(){
         this.router.post('/user/register', registerService)
@@ -71,6 +76,7 @@ class Routes {
         this.router.post('/admin/tambah/brand', upload.single('file'), addBrandService)
         this.router.post('/admin/tambah/produk', upload.single('file'), addProductService)
         this.router.post('/admin/tambah/kategori', upload.single('file'), addCategoryService)
+        this.router.post('/admin/tambah/terbaru', upload.single('file'), addTerbaruService)
     }
 }
 

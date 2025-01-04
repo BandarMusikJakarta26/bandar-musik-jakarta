@@ -54,7 +54,7 @@ model Kategori{
 
 model Terbaru{
   id String @id @default(uuid())
-  name String @unique
+  topik String @unique
   deskripsi String
   image String
   link String
