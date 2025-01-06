@@ -20,6 +20,7 @@ export default function AddCategory(){
         const form = new FormData()
         form.append('name', name)
         form.append('file', gambar!)
+        console.log('kirim')
         const response = await axios.post(`${host}/admin/tambah/kategori`, form)
         setLoading(false)
         if(response.data.success) return navigate('/admin/kategori')

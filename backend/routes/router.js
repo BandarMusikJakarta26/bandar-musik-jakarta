@@ -9,11 +9,11 @@ import isAdmin from "../services/auth/isAdmin.service.js"
 
 import addBrandService from "../services/admin/add.brand.service.js"
 import addProductService from "../services/admin/add.product.service.js"
-import addCategoryService from "../services/admin/add.category.service.js"
 
 import getBrandService from "../services/brand/get.brand.service.js"
 import getBrandByNameService from "../services/brand/get.brand.by.name.service.js"
 
+import addCategoryService from "../services/admin/add.category.service.js"
 import getCategoryService from "../services/kategori/get.category.service.js"
 import getCategoryByNameService from "../services/kategori/get.category.by.name.service.js"
 
@@ -75,8 +75,9 @@ class Routes {
 
         this.router.post('/admin/tambah/brand', upload.single('file'), addBrandService)
         this.router.post('/admin/tambah/produk', upload.single('file'), addProductService)
-        this.router.post('/admin/tambah/kategori', upload.single('file'), addCategoryService)
         this.router.post('/admin/tambah/terbaru', upload.single('file'), addTerbaruService)
+
+        this.router.post('/admin/tambah/kategori', upload.single('file'), addCategoryService)
     }
 }
 
