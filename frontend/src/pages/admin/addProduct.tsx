@@ -59,6 +59,7 @@ export default function AddProduct(){
                     <input type="text" name="name" placeholder="Masukkan nama produk..." className="name"/>
                     <input type="text" name="harga" placeholder="Masukkan harga brand..."/>
                     </div>
+                    <input type="text" name="deskripsi" placeholder="Masukkan deskripsi produk"/>
 
                     <div className="select grid grid-cols-2 gap-x-20">
 

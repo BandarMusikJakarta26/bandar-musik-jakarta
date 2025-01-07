@@ -6,7 +6,7 @@ import responsivePage from "../action/screen.action"
 function DesktopUI({ products }: { products: any[] }){
     return products.map((product, index)=>{
         return (
-            <a className="group card shadow-xl p-6 relative flex flex-col gap-y-3 bg-white rounded-2xl"key={index} href={product.tokopedia} target="_blank">
+            <a className="group card shadow-xl p-6 relative flex flex-col gap-y-3 bg-white rounded-2xl"key={index} href={`/produk/${product.name}`}>
                 <div className="gambar rounded-full scale-100 group-hover:bg-[#fafafa] group-hover:scale-[1.03] transition-all">
                     <div className="md:w-[320px] group-hover:scale-[1.03] transition">
                         <AdvancedImage cldImg={cloudSDK.image(product.image)}/>
@@ -16,7 +16,10 @@ function DesktopUI({ products }: { products: any[] }){
                     <h1 className="text-[20px] md:text-[22px] font-bold md:font-extrabold mb-1 md:mb-0 text-center">{product.name}</h1>
                     <p className="text-[14px] md:text-[18px] font-normal md:opacity-60 mt-[-8px] text-center">{product.categoryName}</p>
                 </div>
-                <div className="harga grid grid-cols-3 gap-x-3">
+                <div className="lihat flex justify-center items-center">
+                    <p className="text-center underline">Lihat Detail</p>
+                </div>
+                {/* <div className="harga grid grid-cols-3 gap-x-3">
                     <div className="pricelist">
                         <p className="text-center text-[14px] mb-[-6px] opacity-80">Pricelist</p>
                         <p className="mt-2 font-semibold text-center tracking-tight border-2 border-third rounded-2xl hover:bg-third hover:text-primary transition-all">{product.harga}</p>
@@ -30,7 +33,7 @@ function DesktopUI({ products }: { products: any[] }){
                         <p className="mt-2 font-semibold text-center tracking-tight border-2 border-third rounded-2xl hover:bg-third hover:text-primary transition-all">{product.harga}</p>
                     </div>
                  
-                </div>
+                </div> */}
             </a>
         )
     })

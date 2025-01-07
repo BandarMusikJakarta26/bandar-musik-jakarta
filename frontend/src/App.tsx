@@ -27,6 +27,7 @@ import GetProduct from './pages/admin/getProduct.tsx'
 import AllTerbaru from './pages/allNewest/AllTerbaru.tsx'
 import About from './pages/about/About.tsx'
 import AddTerbaru from './pages/admin/addTerbaru.tsx'
+import Product from './pages/product/product.tsx'
 
 axios.defaults.withCredentials = true
 
@@ -47,6 +48,7 @@ export default function App() {
               <Route path="/kategori/:name" element={<Kategori/>}/>
               <Route path="/terbaru" element={<AllTerbaru/>}/>
               <Route path="/about" element={<About/>}/>
+              <Route path="/produk/:name" element={<Product/>}/>
 
               <Route path="/user/login" element={<Login/>}/>
               <Route path="/user/register" element={<Register/>}/>

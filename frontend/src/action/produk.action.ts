@@ -11,6 +11,11 @@ export async function getProductByCategory(setProductByCategory: React.SetStateA
     return setProductByCategory(response.data.produk)
 }
 
+export async function getProductByName(setProduct: React.SetStateAction<any[] | any>, name: string){
+    const response = await axios.get(`${host}/produk/${name}`) as AxiosResponse
+    return setProduct(response.data.produk)
+}
+
 export async function getProducts(setProducts?: React.SetStateAction<any[] | any>){
     const response = await axios.get(`${host}/admin/produk`) as AxiosResponse
     if(!setProducts) return response.data.produk.length
