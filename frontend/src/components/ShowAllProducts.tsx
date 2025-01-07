@@ -13,8 +13,8 @@ function DesktopUI({ products }: { products: any[] }){
                     </div>
                 </div>
                 <div className="name-product text-center md:text-left">
-                    <h1 className="text-[20px] md:text-[22px] font-bold md:font-extrabold mb-1 md:mb-0 text-center">{product.name}</h1>
-                    <p className="text-[14px] md:text-[18px] font-normal md:opacity-60 mt-[-8px] text-center">{product.categoryName}</p>
+                    <h1 className="text-[20px] md:text-[21px] font-bold md:font-bold mb-1 md:mb-0 text-center">{product.name}</h1>
+                    <p className="text-[14px] md:text-[16px] font-normal md:opacity-60 mt-[-3px] text-center">{product.categoryName}</p>
                 </div>
                 <div className="lihat flex justify-center items-center">
                     <p className="text-center underline">Lihat Detail</p>
@@ -42,7 +42,7 @@ function DesktopUI({ products }: { products: any[] }){
 function MobileUI({ products }: { products: any[] }){
     return products.map((product, index)=>{
         return (
-            <a className="flex bg-[#fbfbfb] rounded-[16px] overflow-hidden items-center gap-x-3" key={index} href={product.tokopedia} target="_blank">
+            <a className="flex bg-[#fbfbfb] rounded-[16px] overflow-hidden items-center gap-x-3" key={index} href={`/produk/${product.name}`}>
                 <div className="gambar bg-[#dfdfdf] p-3">
                     <div className="w-[90px]">
                         <AdvancedImage cldImg={cloudSDK.image(product.image)}/>
@@ -51,7 +51,8 @@ function MobileUI({ products }: { products: any[] }){
                 <div className="py-3">
                     <h1 className="text-[16px] font-bold">{product.name}</h1>
                     <p className="text-[12px] font-normal opacity-70 -mt-[3px]">{product.categoryName}</p>
-                    <div className="harga grid grid-cols-3 gap-x-10 mt-2">
+                    
+                    {/* <div className="harga grid grid-cols-3 gap-x-10 mt-2">
                     <div className="pricelist">
                         <p className="text-left text-[12px] mb-[-6px] opacity-80">Pricelist</p>
                         <p className="mt-2 font-semibold tracking-tight text-[13px]">{product.harga}</p>
@@ -63,10 +64,9 @@ function MobileUI({ products }: { products: any[] }){
                     <div className="pricelist">
                         <p className="text-left text-[12px] mb-[-6px] opacity-80">Pricelist</p>
                         <p className="mt-2 font-semibold tracking-tight text-[13px]">{product.harga}</p>
-                    </div>
-                 
-                 
-                </div>
+                    </div>  
+                    </div> */}
+
                 </div>
             
             </a>

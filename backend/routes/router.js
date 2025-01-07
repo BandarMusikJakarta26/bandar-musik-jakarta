@@ -56,6 +56,7 @@ class Routes {
         this.router.get('/brand/:name', getBrandByNameService)
         this.router.get('/kategori/:name', getCategoryByNameService)
 
+        this.router.get('/produk', getProductByName)
         this.router.get('/produk/:name', getProductByName)
         this.router.get('/produk/brand/:brand', getProductByBrand)
         this.router.get('/produk/kategori/:kategori', getProductByCategory)
