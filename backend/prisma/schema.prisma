@@ -67,6 +67,7 @@ model Terbaru{
 model Produk{
   id String @id @unique @default(uuid())
   name String @unique
+  deskripsi String
   image String
   harga String
   categoryName String

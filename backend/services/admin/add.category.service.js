@@ -2,7 +2,7 @@ import { db } from "../../config.js"
 
 export default async function addCategoryService(req, res){
     try{
-        console.log(req.body)
+        console.log(req.body.name)
         console.log(req.file)
         const { name } = req.body
         const pathname = req.file.filename

@@ -28,8 +28,9 @@ import getProductByCategory from "../services/produk/get.product.by.category.js"
 import getProductsService from "../services/produk/get.product.service.js"
 import addTerbaruService from "../services/admin/add.terbaru.service.js"
 import getTerbaruService from "../services/terbaru/get.terbaru.service.js"
+import getProductByName from "../services/produk/get.product.by.name.service.js"
 
-const upload = multer({ storage: cloudinaryStorage, limits: { fileSize: 3000000 }, fileFilter: function(req, file, cb){
+const multerStorage = multer({ storage: cloudinaryStorage, limits: { fileSize: 3000000 }, fileFilter: function(req, file, cb){
     const imageExt = ['png', 'jpg', 'jpeg']
     const ext = file.mimetype.split('/')[1]
     const checkExt = imageExt.filter(exist=>ext === exist)
@@ -41,6 +42,7 @@ const upload = multer({ storage: cloudinaryStorage, limits: { fileSize: 3000000 
 class Routes {
     constructor(){
         this.router = Router()
+        this.upload = multerStorage
         this.#getRoute()
         this.#postRoute()
     }
@@ -54,6 +56,7 @@ class Routes {
         this.router.get('/brand/:name', getBrandByNameService)
         this.router.get('/kategori/:name', getCategoryByNameService)
 
+        this.router.get('/produk/:name', getProductByName)
         this.router.get('/produk/brand/:brand', getProductByBrand)
         this.router.get('/produk/kategori/:kategori', getProductByCategory)
 
@@ -73,11 +76,10 @@ class Routes {
         this.router.post('/user/register', registerService)
         this.router.post('/user/login', loginService, initToken)
 
-        this.router.post('/admin/tambah/brand', upload.single('file'), addBrandService)
-        this.router.post('/admin/tambah/produk', upload.single('file'), addProductService)
-        this.router.post('/admin/tambah/terbaru', upload.single('file'), addTerbaruService)
-
-        this.router.post('/admin/tambah/kategori', upload.single('file'), addCategoryService)
+        this.router.post('/admin/tambah/brand', this.upload.single('file'), addBrandService)
+        this.router.post('/admin/tambah/produk', this.upload.single('file'), addProductService)
+        this.router.post('/admin/tambah/terbaru', this.upload.single('file'), addTerbaruService)
+        this.router.post('/admin/tambah/kategori', this.upload.single('file'), addCategoryService)
     }
 }
 
