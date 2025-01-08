@@ -4,7 +4,6 @@ import axios, { AxiosResponse } from "axios"
 import { useNavigate } from "react-router"
 import BlankPage from "../blank"
 import { checkAdmin } from "../../action/auth.action"
-import { fields } from "@hookform/resolvers/ajv/src/__tests__/__fixtures__/data.js"
 
 export default function AddProduct(){
     const [ admin, isAdmin ] = useState<boolean>(false) 
