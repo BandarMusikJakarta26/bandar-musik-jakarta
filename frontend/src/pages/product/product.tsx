@@ -26,8 +26,8 @@ export default function Product(){
             <div className="area-gambar w-[34%] relative z-10">
 
             <div className="gambar h-auto px-10 mb-3">
-                <div className="gambar-produk w-full h-full">
-                    {product.images.length > 0 ? <AdvancedImage cldImg={cloudSDK.image(active ? active : product.images[0])}  zoom={300}/> : <h1>{product.name}</h1>}
+                <div className="group gambar-produk w-full h-full">
+                    {product.images.length > 0 ? <AdvancedImage cldImg={cloudSDK.image(active ? active : product.images[0])} className="group-hover:scale-150 group-hover:cursor-grab transition-all"/> : <h1>{product.name}</h1>}
                 </div>
             </div>
             <div className={`gambarmini grid grid-cols-4 gap-x-2 px-10`}>
