@@ -78,7 +78,7 @@ class Routes {
         this.router.post('/user/login', loginService, initToken)
 
         this.router.post('/admin/tambah/brand', this.upload.single('file'), addBrandService)
-        this.router.post('/admin/tambah/produk', this.upload.single('file'), addProductService)
+        this.router.post('/admin/tambah/produk', this.upload.array('productfiles', 4), addProductService)
         this.router.post('/admin/tambah/terbaru', this.upload.single('file'), addTerbaruService)
         this.router.post('/admin/tambah/kategori', this.upload.single('file'), addCategoryService)
     }

@@ -18,7 +18,7 @@ export default function Footer(){
     }, [])
 
     return (
-        <div className="w-full bg-third py-12 px-[36px] md:px-[160px] text-primary mt-20 flex flex-col">
+        <div className="w-full bg-third py-12 px-[36px] md:px-[160px] text-primary mt-20 flex flex-col relative z-10">
             <div className="footer-top w-full h-full flex flex-col gap-y-2 md:grid md:grid-cols-3 md:gap-x-4 items-center justify-between">
                 <LogoFooter/>
                 <ShopInformation/>

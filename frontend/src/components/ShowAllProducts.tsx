@@ -9,7 +9,7 @@ function DesktopUI({ products }: { products: any[] }){
             <a className="group card shadow-xl p-6 relative flex flex-col gap-y-3 bg-white rounded-2xl"key={index} href={`/produk/${product.name}`}>
                 <div className="gambar rounded-full scale-100 group-hover:bg-[#fafafa] group-hover:scale-[1.03] transition-all">
                     <div className="md:w-[320px] group-hover:scale-[1.03] transition">
-                        <AdvancedImage cldImg={cloudSDK.image(product.image)}/>
+                        {product.images.length > 0 ? <AdvancedImage cldImg={cloudSDK.image(product.images[0])}/> : false}
                     </div>
                 </div>
                 <div className="name-product text-center md:text-left">
@@ -45,7 +45,7 @@ function MobileUI({ products }: { products: any[] }){
             <a className="flex bg-[#fbfbfb] rounded-[16px] overflow-hidden items-center gap-x-3" key={index} href={`/produk/${product.name}`}>
                 <div className="gambar bg-[#dfdfdf] p-3">
                     <div className="w-[90px]">
-                        <AdvancedImage cldImg={cloudSDK.image(product.image)}/>
+                        {product.images.length > 0 ? <AdvancedImage cldImg={cloudSDK.image(product.images[0])}/> : false}
                     </div>
                 </div>
                 <div className="py-3">

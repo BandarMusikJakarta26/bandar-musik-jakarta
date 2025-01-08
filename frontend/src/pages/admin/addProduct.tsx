@@ -4,17 +4,18 @@ import axios, { AxiosResponse } from "axios"
 import { useNavigate } from "react-router"
 import BlankPage from "../blank"
 import { checkAdmin } from "../../action/auth.action"
+import { fields } from "@hookform/resolvers/ajv/src/__tests__/__fixtures__/data.js"
 
 export default function AddProduct(){
     const [ admin, isAdmin ] = useState<boolean>(false) 
-    const [ image, setImage ] = useState<any | null>(null)
+    const [ image, setImage ] = useState<number>(0)
 
     async function adminValidation() { return await isAdmin(await checkAdmin()) }
     adminValidation()
 
     const [ brands, setBrand ] = useState<any[]>([])
     const [ categories, setCategories ] = useState<any[]>([])
-    const [ file, setFile ] = useState<File | null>(null)
+    const [ files, setFiles ] = useState<FileList | null>(null)
     const [ checkCategory, getCategory ] = useState<any>(null)
     const [ checkBrand, getBrand ] = useState<any>(null)
     const navigate = useNavigate()
@@ -39,17 +40,11 @@ export default function AddProduct(){
 
     async function onUploadForm(){
         const upload = new FormData(document.querySelector('form')!)
-        upload.append('file', file!)
+        for(let i = 0; i < files!.length; i++){
+            upload.append(`productfiles`, files![i])
+        }
         await axios.post(`${host}/admin/tambah/produk`, upload)
         return navigate(0)
-    }
-
-    function previewFile(file: Blob){
-        const reader = new FileReader()
-        reader.readAsDataURL(file)
-        return reader.onloadend = ()=>{
-            setImage(reader.result)
-        }
     }
 
     function changeCategory(e:any){ getCategory(e.target.value) }
@@ -102,10 +97,10 @@ export default function AddProduct(){
                             <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
                             <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
                         </div>}
-                        {image && <img src={image} width={200}/>}
-                        <input type="file" className="hidden" name="file" onChange={(e)=>{
-                            setFile(e.target.files![0])
-                            previewFile(e.target.files![0])
+                        {image > 0 && <h1 className="text-[30px] italic opacity-60">{image} file diupload</h1> }
+                        <input type="file" className="hidden" name="productfiles" multiple onChange={(e)=>{
+                            setFiles(e.target.files!)
+                            setImage(e.target.files!.length)
                         }}/>
                     </label>
                     </div> 

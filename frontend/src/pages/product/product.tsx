@@ -8,18 +8,39 @@ import { AdvancedImage } from "@cloudinary/react";
 export default function Product(){
     const { name } = useParams()
     const [ product, setProduct ] = useState<any | null>(null)
+    const [ active, setActive ] = useState<string | null>(null)
 
     useEffect(()=>{ getProductByName(setProduct, name!) }, [])
 
+    function ShowMiniImages({productImages}: { productImages: any[] }){
+        return productImages.map((image: string, index: number)=>{
+            return <div className={`${active == image || ( image == product.images[0] && !active ) ? 'brightness-100' : 'brightness-[0.6] scale-90'} border-2 border-third h-auto bg-primary hover:cursor-pointer`} onClick={()=>setActive(image)} key={index}>
+                <AdvancedImage cldImg={cloudSDK.image(image)} className="h-[100px]"/>
+            </div>
+        })
+    }
+
     if(!product) return false
     else return (
-        <div className="main w-full flex justify-between py-24">
-            <div className="gambar h-auto w-[36%]">
-                <div className="gambar-produk w-full h-full border-2 border-third rounded-[48px]">
-                    <AdvancedImage cldImg={cloudSDK.image(product.image)}/>
+        <div className="main w-full flex justify-between mt-6 py-20 px-10 relative">
+            <div className="area-gambar w-[34%] relative z-10">
+
+            <div className="gambar h-auto px-10 mb-3">
+                <div className="gambar-produk w-full h-full">
+                    {product.images.length > 0 ? <AdvancedImage cldImg={cloudSDK.image(active ? active : product.images[0])}  zoom={300}/> : <h1>{product.name}</h1>}
                 </div>
             </div>
+            <div className={`gambarmini grid grid-cols-4 gap-x-2 px-10`}>
+                <ShowMiniImages productImages={product.images}/>
+            </div>
+
+            </div>
+
+            <div className="gambar h-[240px] w-[240px] p-10 bg-second absolute z-0 top-[180px] rounded-full"></div>
             <div className="tulisan flex flex-col gap-y-4 w-[60%]">
+                <div className="brandName flex">
+                    <a className="font-bold mb-[-20px] px-4 py-[2px] border-2 border-third hover:brightness-90 transition-all" href={`/brand/${product.brandName}`}>{product.brandName}</a>
+                </div>
                 <h1 className="text-[45px] font-bold">{product.name}</h1>
                 <p className="font-bold opacity-70">Deskripsi Produk</p>
                 <div className="garis h-[2px] w-[130px] bg-third rounded-full mt-[-8px]"></div>

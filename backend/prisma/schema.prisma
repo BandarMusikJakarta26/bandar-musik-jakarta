@@ -68,7 +68,7 @@ model Produk{
   id String @id @unique @default(uuid())
   name String @unique
   deskripsi String
-  image String
+  images String[]
   harga String
   categoryName String
   brandName String
