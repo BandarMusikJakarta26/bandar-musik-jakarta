@@ -51,8 +51,8 @@ function MobileUI({ products }: { products: any[] }){
                     </div>
                 </div>
                 <div className="py-3">
-                    <h1 className="text-[16px] font-bold">{product.name}</h1>
-                    <p className="text-[12px] font-normal opacity-70 -mt-[3px]">{product.categoryName}</p>
+                    <h1 className="text-[14px] md:text-[16px] font-bold">{product.name}</h1>
+                    <p className="text-[12px] font-normal opacity-70 -mt-[2px]">{product.categoryName}</p>
                     
                     {/* <div className="harga grid grid-cols-3 gap-x-10 mt-2">
                     <div className="pricelist">
