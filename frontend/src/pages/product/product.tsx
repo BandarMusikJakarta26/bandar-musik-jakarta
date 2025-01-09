@@ -30,7 +30,7 @@ export default function Product(){
                     {product.images.length > 0 ? <AdvancedImage cldImg={cloudSDK.image(active ? active : product.images[0])} className="group-hover:scale-125 md:group-hover:scale-150 group-hover:cursor-grab transition-all"/> : <h1>{product.name}</h1>}
                 </div>
             </div>
-            <div className={`gambarmini grid grid-cols-${product.images.length} md:grid-cols-4 gap-x-2 px-10 mt-[-24px]`}>
+            <div className={`gambarmini grid grid-cols-4 gap-x-2 px-10 mt-[-24px]`}>
                 <ShowMiniImages productImages={product.images}/>
             </div>
 
