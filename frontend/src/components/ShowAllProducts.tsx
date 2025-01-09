@@ -47,7 +47,7 @@ function MobileUI({ products }: { products: any[] }){
                 <div className="gambar bg-[#dfdfdf] p-3">
                     <div className="w-[90px]">
                         {product.images.length > 0 ? <AdvancedImage cldImg={cloudSDK.image(product.images[0])} className="group-hover:hidden"/> : false}
-                        {product.images.length > 0 ? <AdvancedImage cldImg={cloudSDK.image(product.images[1])} className="hidden group-hover:block"/> : false}
+                        {product.images.length > 0 ? <AdvancedImage cldImg={cloudSDK.image(product.images[1] !== undefined ? product.images[1] : product.images[0])} className="hidden group-hover:block"/> : false}
                     </div>
                 </div>
                 <div className="py-3">
@@ -83,7 +83,7 @@ function ShowPagination({ pagesNumber, currentPage, setCurrentPage }: { pagesNum
         pagination.push(i+1)
     }
     return pagination.map((value)=>{
-        return <p className={`${value == currentPage ? 'opacity-100 bg-third text-primary' : 'opacity-50'} px-2 hover:cursor-pointer border-2 border-third text-[18px]`} onClick={()=>setCurrentPage(value)}>{value}</p>
+        return <p className={`${value == currentPage ? 'opacity-100 bg-third text-primary' : 'opacity-50'} px-2 hover:cursor-pointer border-2 border-third text-[14px] md:text-[18px]`} onClick={()=>setCurrentPage(value)}>{value}</p>
     })
 }
 
@@ -101,11 +101,14 @@ export default function ShowAllProducts({ products, according }: { products: any
 
     if(screen <= 768 ) return (
         <>
-        <div className="title-product flex px-6 justify-between items-center">
-            <h1 className="text-[16px] font-bold">Products</h1>
-            <p className="text-[12px]">Filter</p>
-        </div>
-        <MobileUI products={currentProducts}/>
+            <div className="title-product flex px-6 justify-between items-center">
+                <h1 className="text-[16px] font-bold">Products</h1>
+                <p className="text-[12px]">Filter</p>
+            </div>
+            <MobileUI products={currentProducts}/>
+            <div className="pagination w-full flex justify-center gap-x-3 mt-4">
+                <ShowPagination pagesNumber={products} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
+            </div>
         </>)
     else return (
         <>
@@ -113,7 +116,7 @@ export default function ShowAllProducts({ products, according }: { products: any
                 <DesktopUI products={currentProducts}/>
             </div>
             
-            <div className="pagination w-full flex justify-center gap-x-3 mt-4">
+            <div className="pagination w-full flex justify-center gap-x-1 md:gap-x-3 mt-4">
                 <ShowPagination pagesNumber={products} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
             </div>
         </>
