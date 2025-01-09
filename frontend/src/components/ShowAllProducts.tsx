@@ -91,6 +91,7 @@ export default function ShowAllProducts({ products, according }: { products: any
     const [ screen, setScreen ] = useState<number>(window.innerWidth)
     const [ currentPage, setCurrentPage ] = useState<number>(1)
 
+    console.log(according)
     const productPerPage = 20
     const lastPostPage = currentPage * productPerPage
     const firstPostPage = lastPostPage - productPerPage
