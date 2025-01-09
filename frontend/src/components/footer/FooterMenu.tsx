@@ -25,10 +25,10 @@ export default function Footer(){
                 <SosmedInformation/>
             </div>
             <div className="tautan md:gap-x-8 grid grid-cols-2 mt-8 md:mt-16">
-                <TautanLayout>
+                <TautanLayout title={'Brand'}>
                     <ShowPageList page={'brand'} data={brands}/>
                 </TautanLayout>
-                <TautanLayout>
+                <TautanLayout title={'Kategori'}>
                     <ShowPageList page={'kategori'} data={categories}/>
                 </TautanLayout>        
             </div>

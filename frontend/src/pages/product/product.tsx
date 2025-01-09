@@ -15,7 +15,7 @@ export default function Product(){
     function ShowMiniImages({productImages}: { productImages: any[] }){
         return productImages.map((image: string, index: number)=>{
             return <div className={`${active == image || ( image == product.images[0] && !active ) ? 'brightness-100' : 'brightness-[0.6] scale-90'} border-2 border-third h-auto bg-primary hover:cursor-pointer`} onClick={()=>setActive(image)} key={index}>
-                <AdvancedImage cldImg={cloudSDK.image(image)} className="md:h-[100px]"/>
+                <AdvancedImage cldImg={cloudSDK.image(image)} className="h-[100px]"/>
             </div>
         })
     }
@@ -30,7 +30,7 @@ export default function Product(){
                     {product.images.length > 0 ? <AdvancedImage cldImg={cloudSDK.image(active ? active : product.images[0])} className="group-hover:scale-125 md:group-hover:scale-150 group-hover:cursor-grab transition-all"/> : <h1>{product.name}</h1>}
                 </div>
             </div>
-            <div className={`gambarmini grid grid-cols-${product.images.length} gap-x-2 px-10 mt-[-24px]`}>
+            <div className={`gambarmini grid grid-cols-${product.images.length} md:grid-cols-4 gap-x-2 px-10 mt-[-24px]`}>
                 <ShowMiniImages productImages={product.images}/>
             </div>
 
@@ -40,7 +40,10 @@ export default function Product(){
             <div className="tulisan flex flex-col gap-y-4 w-full md:w-[60%] mt-10 md:mt-0">
                 <div className="brandName flex">
                     <div className="brand w-full flex md:block justify-center">
-                        <a className="font-bold mb-[-20px] px-4 py-[2px] border-2 border-third hover:brightness-90 transition-all" href={`/brand/${product.brandName}`}>{product.brandName}</a>
+                        <p className="font-semibold mb-[-20px] underline">
+                            <a className="opacity-60 hover:opacity-100" href={`/kategori/${product.categoryName}`}>{product.categoryName} </a>
+                            <a className="opacity-60 hover:opacity-100" href={`/brand/${product.brandName}`}>/ {product.brandName}</a>
+                        </p>
                     </div>
                 </div>
                 <h1 className="text-[22px] md:text-[45px] font-bold mt-5 md:mt-0">{product.name}</h1>

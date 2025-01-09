@@ -14,8 +14,8 @@ export default function Terbaru(){
             <AdvancedImage cldImg={cloudSDK.image(update.image)}/>
           </div>
           <div className="text-blog pt-2">
-            <h1 className="text-[21px] md:text-[36px] font-extrabold tracking-tight text-center md:text-left">{update.topik}</h1>
-            <p className="text-[14px] md:text-[18px] text-center md:text-justify opacity-80 font-normal">{update.deskripsi}</p>
+            <h1 className="text-[21px] md:text-[36px] font-bold tracking-tight text-center md:text-left">{update.topik}</h1>
+            <p className="text-[14px] md:text-[22px] text-center md:text-justify opacity-80 font-normal">{update.deskripsi}</p>
           </div>
         </a>
       )
@@ -31,7 +31,7 @@ export default function Terbaru(){
           <h1 className="text-[60px] md:text-[72px] uppercase font-black tracking-tight -mt-[26px] md:-mt-[30px]">Terbaru?</h1>
           <a href={`/terbaru`} className="text-[20px] md:text-[24px] border-2 border-third px-10 py-1 md:py-2 hover:bg-third hover:text-primary transition-all">Lihat Semua Terbaru</a>
         </div>
-        <div className="terbaru-list md:h-[400px] grid grid-cols-2 gap-x-8  md:gap-x-16">
+        <div className="terbaru-list grid grid-cols-2 gap-x-8  md:gap-x-16">
             { terbaru.length > 0 && <ShowDataTerbaru/> }
         </div>
      </div>

@@ -8,8 +8,9 @@ function DesktopUI({ products }: { products: any[] }){
         return (
             <a className="group card shadow-xl p-6 relative flex flex-col gap-y-3 bg-white rounded-2xl"key={index} href={`/produk/${product.name}`}>
                 <div className="gambar rounded-full scale-100 group-hover:bg-[#fafafa] group-hover:scale-[1.03] transition-all">
-                    <div className="md:w-[320px] group-hover:scale-[1.03] transition">
-                        {product.images.length > 0 ? <AdvancedImage cldImg={cloudSDK.image(product.images[0])}/> : false}
+                    <div className="md:w-[320px] transition group">
+                        {product.images.length > 0 ? <AdvancedImage cldImg={cloudSDK.image(product.images[0])} className="group-hover:hidden"/> : false}
+                        {product.images.length > 0 ? <AdvancedImage cldImg={cloudSDK.image(product.images[1] !== undefined ? product.images[1] : product.images[0] )} className="hidden group-hover:block"/> : false}
                     </div>
                 </div>
                 <div className="name-product text-center md:text-left">
@@ -42,10 +43,11 @@ function DesktopUI({ products }: { products: any[] }){
 function MobileUI({ products }: { products: any[] }){
     return products.map((product, index)=>{
         return (
-            <a className="flex bg-[#fbfbfb] rounded-[16px] overflow-hidden items-center gap-x-3" key={index} href={`/produk/${product.name}`}>
+            <a className="flex bg-[#fbfbfb] rounded-[16px] overflow-hidden items-center gap-x-3 group" key={index} href={`/produk/${product.name}`}>
                 <div className="gambar bg-[#dfdfdf] p-3">
                     <div className="w-[90px]">
-                        {product.images.length > 0 ? <AdvancedImage cldImg={cloudSDK.image(product.images[0])}/> : false}
+                        {product.images.length > 0 ? <AdvancedImage cldImg={cloudSDK.image(product.images[0])} className="group-hover:hidden"/> : false}
+                        {product.images.length > 0 ? <AdvancedImage cldImg={cloudSDK.image(product.images[1])} className="hidden group-hover:block"/> : false}
                     </div>
                 </div>
                 <div className="py-3">
@@ -74,9 +76,26 @@ function MobileUI({ products }: { products: any[] }){
     })
 }
 
+function ShowPagination({ pagesNumber, currentPage, setCurrentPage }: { pagesNumber: any[], currentPage: number,setCurrentPage: React.SetStateAction<any>}){
+    const totalPage = Math.floor(pagesNumber.length/20)
+    let pagination = []
+    for(let i = 0; i <= totalPage; i++){
+        pagination.push(i+1)
+    }
+    return pagination.map((value)=>{
+        return <p className={`${value == currentPage ? 'opacity-100 bg-third text-primary' : 'opacity-50'} px-2 hover:cursor-pointer border-2 border-third text-[18px]`} onClick={()=>setCurrentPage(value)}>{value}</p>
+    })
+}
+
 export default function ShowAllProducts({ products, according }: { products: any[], according: string }){
     const [ screen, setScreen ] = useState<number>(window.innerWidth)
-    console.log(according)
+    const [ currentPage, setCurrentPage ] = useState<number>(1)
+
+    const productPerPage = 20
+    const lastPostPage = currentPage * productPerPage
+    const firstPostPage = lastPostPage - productPerPage
+    const currentProducts = products.slice(firstPostPage, lastPostPage)
+
     useEffect(()=>{ responsivePage(setScreen) })
 
     if(screen <= 768 ) return (
@@ -85,7 +104,17 @@ export default function ShowAllProducts({ products, according }: { products: any
             <h1 className="text-[16px] font-bold">Products</h1>
             <p className="text-[12px]">Filter</p>
         </div>
-        <MobileUI products={products}/>
+        <MobileUI products={currentProducts}/>
         </>)
-    else return <DesktopUI products={products}/>
+    else return (
+        <>
+            <div className="product-list w-full grid grid-cols-1 md:grid-cols-4 gap-y-4 md:gap-x-8 md:gap-y-10">
+                <DesktopUI products={currentProducts}/>
+            </div>
+            
+            <div className="pagination w-full flex justify-center gap-x-3 mt-4">
+                <ShowPagination pagesNumber={products} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
+            </div>
+        </>
+    )
 }

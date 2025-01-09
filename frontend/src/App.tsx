@@ -38,7 +38,7 @@ export default function App() {
       <BrowserRouter>
         <NavMenu/>
         {<NavAdmin/>}
-          <div className="main mx-auto md:w-[84%] pt-[136px] md:pt-[150px] box-border overflow-hidden">
+          <div className="main mx-auto md:w-[84%] pt-[136px] md:pt-[190px] box-border overflow-hidden">
             <Routes>
 
               <Route path="/" element={<Dashboard/>}/>

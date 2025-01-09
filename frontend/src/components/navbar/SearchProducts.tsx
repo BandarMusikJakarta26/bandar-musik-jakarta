@@ -5,7 +5,7 @@ export default function SearchProducts({ products }: { products: any[] }){
             { products.map((product, index)=>{
                 return (
                     <div className="kotak" key={index}>
-                        <a href={`${product.tokopedia}`} className="py-[6px] block hover:bg-white px-4 transition-all">{product.name}</a>
+                        <a href={`/produk/${product.name}`} className="py-[6px] block hover:bg-white px-4 transition-all">{product.name}</a>
                     </div>
             )})}
             </>
