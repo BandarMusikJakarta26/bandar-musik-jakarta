@@ -15,7 +15,7 @@ export default function Product(){
     function ShowMiniImages({productImages}: { productImages: any[] }){
         return productImages.map((image: string, index: number)=>{
             return <div className={`${active == image || ( image == product.images[0] && !active ) ? 'brightness-100' : 'brightness-[0.6] scale-90'} border-2 border-third h-auto bg-primary hover:cursor-pointer`} onClick={()=>setActive(image)} key={index}>
-                <AdvancedImage cldImg={cloudSDK.image(image)} className="h-[100px]"/>
+                <AdvancedImage cldImg={cloudSDK.image(image)} className="md:h-[100px]"/>
             </div>
         })
     }
@@ -36,11 +36,11 @@ export default function Product(){
 
             </div>
 
-            <div className="gambar h-[130px] w-[130px] md:h-[240px] md:w-[240px] md:p-10 bg-second absolute z-0 top-[56px] left-[180px] md:top-[180px] rounded-full"></div>
+            <div className="gambar h-[100px] w-[100px] md:h-[240px] md:w-[240px] md:p-10 bg-second absolute z-0 top-[18px] left-[130px] md:top-[180px] rounded-full"></div>
             <div className="tulisan flex flex-col gap-y-4 w-full md:w-[60%] mt-10 md:mt-0">
                 <div className="brandName flex">
                     <div className="brand w-full flex md:block justify-center">
-                        <p className="font-semibold mb-[-20px] underline">
+                        <p className="font-semibold text-[12px] md:text-[16px] mb-[] md:mb-[-20px] underline">
                             <a className="opacity-60 hover:opacity-100" href={`/kategori/${product.categoryName}`}>{product.categoryName} </a>
                             <a className="opacity-60 hover:opacity-100" href={`/brand/${product.brandName}`}>/ {product.brandName}</a>
                         </p>
