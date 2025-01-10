@@ -21,7 +21,7 @@ import getProductByBrand from "../services/produk/get.product.by.brand.js"
 
 import deleteBrandService from "../services/admin/delete.brand.service.js"
 
-import { cloudinaryStorage } from "../config.js"
+import { cloudinaryStorage, cloudinaryVideoStorage } from "../config.js"
 import multer from "multer";
 import getSearchByName from "../services/get.search.by.name.service.js"
 import getProductByCategory from "../services/produk/get.product.by.category.js"
@@ -29,6 +29,7 @@ import getProductsService from "../services/produk/get.product.service.js"
 import addTerbaruService from "../services/admin/add.terbaru.service.js"
 import getTerbaruService from "../services/terbaru/get.terbaru.service.js"
 import getProductByName from "../services/produk/get.product.by.name.service.js"
+import addVideoProductService from "../services/admin/add.video.product.service.js"
 
 const multerStorage = multer({ storage: cloudinaryStorage, limits: { fileSize: 3000000 }, fileFilter: function(req, file, cb){
     const imageExt = ['png', 'jpg', 'jpeg']
@@ -39,10 +40,20 @@ const multerStorage = multer({ storage: cloudinaryStorage, limits: { fileSize: 3
     } else cb(null, true)
 }})
 
+const videoStorage = multer({ storage: cloudinaryVideoStorage, limits: { fileSize: 30000000 }, fileFilter: function(req, file, cb){
+    const imageExt = ['mp4', 'mov']
+    const ext = file.mimetype.split('/')[1]
+    const checkExt = imageExt.filter(exist=>ext === exist)
+    if(checkExt.length == 0){
+        cb(new Error('File bukan video!'))
+    } else cb(null, true)
+}})
+
 class Routes {
     constructor(){
         this.router = Router()
         this.upload = multerStorage
+        this.video = videoStorage
         this.#getRoute()
         this.#postRoute()
     }
@@ -79,6 +90,7 @@ class Routes {
 
         this.router.post('/admin/tambah/brand', this.upload.single('file'), addBrandService)
         this.router.post('/admin/tambah/produk', this.upload.array('productfiles', 4), addProductService)
+        this.router.post('/admin/tambah/video-produk', this.video.single('video'), addVideoProductService)
         this.router.post('/admin/tambah/terbaru', this.upload.single('file'), addTerbaruService)
         this.router.post('/admin/tambah/kategori', this.upload.single('file'), addCategoryService)
     }

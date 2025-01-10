@@ -1,2 +1,2 @@
 -- AlterTable
-ALTER TABLE "produk" ADD COLUMN     "images" TEXT[];
+ALTER TABLE "produk" ADD COLUMN "images" TEXT[];

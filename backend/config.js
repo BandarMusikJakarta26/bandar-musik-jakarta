@@ -12,6 +12,15 @@ cloudinary.config({
     api_secret: process.env.CLOUDNARY_API_SECRET,
 })
 
+export const cloudinaryVideoStorage = new CloudinaryStorage({
+    cloudinary,
+    // allowedFormats: ['mp4', 'mov'],
+    params: {
+        folder: 'videos',
+        public_id: (req, file)=> file.originalname.split('.')[0]
+    }
+})
+
 export const cloudinaryStorage = new CloudinaryStorage({
     cloudinary,
     allowedFormats: ['jpg, png, jpeg'],
