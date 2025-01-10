@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { host } from "../../../libs/config"
-import axios, { AxiosResponse } from "axios"
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios"
 import { useNavigate } from "react-router"
 import BlankPage from "../blank"
 import { checkAdmin } from "../../action/auth.action"
@@ -13,8 +13,11 @@ export default function AddProduct(){
     adminValidation()
 
     const [ brands, setBrand ] = useState<any[]>([])
+    const [ harga, setHarga ] = useState<string>('Rp.')
+    const [ diskon, setDiskon ] = useState<string>('')
     const [ categories, setCategories ] = useState<any[]>([])
     const [ files, setFiles ] = useState<FileList | null>(null)
+    const [ video, setVideo ] = useState<File | null>(null)
     const [ checkCategory, getCategory ] = useState<any>(null)
     const [ checkBrand, getBrand ] = useState<any>(null)
     const navigate = useNavigate()
@@ -38,16 +41,64 @@ export default function AddProduct(){
     }, [])
 
     async function onUploadForm(){
-        const upload = new FormData(document.querySelector('form')!)
-        for(let i = 0; i < files!.length; i++){
-            upload.append(`productfiles`, files![i])
+        try{
+            const upload = new FormData(document.querySelector('form')!)
+            upload.append('diskon', diskon)
+            // const videoUpload = new FormData()
+            // videoUpload.append('video', video!)
+
+            for(let i = 0; i < files!.length; i++){
+                upload.append(`productfiles`, files![i])
+            }
+
+            // const progressBar = document.querySelector('progress')
+            // const config: AxiosRequestConfig<FormData> = {
+            //     onUploadProgress: function(progressEvent){
+            //         const progress = (progressEvent.loaded / progressEvent.total!)*100 as number
+            //         progressBar!.setAttribute('value', progress.toString())
+            //         progressBar!.previousElementSibling!.textContent = `${Math.round(progress)}%`
+            //         if(progress == 100) progressBar!.previousElementSibling!.textContent = `Upload Selesai`
+            //     }
+            // }
+            // await axios.post(`${host}/admin/tambah/video-produk`, videoUpload, config)
+            await axios.post(`${host}/admin/tambah/produk`, upload)
+            return navigate(0)
+        }catch(error:any){ console.log(error.response.data) }
+      
+    }
+
+    function setHargaProduk(hargaText:string){
+        setHarga(hargaText)
+        let hargaAsli = hargaText.split('Rp.')[1] as any
+        if(hargaAsli !== ''){
+            hargaAsli = hargaAsli.split('.').join('')
+            const potongan = (hargaAsli*20)/100
+            let hargaDiskon = hargaAsli - potongan as any
+            const totalDiskon = hargaDiskon.toString().split('')
+            if(totalDiskon.length == 4){
+                totalDiskon.splice(1,0,'.')
+            }
+            else if(totalDiskon.length == 5){
+                totalDiskon.splice(2,0,'.')
+            }
+            else if(totalDiskon.length == 6){
+                totalDiskon.splice(3,0,'.')
+            }
+            else if(totalDiskon.length == 7){
+                totalDiskon.splice(1,0,'.')
+                totalDiskon.splice(5,0,'.')
+            }
+            else if(totalDiskon.length == 8){
+                totalDiskon.splice(2,0,'.')
+                totalDiskon.splice(6,0,'.')
+            }
+            setDiskon(`Rp.${totalDiskon.join("")}`)
         }
-        await axios.post(`${host}/admin/tambah/produk`, upload)
-        return navigate(0)
     }
 
     function changeCategory(e:any){ getCategory(e.target.value) }
     function changeBrand(e:any){ getBrand(e.target.value) }
+
 
     if(!admin) return <BlankPage/>
     else return (
@@ -59,9 +110,14 @@ export default function AddProduct(){
 
                     <form className="flex flex-col gap-y-6" onSubmit={(e)=>e.preventDefault()}>
 
-                    <div className="input-top grid grid-cols-[2fr_1fr] gap-x-20">
-                    <input type="text" name="name" placeholder="Masukkan nama produk..." className="name"/>
-                    <input type="text" name="harga" placeholder="Masukkan harga brand..."/>
+                    <div className="input-top grid grid-cols-[3fr_1fr_1fr] gap-x-12">
+                    <input type="text" name="name" placeholder="Masukkan nama produk" className="name"/>
+                    <input type="text" name="harga" placeholder="Masukkan harga" onChange={(e)=>{setHargaProduk(e.target.value)}} value={harga}/>
+
+                    <div className="diskon flex">
+                        <p className="font-bold text-[14px] border-2 border-third pt-[10px] px-2">20%</p>
+                        <input type="text" name="diskon" placeholder="Diskon" className="bg-white indent-0" disabled value={diskon}/>
+                    </div>
                     </div>
                     <textarea name="deskripsi" placeholder="Masukkan deskripsi produk" className="h-[200px] indent-0"/>
 
@@ -104,6 +160,9 @@ export default function AddProduct(){
                     </label>
                     </div> 
 
+                        <input type="file" name="video" onChange={(e)=>setVideo(e.target.files![0])}/>
+                        <label>Upload</label>
+                        <progress value={0} max={100}></progress>
                 </div>
 
             </div>

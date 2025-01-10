@@ -36,7 +36,7 @@ export default function Product(){
 
             </div>
 
-            <div className="gambar h-[100px] w-[100px] md:h-[240px] md:w-[240px] md:p-10 bg-second absolute z-0 top-[18px] left-[130px] md:top-[180px] rounded-full"></div>
+            <div className="gambar h-[100px] w-[100px] md:h-[240px] md:w-[240px] md:p-10 bg-second absolute z-0 top-[18px] left-[130px] md:top-[180px] md:left-[180px] rounded-full"></div>
             <div className="tulisan flex flex-col gap-y-4 w-full md:w-[60%] mt-10 md:mt-0">
                 <div className="brandName flex">
                     <div className="brand w-full flex md:block justify-center">
@@ -51,7 +51,10 @@ export default function Product(){
                 <div className="garis h-[2px] w-[115px] md:w-[130px] bg-third rounded-full mt-[-8px]"></div>
                 <p className="text-[12px] md:text-[14px] text-justify mt-[-12px]">{product.deskripsi}</p>
                 <div className="pembelian flex flex-col md:flex-row justify-between w-full mt-2">
-                    <p className="text-[30px] text-center md:text-left md:text-[36px] font-bold tracking-tight">{product.harga}</p>
+                    <div className="harga">
+                        <p className="text-[30px] text-center md:text-left md:text-[36px] font-bold tracking-tight">{product.diskon}</p>
+                        <p className="text-[18px] text-center md:text-left md:text-[16px] font-medium text-red-800"><span className="line-through">{product.harga}</span> Diskon</p>
+                    </div>
                     <a href={product.tokopedia} className="py-2 px-8 bg-green-600 text-primary self-center flex items-center gap-x-2 rounded-3xl mt-4 md:mt-0 text-[14px] md:text-[16px]" target="_blank"><RiShoppingBagLine size={20}/>Beli Barang</a>
                 </div>
             </div>
