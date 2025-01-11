@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { host } from "../../../libs/config"
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios"
+import axios, { AxiosResponse } from "axios"
 import { useNavigate } from "react-router"
 import BlankPage from "../blank"
 import { checkAdmin } from "../../action/auth.action"
@@ -21,6 +21,8 @@ export default function AddProduct(){
     const [ checkCategory, getCategory ] = useState<any>(null)
     const [ checkBrand, getBrand ] = useState<any>(null)
     const navigate = useNavigate()
+
+    console.log(video)
 
     async function getBrands(){
         const response = await axios.get(`${host}/admin/brand`) as AxiosResponse
