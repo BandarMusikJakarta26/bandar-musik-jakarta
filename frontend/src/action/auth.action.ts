@@ -7,7 +7,9 @@ import { registerSchemaType } from "../../libs/schema/register.schema"
 
 async function doAuthAction(route: string, data: registerSchemaType | loginSchemaType, setLoading: SetStateAction<any>, setError: any, navigate: NavigateFunction){
     setLoading(true)
-    const response = await axios.post(`${host}/user/` + route, data) as AxiosResponse
+    const response = await axios.post(`${host}/user/` + route, data, { headers: { 'Access-Control-Allow-Origin' : '*',
+    'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS'
+    } }) as AxiosResponse
     setLoading(false)
     if(response.data.error) return setError(response.data.error)
     if(response.data.status === 200 && route === "login"){

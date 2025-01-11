@@ -16,7 +16,7 @@ class App {
         this.app.use(express.static("public"))
         this.app.use(express.urlencoded({ extended: true }))
         this.app.use(cookieParser(process.env.COOKIE_SECRET))
-        this.app.use(cors({ origin: process.env.ORIGIN ? process.env.ORIGIN : 'https://bandarmusikjakarta.vercel.app', credentials: true }))
+        this.app.use(cors({ origin: process.env.ORIGIN ? process.env.ORIGIN : 'https://bandarmusikjakarta.com', credentials: true }))
         this.app.use(router)
     }
     #connection(){
