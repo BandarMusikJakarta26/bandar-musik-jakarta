@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios"
 import { useEffect, useState } from "react"
-import { cloudSDK, host } from '../../../libs/config'
+import { cloudSDK, headers, host } from '../../../libs/config'
 import { FaRegPlusSquare } from "react-icons/fa";
 import { AdvancedImage } from "@cloudinary/react";
 import responsivePage from "../../action/screen.action";
@@ -17,7 +17,7 @@ export default function GetBrand(){
 
     useEffect(()=>{
         async function brandFetch(){
-            const response = await axios.get(`${host}/admin/brand`) as AxiosResponse
+            const response = await axios.get(`${host}/admin/brand`, headers) as AxiosResponse
             response.data.brands.length > 0 ? setBrand(response.data.brands) : setBrand([])
         }
         brandFetch()
