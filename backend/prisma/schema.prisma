@@ -53,6 +53,17 @@ model Terbaru {
   @@map("terbaru")
 }
 
+
+model ImageProduct {
+  id String @id @default(uuid())
+  url String
+  produkId String
+  product Produk @relation(references: [id], fields: [produkId])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("gambarProduk")
+}
 model Produk {
   id           String   @id @unique @default(uuid())
   name         String   @unique
@@ -63,7 +74,7 @@ model Produk {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   deskripsi    String
-  // images       String[]
+  images       ImageProduct[]
   diskon       String?
 
   @@map("produk")
