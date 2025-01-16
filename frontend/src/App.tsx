@@ -18,7 +18,7 @@ import Brand from './pages/brand/brand.tsx'
 import AllBrand from './pages/allBrand/AllBrand.tsx'
 import BlankPage from './pages/blank.tsx'
 
-import axios from 'axios'
+// import axios from 'axios'
 import AddCategory from './pages/admin/addCategory.tsx'
 import GetCategory from './pages/admin/getCategory.tsx'
 import Kategori from './pages/kategori/kategori.tsx'
@@ -28,10 +28,25 @@ import AllTerbaru from './pages/allNewest/AllTerbaru.tsx'
 import About from './pages/about/About.tsx'
 import AddTerbaru from './pages/admin/addTerbaru.tsx'
 import Product from './pages/product/product.tsx'
+import { useEffect } from 'react'
+import { isLogin } from './action/auth.action.ts'
+import axiosClient from '../libs/axiosConfig.ts'
 
-axios.defaults.withCredentials = true
+// axios.defaults.withCredentials = true
 
 export default function App() {
+
+  async function checkLogin(){
+    await isLogin()
+  }
+  checkLogin()
+
+  useEffect(()=>{
+      async function getAllCookies(){
+        return await axiosClient.get('/get-cookie') 
+      }
+      getAllCookies()
+  },[])
       
   return (
     <div className='w-full bg-primary text-third'> 

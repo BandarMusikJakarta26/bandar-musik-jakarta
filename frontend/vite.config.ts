@@ -6,7 +6,11 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '*': { target: process.env.NODE_ENV == "production" ? 'https://bandarmusikjakartaserver.vercel.app' : 'http://localhost:5000' }
+      '*': { 
+        target: 'http://localhost:8000',
+        // target: 'https://backend.bandarmusikjakarta.com',
+        secure: true
+      }
     }
   }
 })

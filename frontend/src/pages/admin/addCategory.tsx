@@ -1,14 +1,13 @@
-import axios from "axios"
 import { useState } from "react"
 import { useNavigate } from "react-router"
-import { host } from "../../../libs/config"
-import { checkAdmin } from "../../action/auth.action"
-import BlankPage from "../blank"
+// import { checkAdmin } from "../../action/auth.action"
+// import BlankPage from "../blank"
+import { createCategory } from "../../action/kategori.action"
 
 export default function AddCategory(){
-    const [ admin, isAdmin ] = useState<boolean>(false) 
-    async function adminValidation() { return await isAdmin(await checkAdmin()) }
-    adminValidation()
+    // const [ admin, isAdmin ] = useState<boolean>(false) 
+    // async function adminValidation() { return await isAdmin(await checkAdmin()) }
+    // adminValidation()
     
     const [ gambar, setGambar ] = useState<Blob | null>(null)
     const [ image, setImage ] = useState<any | null>(null)
@@ -20,9 +19,9 @@ export default function AddCategory(){
         try{
             setLoading(true)
             const form = new FormData()
-            form.append('name', name)
-            form.append('file', gambar!)
-            const response = await axios.post(`${host}/admin/tambah/kategori`, form)
+            form.append('title', name)
+            form.append('image', gambar!)
+            const response = await createCategory(form)
             setLoading(false)
             if(response.data.success) return navigate('/admin/kategori')
         }catch(err: any){ console.log(err.message) }
@@ -34,8 +33,8 @@ export default function AddCategory(){
         reader.onloadend = ()=>{ setImage(reader.result) }
     }
 
-    if(!admin) return <BlankPage/>
-    else return (
+    // if(!admin) return <BlankPage/>
+    return (
         <div className="form px-4 pt-20">
 
             <div className={`${image ? 'grid grid-cols-2 justify-center items-center' : 'block'} top-section`}>

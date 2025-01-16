@@ -1,0 +1,44 @@
+GET http://localhost:8000/api/brand
+
+
+###
+POST http://localhost:8000/api/produk
+Content-Type: application/json
+
+{
+    "name": "Fena Guitars",
+    "price": "10000",
+    "discount": "10000",
+    "tokopedia": "hohoho",
+    "description": "hehehe"
+}
+
+###
+POST http://localhost:8000/api/tambah/brand
+Content-Type: multipart/form-data
+
+{
+    "name": "Takamine",
+    "description": "Guitar brand from Japan",
+    "image": "iniadalahgambar"
+}
+
+###
+POST http://127.0.0.1:8000/api/register
+Accept: application/json
+Content-Type: application/json
+
+{
+    "username": "Cehmenang",
+    "password": "101010"
+}
+
+###
+POST http://127.0.0.1:8000/api/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "username": "Cehmenang",
+    "password": "101010"
+}

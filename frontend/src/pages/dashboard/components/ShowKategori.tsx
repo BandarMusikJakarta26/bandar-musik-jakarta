@@ -1,13 +1,10 @@
-import { AdvancedImage } from "@cloudinary/react"
-import { cloudSDK } from "../../../../libs/config"
+import { host } from "../../../../libs/config";
 
 export function ShowKategori({category}: { category: any }){
+    console.log(category)
     return (
         <a className='w-full drop-shadow-xl flex justify-center' href={`/kategori/${category.name}`}>
-            <AdvancedImage cldImg={cloudSDK.image(category.image)}/>
+            <img src={`${host}/storage/${category.image}`} alt={category.name}/>
         </a>
-        // <a className='w-full h-[260px] drop-shadow-xl' href={`/kategori/${category.name}`}>
-        //     <AdvancedImage cldImg={cloudSDK.image(category.image)}/>
-        // </a>
     )
 }

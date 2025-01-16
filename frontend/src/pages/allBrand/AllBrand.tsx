@@ -11,7 +11,7 @@ export default function AllBrand(){
     const alphabets = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
     async function getAllBrand(){
-        const response = await axios.get(`${host}/admin/brand?name=true`)
+        const response = await axios.get(`${host}/api/brand?name=true`)
         setBrands(response.data.brands.map((brand:{name: string})=>brand.name))
     }
 

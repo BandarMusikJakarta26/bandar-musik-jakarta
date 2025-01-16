@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { getBrandsWithLimit, getCategories } from "../../action/brand.action";
+import { getBrandsWithLimit } from "../../action/brand.action";
+import { getCategoriesWithLimit } from "../../action/kategori.action";
 
 import SosmedInformation from "./components/SosmedInformation";
 import ShopInformation from "./components/ShopInformation";
@@ -14,7 +15,7 @@ export default function Footer(){
 
     useEffect(()=>{
         getBrandsWithLimit(setBrands, 30) 
-        getCategories(setCategories) 
+        getCategoriesWithLimit(setCategories) 
     }, [])
 
     return (
