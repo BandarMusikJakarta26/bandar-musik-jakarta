@@ -30,7 +30,7 @@ Route::get('/kategori', [KategoriController::class, 'index']);
 
 Route::get('/produk', [ProdukController::class, 'index']);
 Route::get('/produk/{params}', [ProdukController::class, 'show']);
-Route::get('/produk/brand/{brandName}', [ProdukController::class, 'show']);
+Route::get('/produk/brand/{brandName}', [ProdukController::class, 'showByBrand']);
 Route::get('/produk/kategori/{kategoriName}', [ProdukController::class, 'show']);
 
 Route::get('/search/{keyword}', [SearchController::class, 'search']);

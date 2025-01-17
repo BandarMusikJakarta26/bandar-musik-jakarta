@@ -1,21 +1,22 @@
 import { AdvancedImage } from "@cloudinary/react"
-import { cloudSDK } from "../../libs/config"
+import { cloudSDK, host } from "../../libs/config"
 import { useEffect, useState } from "react"
 import responsivePage from "../action/screen.action"
 
 function DesktopUI({ products }: { products: any[] }){
     return products.map((product, index)=>{
+        console.log(product.images)
         return (
             <a className="group card shadow-xl p-6 relative flex flex-col gap-y-3 bg-white rounded-2xl"key={index} href={`/produk/${product.name}`}>
                 <div className="gambar rounded-full scale-100 group-hover:bg-[#fafafa] group-hover:scale-[1.03] transition-all">
                     <div className="md:w-[320px] transition group">
-                        {product.images.length > 0 ? <AdvancedImage cldImg={cloudSDK.image(product.images[0])} className="group-hover:hidden"/> : false}
-                        {product.images.length > 0 ? <AdvancedImage cldImg={cloudSDK.image(product.images[1] !== undefined ? product.images[1] : product.images[0] )} className="hidden group-hover:block"/> : false}
+                        <img src={`${host}/storage/${product.images[0]}`} className="group-hover:hidden"/>
+                        <img src={product.images[1] !== undefined ? `${host}/storage/${product.images[1]}` : `${host}/storage/${product.images[0]}}`} className="hidden group-hover:block"/>
                     </div>
                 </div>
                 <div className="name-product text-center md:text-left">
                     <h1 className="text-[20px] md:text-[21px] font-bold md:font-bold mb-1 md:mb-0 text-center">{product.name}</h1>
-                    <p className="text-[14px] md:text-[16px] font-normal md:opacity-60 mt-[-3px] text-center">{product.categoryName}</p>
+                    <p className="text-[14px] md:text-[16px] font-normal md:opacity-60 mt-[-3px] text-center">{product.kategoriId}</p>
                 </div>
                 <div className="lihat flex justify-center items-center">
                     <p className="text-center underline">Lihat Detail</p>

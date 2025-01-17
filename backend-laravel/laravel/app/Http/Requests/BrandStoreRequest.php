@@ -21,9 +21,9 @@ class BrandStoreRequest extends FormRequest
      */
     public function rules(): array{
         return [
-            'name'=>'required|string|min:3', 
-            'description'=>'required|string',
-            'image'=>'required|image|mimes:jpeg,jpg,png|max:3000'
+            'name'=>['required','string', 'min:3'], 
+            'description'=>['required', 'string'],
+            'image'=>['required', 'image', 'mimes:jpeg,jpg,png', 'max:3000']
         ];
     }
 

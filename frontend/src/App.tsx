@@ -28,31 +28,28 @@ import AllTerbaru from './pages/allNewest/AllTerbaru.tsx'
 import About from './pages/about/About.tsx'
 import AddTerbaru from './pages/admin/addTerbaru.tsx'
 import Product from './pages/product/product.tsx'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { isLogin } from './action/auth.action.ts'
 import axiosClient from '../libs/axiosConfig.ts'
 
 // axios.defaults.withCredentials = true
 
 export default function App() {
+  const [login, setlogin] = useState<boolean>(false)
 
-  async function checkLogin(){
-    await isLogin()
-  }
+  async function checkLogin(){ setlogin(await isLogin()) }
   checkLogin()
 
   useEffect(()=>{
-      async function getAllCookies(){
-        return await axiosClient.get('/get-cookie') 
-      }
+      async function getAllCookies(){ return await axiosClient.get('/get-cookie')  }
       getAllCookies()
   },[])
       
   return (
     <div className='w-full bg-primary text-third'> 
       <BrowserRouter>
-        <NavMenu/>
-        {<NavAdmin/>}
+        <NavMenu login={login}/>
+        <NavAdmin login={login}/>
           <div className="main mx-auto md:w-[84%] pt-[136px] md:pt-[190px] box-border overflow-hidden">
             <Routes>
 
@@ -65,8 +62,8 @@ export default function App() {
               <Route path="/about" element={<About/>}/>
               <Route path="/produk/:name" element={<Product/>}/>
 
-              <Route path="/user/login" element={<Login/>}/>
-              <Route path="/user/register" element={<Register/>}/>
+              <Route path="/user/login" element={<Login login={login}/>}/>
+              <Route path="/user/register" element={<Register login={login}/>}/>
 
               <Route path="/admin/dashboard" element={<AdminDashboard/>}/>
               <Route path="/admin/brand" element={<GetBrand/>}/>

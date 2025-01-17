@@ -23,7 +23,7 @@ class BrandController extends Controller
             $brands = Brand::select("name")->orderBy("created_at", "desc")->get();
         }
         else{
-            $brands = Brand::orderBy("created_at", "desc")->get();
+            $brands = Brand::orderBy("name", "asc")->get();
         }
         return response()->json(["success"=>true,"brands"=>$brands]);
     }

@@ -5,30 +5,20 @@ import NavSearch from "./NavSearch"
 import NavLogo from "./NavLogo"
 import NavLink from "./NavLink"
 
-import axios from "axios"
-import { host } from "../../../libs/config"
 import { useNavigate } from "react-router"
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FaRegWindowClose } from "react-icons/fa";
 import responsivePage from "../../action/screen.action"
 
-export default function NavMenu(){
+export default function NavMenu({ login } : { login: boolean }){
     const [ screen, setScreen ] = useState<number>(window.innerWidth)
     const [ pages, showPages ] = useState<boolean>(false)
-    const navigate = useNavigate()
-    
     const [ auth, setAuth ] = useState<boolean>(false)
-    async function getToken(){
-        const response = await axios.get(`${host}/token`)
-        return setAuth(response.data.refreshToken ? true :  false)
-    }
+    const navigate = useNavigate()
 
-    getToken()
-
-    useEffect(()=>{
-        auth && navigate(0)
-        responsivePage(setScreen)
-    },[])
+    useEffect(()=>{ login && setAuth(true) }, [login])
+    
+    useEffect(()=>{ responsivePage(setScreen) }, [])
 
     return (
         <div className="nav w-full flex flex-col md:flex-row md:justify-between mx-auto py-4 md:py-6 md:px-[160px] items-center gap-x-[80px] fixed z-50 left-0 top-0 bg-primary drop-shadow-lg gap-y-2 md:gap-y-0 md:gap-x-8">

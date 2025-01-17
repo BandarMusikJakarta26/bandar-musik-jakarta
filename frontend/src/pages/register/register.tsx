@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from "react-router"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { registerSchema, registerSchemaType } from "../../../libs/schema/register.schema"
 import { registerAction } from "../../action/auth.action"
@@ -17,12 +17,14 @@ import LayoutAuthError from "../../components/auth/LayoutAuthError"
 import LayoutSubmitAuth from "../../components/auth/LayoutSubmitAuth"
 
 
-export default function Register(){
+export default function Register({ login }: { login: boolean }){
     const navigate = useNavigate()
 
     const { register, handleSubmit, formState: { errors } } = useForm<registerSchemaType>({ resolver: zodResolver(registerSchema) })
     const [ loading, setLoading ] = useState(false)
     const [ error, setError ] = useState<string | null>(null)
+
+    useEffect(()=>{ login && navigate('/') },[login])
 
     function onRegisterSubmit(data: registerSchemaType){ return registerAction(data, setLoading, setError, navigate) }
 

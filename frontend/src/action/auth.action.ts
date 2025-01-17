@@ -8,17 +8,15 @@ import axiosClient from "../../libs/axiosConfig"
 
 async function doAuthAction(route: string, data: registerSchemaType | loginSchemaType, setLoading: SetStateAction<any>, setError: any, navigate: NavigateFunction){
     setLoading(true)
-    const response = await axiosClient.post(`api/` + route, data, { headers: { 'Content-Type': 'application/json' } }) as AxiosResponse
+    const response = await axiosClient.post(`api/` + route, data) as AxiosResponse
     setLoading(false)
     if(response.data.error) return setError(response.data.error)
     if(response.data.success === true && route === "login"){
-        const responseCookie = await axiosClient.get(`api/cookie/${response.data.accessToken}`) as AxiosResponse
-        console.log('telah login')
-        console.log('Response Cookie', responseCookie)
+        await axiosClient.get(`api/cookie/${response.data.accessToken}`) as AxiosResponse
         return navigate('/')
     } 
     if(route === "register") return navigate('/user/login')
-    // else return navigate('/')
+    else return navigate('/')
 }
 
 export async function registerAction(data: registerSchemaType, setLoading: SetStateAction<any>, setError: any, navigate: NavigateFunction){
@@ -37,12 +35,11 @@ export async function checkAdmin(): Promise<boolean>{
 
 export async function isLogin(){
     const response = await axiosClient.get(`api/get-cookie`) as AxiosResponse
-    console.log('sudahkah login?', response.data)
-    // if(response.data.accessToken) return true
-    // else return false
+    if(response.data.success) return true
+    else return false
 }
 
 export async function doLogout(navigate: NavigateFunction){
-    await axios.get(`${host}/user/logout`)
+    await axiosClient.get(`api/logout`)
     return navigate(0)
 }

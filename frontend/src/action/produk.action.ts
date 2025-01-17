@@ -1,8 +1,10 @@
 import axios, { AxiosResponse } from "axios"
 import { host } from "../../libs/config"
+import axiosClient from "../../libs/axiosConfig"
 
-export async function getProductByBrand(setProductByBrand: React.SetStateAction<any[] | any>, brand: string){
-    const productsByBrand = await axios.get(`${host}/produk/brand/${brand}`) as AxiosResponse
+export async function getProductByBrand(setProductByBrand: React.SetStateAction<any[] | any>, brandName: string){
+    const productsByBrand = await axiosClient.get(`api/produk/brand/${brandName}`) as AxiosResponse
+    console.log(productsByBrand)
     return setProductByBrand(productsByBrand.data.produk)
 }
 
@@ -12,7 +14,8 @@ export async function getProductByCategory(setProductByCategory: React.SetStateA
 }
 
 export async function getProductByName(setProduct: React.SetStateAction<any[] | any>, name: string){
-    const response = await axios.get(`${host}/produk/${name}`) as AxiosResponse
+    const response = await axiosClient.get(`api/produk/${name}`) as AxiosResponse
+    console.log(response)
     return setProduct(response.data.produk)
 }
 

@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
 
 import { loginSchema, loginSchemaType } from '../../../libs/schema/login.schema'
@@ -16,18 +16,18 @@ import LayoutAuthError from "../../components/auth/LayoutAuthError"
 import LayoutSubmitAuth from "../../components/auth/LayoutSubmitAuth"
 import Unregister from "./components/Unregister"
 
-export default function Login(){
+export default function Login({ login }:{ login:boolean }){
     const navigate = useNavigate()
-
+    
     const { register, handleSubmit, formState: { errors } } = useForm<loginSchemaType>({ resolver: zodResolver(loginSchema) })
     const [ loading, setLoading ] = useState<boolean>(false)
     const [ error, setError ] = useState<string | null>(null)
 
-    function onLoginSubmit(data: loginSchemaType){ 
-        return loginAction(data, setLoading, setError, navigate)
-    }
+    useEffect(()=>{ login && navigate('/') },[login])
 
-    return (
+    function onLoginSubmit(data: loginSchemaType){ return loginAction(data, setLoading, setError, navigate) }
+
+     return (
         <LayoutAuth>
             <LayoutAuthTitle>Masuk Akun</LayoutAuthTitle>
             { error !== null && <LayoutAuthError error={error}/>}

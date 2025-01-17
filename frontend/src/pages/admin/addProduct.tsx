@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react"
-import { host } from "../../../libs/config"
-import axios, { AxiosResponse } from "axios"
 import { useNavigate } from "react-router"
 import BlankPage from "../blank"
-import { checkAdmin } from "../../action/auth.action"
+import { getBrands } from "../../action/brand.action"
+import { getCategories } from "../../action/kategori.action"
+import axiosClient from "../../../libs/axiosConfig"
+// import { checkAdmin } from "../../action/auth.action"
 
 export default function AddProduct(){
-    const [ admin, isAdmin ] = useState<boolean>(false) 
+    // const [ admin, isAdmin ] = useState<boolean>(false) 
     const [ image, setImage ] = useState<number>(0)
 
-    async function adminValidation() { return await isAdmin(await checkAdmin()) }
-    adminValidation()
+    // async function adminValidation() { return await isAdmin(await checkAdmin()) }
+    // adminValidation()
 
     const [ brands, setBrand ] = useState<any[]>([])
     const [ harga, setHarga ] = useState<string>('Rp.')
@@ -22,35 +23,29 @@ export default function AddProduct(){
     const [ checkBrand, getBrand ] = useState<any>(null)
     const navigate = useNavigate()
 
-    console.log(video)
+    // console.log(video)
 
-    async function getBrands(){
-        const response = await axios.get(`${host}/admin/brand`) as AxiosResponse
-        response.data.brands.length > 0 ? setBrand(response.data.brands) : setBrand([])
-    }
-
-    async function getCategories(){
-        const response = await axios.get(`${host}/admin/kategori`) as AxiosResponse
-        response.data.categories.length > 0 ? setCategories(response.data.categories) : setCategories([])
-    }
+    async function getDataBrands(){ return await getBrands(setBrand) }
+    async function getDataCategories(){ return await getCategories(setCategories) }
 
     function SelectBrand(){ return brands.map((brand, index)=><option value={brand.name} key={index} selected={ brand.name === checkBrand ? true : false }>{brand.name}</option> )}
-    function SelectCategory(){ return categories.map((category, index)=><option value={category.name} key={index} selected={ category.name === checkCategory ? true : false } >{category.name}</option> )}
+
+    function SelectCategory(){ return categories.map((category, index)=><option value={category.title} key={index} selected={ category.title === checkCategory ? true : false } >{category.title}</option> )}
 
     useEffect(()=>{
-        getBrands()
-        getCategories()
+        getDataBrands()
+        getDataCategories()
     }, [])
 
     async function onUploadForm(){
         try{
             const upload = new FormData(document.querySelector('form')!)
-            upload.append('diskon', diskon)
+            upload.append('discount', diskon)
             // const videoUpload = new FormData()
             // videoUpload.append('video', video!)
 
             for(let i = 0; i < files!.length; i++){
-                upload.append(`productfiles`, files![i])
+                upload.append(`images[]`, files![i])
             }
 
             // const progressBar = document.querySelector('progress')
@@ -63,8 +58,9 @@ export default function AddProduct(){
             //     }
             // }
             // await axios.post(`${host}/admin/tambah/video-produk`, videoUpload, config)
-            await axios.post(`${host}/admin/tambah/produk`, upload)
-            return navigate(0)
+            const response = await axiosClient.post(`api/tambah/produk`, upload)
+            console.log(response)
+            // return navigate(0)
         }catch(error:any){ console.log(error.response.data) }
       
     }
@@ -102,8 +98,8 @@ export default function AddProduct(){
     function changeBrand(e:any){ getBrand(e.target.value) }
 
 
-    if(!admin) return <BlankPage/>
-    else return (
+    // if(!admin) return <BlankPage/>
+    return (
         <div className="addProduct px-16 pt-16">
             <div className="w-full shadow-xl px-[50px] flex flex-col gap-y-2">
                 <h1 className="text-[48px] font-bold tracking-tight ">Tambah Produk</h1>
@@ -114,14 +110,14 @@ export default function AddProduct(){
 
                     <div className="input-top grid grid-cols-[3fr_1fr_1fr] gap-x-12">
                     <input type="text" name="name" placeholder="Masukkan nama produk" className="name"/>
-                    <input type="text" name="harga" placeholder="Masukkan harga" onChange={(e)=>{setHargaProduk(e.target.value)}} value={harga}/>
+                    <input type="text" name="price" placeholder="Masukkan harga" onChange={(e)=>{setHargaProduk(e.target.value)}} value={harga}/>
 
                     <div className="diskon flex">
                         <p className="font-bold text-[14px] border-2 border-third pt-[10px] px-2">20%</p>
-                        <input type="text" name="diskon" placeholder="Diskon" className="bg-white indent-0" disabled value={diskon}/>
+                        <input type="text" name="discount" placeholder="Diskon" className="bg-white indent-0" disabled value={diskon}/>
                     </div>
                     </div>
-                    <textarea name="deskripsi" placeholder="Masukkan deskripsi produk" className="h-[200px] indent-0"/>
+                    <textarea name="description" placeholder="Masukkan deskripsi produk" className="h-[200px] indent-0"/>
 
                     <div className="select grid grid-cols-2 gap-x-20">
 
@@ -138,7 +134,7 @@ export default function AddProduct(){
                     </div>
 
                     <div className="input-btm grid grid-cols-[2fr_1fr] gap-x-20 absolute w-full bottom-16">
-                        <input type="text" name="tokped" placeholder="Masukkan link tokopedia"/>
+                        <input type="text" name="tokopedia" placeholder="Masukkan link tokopedia"/>
                         <button type="submit" className="border-2 border-third rounded-full text-[20px] font-semibold py-2 hover:bg-third hover:text-primary transition-all" onClick={onUploadForm}>Upload</button>
                     </div>
 
@@ -155,7 +151,7 @@ export default function AddProduct(){
                             <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
                         </div>}
                         {image > 0 && <h1 className="text-[30px] italic opacity-60">{image} file diupload</h1> }
-                        <input type="file" className="hidden" name="productfiles" multiple onChange={(e)=>{
+                        <input type="file" className="hidden" name="images[]" multiple onChange={(e)=>{
                             setFiles(e.target.files!)
                             setImage(e.target.files!.length)
                         }}/>
