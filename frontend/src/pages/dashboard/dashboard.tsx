@@ -3,6 +3,7 @@ import Deskripsi from "./components/Deskripsi"
 import Terbaru from "./components/Terbaru"
 import Kategori from "./components/Kategori"
 import Brand from "./components/Brand"
+import Promo from "./components/Promo"
 import { motion } from 'framer-motion'
 
 export default function Dashboard(){
@@ -17,6 +18,9 @@ export default function Dashboard(){
             <Carousel/>
             <div className="content w-[86%] mx-auto md:w-full">
                 <Deskripsi explore={explore}/>
+                <motion.div initial={{ opacity: 0, y: 200 }} whileInView={{ opacity: 1, y: 0, transition: { duration: 0.5 } }} viewport={{ once: true }}>
+                    <Promo/>
+                </motion.div>
                 <motion.div initial={{ opacity: 0, y: 200 }} whileInView={{ opacity: 1, y: 0, transition: { duration: 0.5 } }} viewport={{ once: true }}>
                     <Terbaru/>
                 </motion.div>

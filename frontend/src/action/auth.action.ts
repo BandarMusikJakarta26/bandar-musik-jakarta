@@ -6,13 +6,14 @@ import { NavigateFunction } from "react-router"
 import { registerSchemaType } from "../../libs/schema/register.schema"
 import axiosClient from "../../libs/axiosConfig"
 
-async function doAuthAction(route: string, data: registerSchemaType | loginSchemaType, setLoading: SetStateAction<any>, setError: any, navigate: NavigateFunction){
+async function doAuthAction(route: string, data: registerSchemaType | loginSchemaType, setLoading: SetStateAction<any>, setError: any, navigate: NavigateFunction, loggedIn? : any){
     setLoading(true)
     const response = await axiosClient.post(`api/` + route, data) as AxiosResponse
     setLoading(false)
     if(response.data.error) return setError(response.data.error)
     if(response.data.success === true && route === "login"){
         await axiosClient.get(`api/cookie/${response.data.accessToken}`) as AxiosResponse
+        loggedIn()
         return navigate('/')
     } 
     if(route === "register") return navigate('/user/login')
@@ -23,8 +24,8 @@ export async function registerAction(data: registerSchemaType, setLoading: SetSt
     await doAuthAction('register', data, setLoading, setError, navigate)
 }
 
-export async function loginAction(data: loginSchemaType, setLoading: SetStateAction<any>, setError: any, navigate: NavigateFunction){
-    await doAuthAction('login', data, setLoading, setError, navigate)
+export async function loginAction(data: loginSchemaType, setLoading: SetStateAction<any>, setError: any, navigate: NavigateFunction, loggedIn: any){
+    await doAuthAction('login', data, setLoading, setError, navigate, loggedIn)
 }
 
 export async function checkAdmin(): Promise<boolean>{
@@ -40,6 +41,7 @@ export async function isLogin(){
 }
 
 export async function doLogout(navigate: NavigateFunction){
-    await axiosClient.get(`api/logout`)
+    const token = await axiosClient.get(`api/get-cookie`)
+    await axiosClient.get(`api/logout`, { headers: { 'Authorization': `Bearer ${token.data.cookie}` } })
     return navigate(0)
 }

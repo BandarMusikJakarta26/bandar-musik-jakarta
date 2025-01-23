@@ -5,19 +5,16 @@ import NavSearch from "./NavSearch"
 import NavLogo from "./NavLogo"
 import NavLink from "./NavLink"
 
-import { useNavigate } from "react-router"
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FaRegWindowClose } from "react-icons/fa";
 import responsivePage from "../../action/screen.action"
 
-export default function NavMenu({ login } : { login: boolean }){
+export default function NavMenu({ login, currentLogin } : { login: boolean, currentLogin: boolean }){
     const [ screen, setScreen ] = useState<number>(window.innerWidth)
     const [ pages, showPages ] = useState<boolean>(false)
     const [ auth, setAuth ] = useState<boolean>(false)
-    const navigate = useNavigate()
 
-    useEffect(()=>{ login && setAuth(true) }, [login])
-    
+    useEffect(()=>{ login || (!login && currentLogin) ? setAuth(true) : false })
     useEffect(()=>{ responsivePage(setScreen) }, [])
 
     return (

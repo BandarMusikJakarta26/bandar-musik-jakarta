@@ -12,11 +12,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kategori', function (Blueprint $table) {
+        Schema::create('promo', function (Blueprint $table) {
             $table->uuid('id')->default(DB::raw('(UUID())'))->index();
             $table->string('title');
             $table->string('image');
-            $table->json('brands')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kategori');
+        Schema::dropIfExists('promo');
     }
 };

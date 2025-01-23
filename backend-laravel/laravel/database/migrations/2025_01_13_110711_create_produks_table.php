@@ -15,13 +15,14 @@ return new class extends Migration
         Schema::create('produk', function (Blueprint $table) {
             $table->uuid('id')->default(DB::raw('(UUID())'))->index();
             $table->string('name');
-            $table->string('price');
-            $table->string('discount');
-            $table->string('tokopedia');
+            $table->string('offlinePrice')->nullable(true);
+            $table->string('onlinePrice')->nullable(true);
+            $table->string('promo')->nullable(value: true);
+            $table->string('url');
             $table->string('description');
             $table->string('brandId');
             $table->string('kategoriId');
-            $table->json('images')->nullable();
+            $table->json('images')->nullable(true);
             $table->timestamps();
         });
     }

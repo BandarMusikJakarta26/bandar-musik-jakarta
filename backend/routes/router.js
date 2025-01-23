@@ -67,6 +67,9 @@ class Routes {
         this.#postRoute()
     }
     #getRoute(){
+        this.router.get('/wle', (req,res)=>{
+            return res.status(200).json({ "msg": "Halo Dunia!" })
+        })
         this.router.get('/token', getToken)
         this.router.get('/user/logout', logout)
 

@@ -22,11 +22,12 @@ class ProductStoreRequest extends FormRequest
     {
         return [
             "name"=>["required", "string"],
-            "price"=>["required","string"],
+            "onlinePrice"=>["nullable","string"],
+            "offlinePrice"=>["nullable","string"],
+            "promo"=>["nullable", "string"],
             "brand"=>["required","string"],
             "kategori"=>["required","string"],
-            "discount"=>["required","string"],
-            "tokopedia"=>["required","string"],
+            "url"=>["required","string"],
             "description"=>["required","string"],
             "images.*"=>["required", "image", "mimes:jpg,jpeg,png", "max:3000"]
         ];

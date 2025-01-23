@@ -7,11 +7,12 @@ const axiosClient = axios.create({
         "X-Requested-with": "XMLHttpRequest",
         "Accept": "application/json",
         "Access-Control-Allow-Credentials": "true",
-        "Access-Control-Allow-Origin": 'http://localhost/8000',
+        "Access-Control-Allow-Origin": host,
         "Access-Control-Allow-Methods": "GET,HEAD,OPTIONS,POST,PUT",
         "Access-Control-Allow-Headers": "Origin, Content-Type, Accept, Set-Cookie"
     },
     withCredentials: true,
+    withXSRFToken: true
 })
 
 export default axiosClient

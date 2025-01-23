@@ -20,6 +20,7 @@ export default function Brand(){
             <>
                 <div className="mobile px-6 md:px-0 flex flex-col gap-y-8">
                     <BrandTitle brand={brand}/>
+                    <div className="line w-full h-[2px] bg-third"></div>
                     <ProductList brand={brand.name} />
                 </div>
             </>

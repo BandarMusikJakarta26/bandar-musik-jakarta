@@ -18,7 +18,6 @@ import Brand from './pages/brand/brand.tsx'
 import AllBrand from './pages/allBrand/AllBrand.tsx'
 import BlankPage from './pages/blank.tsx'
 
-// import axios from 'axios'
 import AddCategory from './pages/admin/addCategory.tsx'
 import GetCategory from './pages/admin/getCategory.tsx'
 import Kategori from './pages/kategori/kategori.tsx'
@@ -31,16 +30,18 @@ import Product from './pages/product/product.tsx'
 import { useEffect, useState } from 'react'
 import { isLogin } from './action/auth.action.ts'
 import axiosClient from '../libs/axiosConfig.ts'
-
-// axios.defaults.withCredentials = true
+import { isLoginStore } from '../libs/store.ts'
+import AddPromo from './pages/admin/addPromo.tsx'
+import UpdateProduct from './pages/admin/updateProduct.tsx'
 
 export default function App() {
-  const [login, setlogin] = useState<boolean>(false)
-
-  async function checkLogin(){ setlogin(await isLogin()) }
-  checkLogin()
+  const currentLogin = isLoginStore(state=>state.login)
+  const [ login, setLogin] = useState<boolean>(false)
 
   useEffect(()=>{
+      async function checkLogin(){ setLogin(await isLogin()) }
+      checkLogin()
+
       async function getAllCookies(){ return await axiosClient.get('/get-cookie')  }
       getAllCookies()
   },[])
@@ -48,9 +49,9 @@ export default function App() {
   return (
     <div className='w-full bg-primary text-third'> 
       <BrowserRouter>
-        <NavMenu login={login}/>
-        <NavAdmin login={login}/>
-          <div className="main mx-auto md:w-[84%] pt-[136px] md:pt-[190px] box-border overflow-hidden">
+        <NavMenu login={login} currentLogin={currentLogin}/>
+        <NavAdmin login={login} currentLogin={currentLogin}/>
+          <div className="main mx-auto md:w-[84%] pt-[126px] md:pt-[124px] box-border overflow-hidden">
             <Routes>
 
               <Route path="/" element={<Dashboard/>}/>
@@ -61,18 +62,22 @@ export default function App() {
               <Route path="/terbaru" element={<AllTerbaru/>}/>
               <Route path="/about" element={<About/>}/>
               <Route path="/produk/:name" element={<Product/>}/>
+              <Route path="/promo" element={<Product/>}/>
 
               <Route path="/user/login" element={<Login login={login}/>}/>
               <Route path="/user/register" element={<Register login={login}/>}/>
 
-              <Route path="/admin/dashboard" element={<AdminDashboard/>}/>
-              <Route path="/admin/brand" element={<GetBrand/>}/>
-              <Route path="/admin/kategori" element={<GetCategory/>}/>
-              <Route path="/admin/produk" element={<GetProduct/>}/>
-              <Route path="/admin/tambah/brand" element={<AddBrand/>}/>
-              <Route path="/admin/tambah/produk" element={<AddProduct/>}/>
-              <Route path="/admin/tambah/kategori" element={<AddCategory/>}/>
-              <Route path="/admin/tambah/terbaru" element={<AddTerbaru/>}/>
+              <Route path="/admin/dashboard" element={login ? <AdminDashboard/> : <BlankPage/>}/>
+              <Route path="/admin/brand" element={login ? <GetBrand/> : <BlankPage/>}/>
+              <Route path="/admin/kategori" element={login ? <GetCategory /> : <BlankPage/> }/>
+              <Route path="/admin/produk" element={login ? <GetProduct/> : <BlankPage/> }/>
+              <Route path="/admin/tambah/brand" element={login ? <AddBrand/> : <BlankPage/>}/>
+              <Route path="/admin/tambah/promo" element={login ? <AddPromo/> : <BlankPage/> }/>
+              <Route path="/admin/tambah/produk" element={login ? <AddProduct/> : <BlankPage/>}/>
+              <Route path="/admin/tambah/kategori" element={login ? <AddCategory/> : <BlankPage/>}/>
+              <Route path="/admin/tambah/terbaru" element={login ? <AddTerbaru/> : <BlankPage/>}/>
+
+              <Route path="/admin/update/produk/:name" element={login ? <UpdateProduct/> : <BlankPage/>}/>
 
               <Route path='*' element={<BlankPage/>}/>
             </Routes>

@@ -1,32 +1,28 @@
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router"
-// import BlankPage from "../blank"
+import { useNavigate, useParams } from "react-router"
 import { getBrands } from "../../action/brand.action"
 import { getCategories } from "../../action/kategori.action"
 import axiosClient from "../../../libs/axiosConfig"
-// import { checkAdmin } from "../../action/auth.action"
+import { getProductByName } from "../../action/produk.action"
 
-export default function AddProduct(){
-    // const [ admin, isAdmin ] = useState<boolean>(false) 
+export default function UpdateProduct(){
     const [ image, setImage ] = useState<number>(0)
+    const { name } = useParams()
 
-    // async function adminValidation() { return await isAdmin(await checkAdmin()) }
-    // adminValidation()
-
+    const [ product, setProduct ] = useState<any>(null)
     const [ brands, setBrand ] = useState<any[]>([])
-    const [ url, setUrl ] = useState<string>('')
-    const [ hargaOnline, setHargaOnline ] = useState<string>('Rp.')
-    const [ hargaOffline, setHargaOffline ] = useState<string>('Rp.')
-    const [ hargaPromo, setHargaPromo ] = useState<string>('Rp.')
+    // const [ hargaOnline, setHargaOnline ] = useState<string>('Rp.')
+    // const [ hargaOffline, setHargaOffline ] = useState<string>('Rp.')
+    // const [ hargaPromo, setHargaPromo ] = useState<string>('Rp.')
     // const [ diskon, setDiskon ] = useState<string>('')
     const [ categories, setCategories ] = useState<any[]>([])
     const [ files, setFiles ] = useState<FileList | null>(null)
-    const [ video, setVideo ] = useState<File | null>(null)
+    // const [ video, setVideo ] = useState<File | null>(null)
     const [ checkCategory, getCategory ] = useState<any>(null)
     const [ checkBrand, getBrand ] = useState<any>(null)
     const navigate = useNavigate()
 
-    console.log(video)
+    // console.log(video)
 
     async function getDataBrands(){ return await getBrands(setBrand) }
     async function getDataCategories(){ return await getCategories(setCategories) }
@@ -38,28 +34,27 @@ export default function AddProduct(){
     useEffect(()=>{
         getDataBrands()
         getDataCategories()
+        getProductByName(setProduct, name!)
     }, [])
 
     async function onUploadForm(){
         try{
             const upload = new FormData(document.querySelector('form')!)
-            upload.append('url', url)
             const promo = upload.get('promo') as string
             if(promo.trim() == "" || promo.trim() == "Rp."){ upload.append('promo', '') }
-            if(hargaOnline.trim() == "" || hargaOnline.trim() == "Rp."){ upload.append('onlinePrice', '') }
-            if(hargaOffline.trim() == "" || hargaOffline.trim() == "Rp."){ upload.append('offlinePrice', '') }
 
             // const videoUpload = new FormData()
             // videoUpload.append('video', video!)
-
-            for(let i = 0; i < files!.length; i++){
-                upload.append(`images[]`, files![i])
+            if(files){
+                for(let i = 0; i < files!.length; i++){
+                    upload.append(`images[]`, files![i])
+                }
             }
 
             // const progressBar = document.querySelector('progress')
             // const config: AxiosRequestConfig<FormData> = {
             //     onUploadProgress: function(progressEvent){
-            //         const progress = (progressEvent.loaded / progressEvent.total!)*100 as number
+            //         const progress = (progressEvent.loqaded / progressEvent.total!)*100 as number
             //         progressBar!.setAttribute('value', progress.toString())
             //         progressBar!.previousElementSibling!.textContent = `${Math.round(progress)}%`
             //         if(progress == 100) progressBar!.previousElementSibling!.textContent = `Upload Selesai`
@@ -67,7 +62,7 @@ export default function AddProduct(){
             // }
             // await axios.post(`${host}/admin/tambah/video-produk`, videoUpload, config)
 
-            await axiosClient.post(`api/tambah/produk`, upload)
+            await axiosClient.post(`api/update/produk`, upload)
             return navigate('/admin/produk')
         }catch(error:any){ console.log(error.response.data) }
       
@@ -104,36 +99,41 @@ export default function AddProduct(){
 
     function changeCategory(e:any){ getCategory(e.target.value) }
     function changeBrand(e:any){ getBrand(e.target.value) }
-    function generateUrlValue(e:any){
-        let formValue= e.target.value as any
-        formValue = formValue.split(" ").join("-").toLowerCase()
-        formValue = formValue.split("")
-        formValue = formValue.filter((value:string)=>value!=="/").join("")
-        return setUrl(formValue)
-    }
 
     // if(!admin) return <BlankPage/>
     return (
         <div className="addProduct px-16 pt-16">
             <div className="w-full shadow-xl px-[50px] flex flex-col gap-y-2">
-                <h1 className="text-[48px] font-bold tracking-tight ">Tambah Produk</h1>
+                <h1 className="text-[48px] font-bold tracking-tight ">Update Produk</h1>
 
                 <div className="form flex flex-col gap-y-6 relative pb-36">
 
                     <form className="flex flex-col gap-y-6" onSubmit={(e)=>e.preventDefault()}>
 
                     <div className="input-top grid grid-cols-[3fr_1fr_1fr_1fr] gap-x-12">
-                    <input type="text" name="name" placeholder="Masukkan nama produk" className="name" onChange={generateUrlValue}/>
-                    <input type="text" name="onlinePrice" placeholder="Harga Online" onChange={(e)=>{setHargaOnline(e.target.value)}} value={hargaOnline}/>
-                    <input type="text" name="offlinePrice" placeholder="Harga Offline" onChange={(e)=>{setHargaOffline(e.target.value)}} value={hargaOffline}/>
-                    <input type="text" name="promo" placeholder="Harga Promo" onChange={(e)=>{setHargaPromo(e.target.value)}} value={hargaPromo}/>
-
-                    {/* <div className="diskon flex">
-                        <p className="font-bold text-[14px] border-2 border-third pt-[10px] px-2">20%</p>
-                        <input type="text" name="discount" placeholder="Diskon" className="bg-white indent-0" disabled value={diskon}/>
-                    </div> */}
+                    <div className="nama">
+                        <h1>Name</h1>
+                        <input type="text" name="name" placeholder="Masukkan nama produk" className="name w-full" value={product.name}/>
                     </div>
-                    <textarea name="description" placeholder="Masukkan deskripsi produk" className="h-[200px] indent-0"/>
+                    <div className="online">
+                        <h1>Harga Online</h1>
+                        {/* <input type="text" name="onlinePrice" placeholder="Harga Online" onChange={(e)=>{setHargaOnline(e.target.value)}} value={product.onlinePrice}/> */}
+                    </div>
+                    <div className="offline">
+                        <h1>Harga Offline</h1>
+                        {/* <input type="text" name="offlinePrice" placeholder="Harga Offline" onChange={(e)=>{setHargaOffline(e.target.value)}} value={product.offlinePrice}/> */}
+                    </div>
+                    <div className="offline">
+                        <h1>Walk in Price</h1>
+                        {/* <input type="text" name="promo" placeholder="Harga Promo" onChange={(e)=>{setHargaPromo(e.target.value)}} value={product.promo}/> */}
+                    </div>
+
+                    <div className="diskon flex">
+                        <p className="font-bold text-[14px] border-2 border-third pt-[10px] px-2">20%</p>
+                        {/* <input type="text" name="discount" placeholder="Diskon" className="bg-white indent-0" disabled value={diskon}/> */}
+                    </div>
+                    </div>
+                    <textarea name="description" placeholder="Masukkan deskripsi produk" className="h-[200px] indent-0" value={product.description}/>
 
                     <div className="select grid grid-cols-2 gap-x-20">
 
@@ -150,7 +150,7 @@ export default function AddProduct(){
                     </div>
 
                     <div className="input-btm grid grid-cols-[2fr_1fr] gap-x-20 absolute w-full bottom-16">
-                        <input type="text" name="url" placeholder="Masukkan link url" value={url} disabled/>
+                        <input type="text" name="tokopedia" placeholder="Masukkan link tokopedia"/>
                         <button type="submit" className="border-2 border-third rounded-full text-[20px] font-semibold py-2 hover:bg-third hover:text-primary transition-all" onClick={onUploadForm}>Upload</button>
                     </div>
 
@@ -174,7 +174,7 @@ export default function AddProduct(){
                     </label>
                     </div> 
 
-                        <input type="file" name="video" onChange={(e)=>setVideo(e.target.files![0])}/>
+                        {/* <input type="file" name="video" onChange={(e)=>setVideo(e.target.files![0])}/> */}
                         <label>Upload</label>
                         <progress value={0} max={100}></progress>
                 </div>

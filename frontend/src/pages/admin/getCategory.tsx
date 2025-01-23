@@ -8,9 +8,6 @@ import responsivePage from "../../action/screen.action";
 import { getCategories } from "../../action/kategori.action";
 
 export default function GetCategory(){
-    // const [ admin, isAdmin ] = useState<boolean>(false) 
-    // async function adminValidation() { return await isAdmin(await checkAdmin()) }
-    // adminValidation()
 
     const [ categories, setCategories ] = useState<any[]>([])
     const [ screen, setScreen ] = useState<number>(window.innerWidth)

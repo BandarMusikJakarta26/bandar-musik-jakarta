@@ -10,9 +10,7 @@ export default function NavSearch(){
 
     useEffect(()=>{
         async function liveSearch(){
-            console.log('REQUEST')
             const response = await axiosClient.get(`api/search/${keyword}`)
-            console.log(response)
             if(!response.data.success || keyword == '' || !response) setResult({ products: [], brands: [], categories: [] })
             else setResult({ products: response.data.products, brands: response.data.brands, categories: response.data.categories })
         }

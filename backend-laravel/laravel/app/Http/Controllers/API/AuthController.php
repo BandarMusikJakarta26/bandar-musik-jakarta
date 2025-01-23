@@ -60,7 +60,7 @@ class AuthController extends Controller
     }
 
     public function logout(){
-        // Auth::logout();
+        if(auth()->user()){ auth()->logout(); }
         $cookie = Cookie::forget('access-token');
         return response()->json(['success'=>true,'message'=> 'Berhasil Logout'],200)->withCookie($cookie);
     }
@@ -73,7 +73,7 @@ class AuthController extends Controller
     public function getCookie(){
         $cookie = Cookie::get('access-token');
         if(!$cookie){ return response()->json(["success"=>false, "message"=>"Unauthorized!"], 200);
-        }else { return response()->json(["success"=>true], 200)->withCookie($cookie); }
+        }else { return response()->json(["success"=>true, "cookie"=>$cookie], 200)->withCookie($cookie); }
 
      }
 

@@ -1,7 +1,7 @@
 // import { useEffect, useState } from "react"
 import { useLocation } from "react-router"
-import { isLogin } from "../../action/auth.action"
-import { useEffect, useState } from "react"
+// import { isLogin } from "../../action/auth.action"
+import BlankPage from "../blank"
 // import { checkAdmin } from "../../action/auth.action"
 
 const navs = [
@@ -12,15 +12,7 @@ const navs = [
     { name: "Daftar Terbaru", url: "/admin/terbaru" },
 ]
 
-export default function NavAdmin({ login }: { login: boolean }){
-    const [ render, setRender ] = useState<boolean>(false) 
-
-    // const navigate = useNavigate()
-    // const [ admin, isAdmin ] = useState<boolean>(false) 
-    // async function adminValidation() { return await isAdmin(await checkAdmin()) }
-    // adminValidation()
-
-    useEffect(()=>{ login && setRender(true) },[login])
+export default function NavAdmin({ login, currentLogin }: { login: boolean, currentLogin: boolean }){
 
     function ShowMenu(){
         const {pathname} = useLocation()
@@ -29,10 +21,12 @@ export default function NavAdmin({ login }: { login: boolean }){
         })
     }
     
-    if(!render) return false
-    else return ( 
-        <div className={`nav-admin fixed top-[130px] left-0 bg-second text-[8px] md:text-[20px] text-third flex justify-center w-full drop-shadow-xl gap-x-4 md:gap-x-5 py-2 z-20`}>
-            <ShowMenu/>
-        </div>
-    )
+    if(login || (!login && currentLogin)){
+        return ( 
+            <div className={`nav-admin fixed top-[123px] left-0 bg-second text-[8px] md:text-[20px] text-third flex justify-center w-full drop-shadow-xl gap-x-4 md:gap-x-5 py-2 z-40`}>
+                <ShowMenu/>
+            </div>
+
+        )
+    }else{ <BlankPage/> }
 }

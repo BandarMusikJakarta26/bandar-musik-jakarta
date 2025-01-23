@@ -10,5 +10,6 @@ class Kategori extends Model
 {
     use HasFactory;
     protected $table = "kategori";
-    protected $fillable = ['title', 'image'];
+    protected $fillable = ['title', 'image', 'brands'];
+    protected $casts = [ 'brands' => 'array' ];
 }

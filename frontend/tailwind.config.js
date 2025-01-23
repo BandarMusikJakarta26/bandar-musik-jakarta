@@ -9,6 +9,37 @@ export default {
         primary: "#eee",
         second: "#f9ad52",
         third: "#3e3f20"
+      },
+      fontFamily: {
+        "bree-serif" : ["bree-serif", "serif"]
+      },
+      keyframes:{
+        "zoom-in": {
+          "0%": {
+            opacity: 1,
+            transform: "scale3d(1, 1, 1)",
+          },
+          "50%": {
+            opacity: 1,
+            transform: "scale3d(1.4, 1.4, 1.4)",
+          },
+          "100%": {
+            opacity: 1,
+            transform: "scale3d(1, 1, 1)",
+          },
+        }, "zoom-out": {
+          "0%": {
+            opacity: 1,
+          },
+          "15%": {
+            opacity: 0.8,
+            transform: "scale3d(1.1, 1.1, 1.1)",
+          },
+          "100%": {
+            opacity: 0,
+            transform: "scale3d(0.3, 0.3, 0.3)",
+          },
+        }
       }
     },
   },

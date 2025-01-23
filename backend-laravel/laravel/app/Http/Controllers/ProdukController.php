@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductStoreRequest;
+use App\Models\Kategori;
 use App\Models\Produk;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -16,7 +17,10 @@ class ProdukController extends Controller
      */
     public function index(): JsonResponse{
         $response = Produk::orderBy("created_at", "desc")->get();
-        return response()->json([ "success"=>true, "data"=>$response ], 200);
+        for($i=0;$i<count($response); $i++){
+            $response[$i]["images"] = json_decode($response[$i]["images"], true);
+        }
+        return response()->json([ "success"=>true,"produk"=>$response ],200);
     }
 
     /**
@@ -37,16 +41,25 @@ class ProdukController extends Controller
         // GambarProduk::insert($imageData);
         $produk = Produk::create([
             'name'=>$body["name"],
-            'price'=>$body["price"],
-            'discount'=>$body["discount"],
-            'tokopedia'=>$body["tokopedia"],
+            'onlinePrice'=>$body["onlinePrice"],
+            'offlinePrice'=>$body["offlinePrice"],
+            'promo'=>$body["promo"],
+            'url'=>$body["url"],
             'description'=>$body["description"],
             'brandId'=>$body["brand"],
             'kategoriId'=>$body["kategori"],
             'images'=>json_encode($imageData)
         ]);
 
-        return response()->json([ "success"=>true, "images"=>$imageData],200);
+        // $kategori = Kategori::where('title', $body["kategori"])->get()[0];
+        // $kategoriBrands = json_decode($kategori["brands"]);
+        
+        // if($kategoriBrands !== null && gettype($kategoriBrands) == "array"){ 
+        //     $kategoryArray = [];
+        //     $kategori->update(["brands"=>json_encode($body["brand"])]);
+        //     return response()->json([ "success"=>true, "images"=>$imageData],200);
+        // }elseif($kategoriBrands == null){ $kategori->update(["brands"=>json_encode($body["brand"])]); };
+        return response()->json([ "success"=>true ],200);
     }
 
     public function showByBrand(string $brandName){
@@ -61,7 +74,7 @@ class ProdukController extends Controller
      * Display the specified resource.
      */
     public function show(string $params): JsonResponse{
-        $responseByName = Produk::where("name",$params)->orderBy("name", "asc")->get()[0];
+        $responseByName = Produk::where("url",$params)->orderBy("name", "asc")->get()[0];
         if( $responseByName->count() > 0){ 
             $responseByName["images"] = json_decode($responseByName["images"], true);
             return response()->json([ "success"=>true,"produk"=>$responseByName ],200);
@@ -73,9 +86,8 @@ class ProdukController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
+    public function update(Request $request, string $id){
+        // Produk::update();
     }
 
     /**

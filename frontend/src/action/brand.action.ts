@@ -28,4 +28,10 @@ export async function getBrands(setBrands?: React.SetStateAction<any[] | any>){
 export async function createBrand(form: FormData): Promise<AxiosResponse | any>{
     const response = await axiosClient.post(`api/tambah/brand`, form)
     return response.data
-}    
+}
+
+export async function deleteBrand(name: string){
+    const response = await axiosClient.get(`api/hapus/brand/${name}`)
+    if(!response.data.success) return false
+    return true
+}

@@ -1,11 +1,13 @@
 import { useParams } from "react-router"
-import { RiShoppingBagLine } from "react-icons/ri";
+import { FaWhatsapp } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { getProductByName } from "../../action/produk.action";
 import { host } from "../../../libs/config";
+import watermark from '/utils/BMJTransparant.png';
 
 export default function Product(){
     const { name } = useParams()
+    const [ nama, setNama ] = useState<string>('')
     const [ product, setProduct ] = useState<any | null>(null)
     const [ active, setActive ] = useState<string | null>(null)
 
@@ -17,6 +19,20 @@ export default function Product(){
                 <img src={`${host}/storage/${image}`} className="md:h-[100px]"/>
             </div>
         })
+    }
+
+    function forwardWhatsapp(productName: string, harga: string){
+        const productLink = `https://bandarmusikjakarta.com/produk/${productName}`
+        return open(`https://wa.me/62081929290560?text=Halo BMJ, Saya sedang mencari barang : ${productLink}, senilai ${harga} apakah tersedia?`, "blank")
+    }
+
+    function ShowPromo({promo} : { promo : string}){
+        return (
+            <div className="promo border-2 border-third px-4 py-2 rounded-2xl">
+                <p className="text-center rounded-3xl text-[15px] text-third font-bold">Walk in Price</p>
+                <p className="text-[26px] text-center md:text-left md:text-[30px] font-bold tracking-tight -mt-1 justify-self-center">{promo}</p>
+            </div>
+        )
     }
 
     if(!product) return false
@@ -35,7 +51,7 @@ export default function Product(){
 
             </div>
 
-            <div className="gambar h-[100px] w-[100px] md:h-[240px] md:w-[240px] md:p-10 bg-second absolute z-0 top-[18px] left-[130px] md:top-[180px] md:left-[180px] rounded-full"></div>
+            <img className="gambar h-[100px] w-[100px] md:h-[400px] md:w-[400px] md:p-10 absolute z-0 top-[18px] left-[100px] md:top-[100px] md:left-[120px] opacity-40" src={watermark}/>
             <div className="tulisan flex flex-col gap-y-4 w-full md:w-[60%] mt-10 md:mt-0">
                 <div className="brandName flex">
                     <div className="brand w-full flex md:block justify-center">
@@ -47,15 +63,38 @@ export default function Product(){
                 </div>
                 <h1 className="text-[22px] md:text-[45px] font-bold mt-5 md:mt-0">{product.name}</h1>
                 <p className="font-bold opacity-70 text-[14px] md:text-[16px]">Deskripsi Produk</p>
-                <div className="garis h-[2px] w-[115px] md:w-[130px] bg-third rounded-full mt-[-8px]"></div>
+                <div className="garis h-[2px] w-[115px] md:w-[130px] bg-third rounded-full mt-[-8px]"/>
                 <p className="text-[12px] md:text-[14px] text-justify mt-[-12px]">{product.description}</p>
                 <div className="pembelian flex flex-col md:flex-row justify-between w-full mt-2">
                     <div className="harga">
-                        <p className="text-[30px] text-center md:text-left md:text-[36px] font-bold tracking-tight">{product.discount}</p>
-                        <p className="text-[18px] text-center md:text-left md:text-[16px] font-medium text-red-800"><span className="line-through">{product.price}</span> Diskon</p>
+                        <div className={`price grid gap-x-10 ${product.promo !== null ? 'grid-cols-[1fr_1fr_2fr]' : 'grid-cols-[1fr_2fr_1fr]' }`}>
+                            
+                        { product.onlinePrice && <div className={`online border-2 border-third px-4 py-2 rounded-2xl ${product.promo !== null ? 'opacity-80' : false}`}>
+                            <p className="text-center rounded-3xl text-[15px] text-third font-bold">Online Price</p>
+                            <p className="text-[26px] text-center md:text-left md:text-[30px] font-bold tracking-tight -mt-1">{product.onlinePrice}</p>
+                        </div> }
+
+                        { product.offlinePrice && <button className={`offline border-2 border-third px-4 py-2 rounded-2xl ${product.promo !== null ? 'opacity-80' : false} hover:cursor-pointer hover:opacity-100 transition-all`} onClick={()=>forwardWhatsapp(product.name, product.offlinePrice)}>
+                            <p className="text-center rounded-3xl text-[15px] text-third font-bold">Offline Price</p>
+                            <p className={`text-[26px] text-center md:text-left md:text-[30px] font-bold tracking-tight -mt-1 justify-self-center ${product.promo !== null ? 'line-through' : false}`}>{product.offlinePrice}</p>
+                        </button> }
+
+
+                        { product.promo && <ShowPromo promo={product.promo}/> }
+
+                        </div>
+                            
                     </div>
-                    <a href={product.tokopedia} className="py-2 px-8 bg-green-600 text-primary self-center flex items-center gap-x-2 rounded-3xl mt-4 md:mt-0 text-[14px] md:text-[16px]" target="_blank"><RiShoppingBagLine size={20}/>Beli Barang</a>
                 </div>
+                    <div className="tanya grid grid-cols-[2fr_1fr] gap-x-20 mt-6">
+                        <div className="input-nama">
+                            <p className="text-[14px] ml-[50px] mb-[6px]">Mohon untuk memasukkan nama anda sebelum menanyakan barang</p>
+                            <input type="text" placeholder="Masukkan nama ..." className="rounded-full w-full border-2 border-third" value={nama} onChange={(e)=>setNama(e.target.value)}/>
+                        </div>
+                        <div className="kotak-link  mt-[22px]">
+                            <button className="py-[14px] px-8 bg-green-700 text-primary flex items-center gap-x-2 rounded-3xl md:mt-0 text-[14px] md:text-[16px] hover:brightness-90 transition-all" onClick={()=>forwardWhatsapp(nama, product.name)}><FaWhatsapp size={24}/>Tanya Barang</button>
+                        </div>
+                    </div>
             </div>
         </div>
     )

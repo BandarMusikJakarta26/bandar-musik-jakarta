@@ -1,16 +1,10 @@
-import axios from "axios"
 import { useEffect, useState } from "react"
 import { host } from '../../../libs/config'
 import { FaRegPlusSquare } from "react-icons/fa";
 import responsivePage from "../../action/screen.action";
-// import { checkAdmin } from "../../action/auth.action";
-// import BlankPage from "../blank";
-import { getBrands } from "../../action/brand.action";
+import { deleteBrand, getBrands } from "../../action/brand.action";
 
 export default function GetBrand(){
-    // const [ admin, isAdmin ] = useState<boolean>(false) 
-    // async function adminValidation() { return await isAdmin(await checkAdmin()) }
-    // adminValidation()
 
     const [ brands, setBrands ] = useState<any[]>([])
     const [ screen, setScreen ] = useState<number>(window.innerWidth)
@@ -30,11 +24,11 @@ export default function GetBrand(){
         )
     }
 
-    async function deleteBrand(id: string){
-        const response = await axios.get(`${host}/admin/hapus/brand/${id}`)
-        if(!response.data.success) return true
-        setBrands(response.data.brands)
-    }
+    async function deleteBrandById(name : string){
+        const response = await deleteBrand(name)
+        if(!response) return true
+        return await getBrands(setBrands)
+    }   
 
     function DataBrand(){
         function ShowBrand(){ 
@@ -46,7 +40,7 @@ export default function GetBrand(){
                     </div>
                     <div className="nama-brand p-4 md:p-5 flex flex-col items-center gap-y-2">
                         <h1 className="md:text-[24px] font-semibold">{brand.name}</h1>
-                        <button className="bg-red-600 text-primary font-semibold rounded-full py-[2px] md:py-1 hover:brightness-90 w-[60px] md:w-[70px] text-[10px] md:text-[14px]" onClick={()=>deleteBrand(brand.id)}>Delete</button>
+                        <button className="bg-red-600 text-primary font-semibold rounded-full py-[2px] md:py-1 hover:brightness-90 w-[60px] md:w-[70px] text-[10px] md:text-[14px]" onClick={()=>deleteBrandById(brand.name)}>Delete</button>
                     </div>
                 </div>
                 )
@@ -65,8 +59,7 @@ export default function GetBrand(){
             </>
         )
     }
-
-    // if(!admin) return <BlankPage/>
+   
     return (
         <div className="w-full box-border py-[80px] px-5 md:p-10">
             <div className="brandList w-full">

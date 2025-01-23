@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react"
-import { checkAdmin } from "../../action/auth.action"
-import BlankPage from "../blank"
 import { getBrands } from "../../action/brand.action"
 import { getCategories } from "../../action/kategori.action"
 import { getProducts } from "../../action/produk.action"
@@ -13,22 +11,19 @@ const dataSet= [
 
 export default function AdminDashboard(){
     const [ dataGroup, setDataGroup ] = useState<typeof dataSet | any[]>(dataSet)
-    const [ admin, isAdmin ] = useState<boolean>(false) 
-
-    async function adminValidation() { return await isAdmin(await checkAdmin()) }
-    adminValidation()
 
     async function getTotalData(){
         const jumlahBrand = await getBrands()
         const jumlahKategori = await getCategories()
         const jumlahProduk = await getProducts()
-        
+
         return setDataGroup([
             { data: 'Brand', jumlah: jumlahBrand },
             { data: 'Kategori', jumlah: jumlahKategori },
             { data: 'Produk', jumlah: jumlahProduk },
         ])
     }
+
 
     useEffect(()=>{ getTotalData() },[])
 
@@ -44,9 +39,7 @@ export default function AdminDashboard(){
         })
     }
 
-
-    if(!admin) return <BlankPage/>
-    else return (
+    return (
         <div className="dashboard pt-[44px] px-4">
             <h1 className="text-[30px] font-bold tracking-tight">Halo Admin!</h1>
 

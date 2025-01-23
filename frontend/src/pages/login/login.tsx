@@ -15,8 +15,11 @@ import LayoutAuthTitle from "../../components/auth/LayoutAuthTitle"
 import LayoutAuthError from "../../components/auth/LayoutAuthError"
 import LayoutSubmitAuth from "../../components/auth/LayoutSubmitAuth"
 import Unregister from "./components/Unregister"
+import { isLoginStore } from "../../../libs/store"
 
 export default function Login({ login }:{ login:boolean }){
+    const loggedIn = isLoginStore(state=>state.loggedIn)
+
     const navigate = useNavigate()
     
     const { register, handleSubmit, formState: { errors } } = useForm<loginSchemaType>({ resolver: zodResolver(loginSchema) })
@@ -25,7 +28,9 @@ export default function Login({ login }:{ login:boolean }){
 
     useEffect(()=>{ login && navigate('/') },[login])
 
-    function onLoginSubmit(data: loginSchemaType){ return loginAction(data, setLoading, setError, navigate) }
+    function onLoginSubmit(data: loginSchemaType){ 
+        return loginAction(data, setLoading, setError, navigate, loggedIn)
+    }
 
      return (
         <LayoutAuth>

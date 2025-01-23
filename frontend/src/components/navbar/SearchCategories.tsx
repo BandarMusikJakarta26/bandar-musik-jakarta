@@ -5,7 +5,7 @@ export default function SearchCategories({ categories }: { categories: any[] }){
         { categories.map((category, index)=>{
         return (
             <div className="kotak" key={index}>
-                <a href={`/kategori/${category.name}`} className="py-[6px] block hover:bg-white px-4 transition-all">{category.name}</a>
+                <a href={`/kategori/${category.title}`} className="py-[6px] block hover:bg-white px-4 transition-all">{category.title}</a>
             </div>
         )}) }
         </>
