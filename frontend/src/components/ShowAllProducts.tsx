@@ -1,7 +1,7 @@
-import { AdvancedImage } from "@cloudinary/react"
-import { cloudSDK, host } from "../../libs/config"
+import { host } from "../../libs/config"
 import { useEffect, useState } from "react"
 import responsivePage from "../action/screen.action"
+import { moneyConverter } from "../action/produk.action"
 
 function DesktopUI({ products, according }: { products: any[], according: string }){
     return products.map((product, index)=>{
@@ -16,31 +16,40 @@ function DesktopUI({ products, according }: { products: any[], according: string
                 <div className="name-product text-center md:text-left">
                     <h1 className="text-[20px] md:text-[18px] font-bold md:font-bold mb-1 md:mb-0 text-center">{product.name}</h1>
                     <p className="text-[14px] md:text-[14px] font-normal md:opacity-60 mt-[-3px] text-center italic">{product.kategoriId}</p>
+                    <p className="text-[30px] text-center font-bold tracking-tight">{product.promo ? moneyConverter(product.promo) : product.offlinePrice !== null ? moneyConverter(product.offlinePrice) : false}</p>
+                    <p className="text-[14px] font-bold line-through text-red-700 text-center -mt-[6px]">{product.promo ? moneyConverter(product.offlinePrice) : false}</p>
                 </div>
                 <div className="lihat flex justify-center items-center">
                     {according == "produk" ? <p className="text-center border-2 border-third px-2">Edit Produk</p> : <p className="text-center border-2 border-third px-3 group-hover:bg-third group-hover:text-primary transition-all">Lihat Detail</p> }
                 </div>
-              
+                {product.promo && <p className="absolute top-[30px] left-7 text-[18px] bg-red-600 text-white px-[10px] rounded-md">Promo</p>}
             </a>
         )
     })
 }
 
 function MobileUI({ products }: { products: any[] }){
+    const limit = 24
     return products.map((product, index)=>{
+        let name = product.name
+        if(name.length > limit){
+            name = name.slice(0, limit) + " ..."
+        }
         return (
-            <a className="flex bg-[#fbfbfb] rounded-[16px] overflow-hidden items-center gap-x-3 group" key={index} href={`/produk/${product.name}`}>
-                <div className="gambar bg-[#dfdfdf] p-3">
-                    <div className="w-[90px]">
-                        {product.images.length > 0 ? <AdvancedImage cldImg={cloudSDK.image(product.images[0])} className="group-hover:hidden"/> : false}
-                        {product.images.length > 0 ? <AdvancedImage cldImg={cloudSDK.image(product.images[1] !== undefined ? product.images[1] : product.images[0])} className="hidden group-hover:block"/> : false}
+            <a className="flex bg-primary rounded-lg overflow-hidden items-center group flex-col shadow-md relative" key={index} href={`/produk/${product.url}`}>
+                <div className="gambar bg-gradient-to-t from-primary to-gray-400 p-1">
+                    <div className="w-full">
+                        <img src={`${host}/storage/${product.images[0]}`} className="group-hover:hidden"/>
+                        <img src={product.images.length > 1 ? `${host}/storage/${product.images[1]}` : `${host}/storage/${product.images[0]}`} className="hidden group-hover:block"/>
                     </div>
                 </div>
-                <div className="py-3">
-                    <h1 className="text-[14px] md:text-[16px] font-bold">{product.name}</h1>
-                    <p className="text-[12px] font-normal opacity-70 -mt-[2px]">{product.categoryName}</p>
+                <div className="pb-2 w-full px-3">
+                    <h1 className="text-[13px] md:text-[16px] font-semibold">{name}</h1>
+                    <p className="text-[11px] font-normal opacity-70 italic">{product.kategoriId}</p>
+                    <p className="text-[15px] font-bold">{product.promo ? moneyConverter(product.promo) : product.offlinePrice !== null ? moneyConverter(product.offlinePrice) : false}</p>
+                    <p className="text-[11px] font-bold line-through text-red-700">{product.promo ? moneyConverter(product.offlinePrice) : false}</p>
                 </div>
-            
+                {product.promo && <p className="absolute top-[124PX] left-3 text-[9px] bg-red-600 text-white px-[10px] rounded-md">Promo</p>}
             </a>
         )
     })
@@ -74,7 +83,9 @@ export default function ShowAllProducts({ products, according }: { products: any
                 <h1 className="text-[16px] font-bold">Products</h1>
                 <p className="text-[12px]">Filter</p>
             </div>
-            <MobileUI products={currentProducts}/>
+            <div className="products grid grid-cols-2 gap-x-2 gap-y-2 mt-2">
+                <MobileUI products={currentProducts}/>
+            </div>
             <div className="pagination w-full flex justify-center gap-x-3 mt-4">
                 <ShowPagination pagesNumber={products} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
             </div>

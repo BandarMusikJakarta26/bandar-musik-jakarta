@@ -22,3 +22,22 @@ export async function getProducts(setProducts?: React.SetStateAction<any[] | any
     if(!setProducts) return response.data.produk.length
     return setProducts(response.data.produk)
 }
+
+export function moneyConverter(money: any){
+    if(money.split(' ')){ money = money.split(' ')[0] }
+    money = money.split('Rp.')[1].split('')
+    if(money.length == 4){
+        money.splice(1,0,'.')
+    }else if(money.length == 5){
+        money.splice(2,0,'.')
+    }else if(money.length == 6){
+        money.splice(3,0,'.')
+    }else if(money.length == 7){
+        money.splice(1,0,'.')
+        money.splice(5,0,'.')
+    }else if(money.length == 8){
+        money.splice(2,0,'.')
+        money.splice(6,0,'.')
+    }
+    return `Rp.${money.join('')}`
+}

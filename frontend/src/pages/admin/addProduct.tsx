@@ -24,6 +24,7 @@ export default function AddProduct(){
     const [ video, setVideo ] = useState<File | null>(null)
     const [ checkCategory, getCategory ] = useState<any>(null)
     const [ checkBrand, getBrand ] = useState<any>(null)
+    const [ coret, setCoret ] = useState<boolean>(false)
     const navigate = useNavigate()
 
     console.log(video)
@@ -43,11 +44,15 @@ export default function AddProduct(){
     async function onUploadForm(){
         try{
             const upload = new FormData(document.querySelector('form')!)
+
             upload.append('url', url)
             const promo = upload.get('promo') as string
             if(promo.trim() == "" || promo.trim() == "Rp."){ upload.append('promo', '') }
             if(hargaOnline.trim() == "" || hargaOnline.trim() == "Rp."){ upload.append('onlinePrice', '') }
-            if(hargaOffline.trim() == "" || hargaOffline.trim() == "Rp."){ upload.append('offlinePrice', '') }
+            if(hargaOffline.trim() == "" || hargaOffline.trim() == "Rp."){ 
+                setCoret(false)
+                upload.append('offlinePrice', '')
+            }
 
             // const videoUpload = new FormData()
             // videoUpload.append('video', video!)
@@ -67,9 +72,15 @@ export default function AddProduct(){
             // }
             // await axios.post(`${host}/admin/tambah/video-produk`, videoUpload, config)
 
+            if(coret){
+                let offline = hargaOffline
+                offline = `${offline} true`
+                upload.append('offlinePrice', offline)
+            }
+
             await axiosClient.post(`api/tambah/produk`, upload)
             return navigate('/admin/produk')
-        }catch(error:any){ console.log(error.response.data) }
+        }catch(error:any){ console.log(error) }
       
     }
 
@@ -114,26 +125,49 @@ export default function AddProduct(){
 
     // if(!admin) return <BlankPage/>
     return (
-        <div className="addProduct px-16 pt-16">
-            <div className="w-full shadow-xl px-[50px] flex flex-col gap-y-2">
-                <h1 className="text-[48px] font-bold tracking-tight ">Tambah Produk</h1>
+        <div className="addProduct md:px-16 pt-16">
+            <div className="w-full shadow-xl px-[20px] md:px-[50px] flex flex-col gap-y-2">
+                <h1 className="text-[30px] text-center md:text-left md:text-[48px] font-bold tracking-tight ">Tambah Produk</h1>
 
                 <div className="form flex flex-col gap-y-6 relative pb-36">
 
                     <form className="flex flex-col gap-y-6" onSubmit={(e)=>e.preventDefault()}>
 
-                    <div className="input-top grid grid-cols-[3fr_1fr_1fr_1fr] gap-x-12">
-                    <input type="text" name="name" placeholder="Masukkan nama produk" className="name" onChange={generateUrlValue}/>
-                    <input type="text" name="onlinePrice" placeholder="Harga Online" onChange={(e)=>{setHargaOnline(e.target.value)}} value={hargaOnline}/>
-                    <input type="text" name="offlinePrice" placeholder="Harga Offline" onChange={(e)=>{setHargaOffline(e.target.value)}} value={hargaOffline}/>
-                    <input type="text" name="promo" placeholder="Harga Promo" onChange={(e)=>{setHargaPromo(e.target.value)}} value={hargaPromo}/>
+                    <div className="input-top grid md:grid-cols-[3fr_1fr_1fr_1fr] gap-x-12 gap-y-4 md:gap-y-0">
+                        <div className="input-group">
+                            <p className="opacity-70 italic indent-5">Nama Produk</p>
+                            <input type="text" name="name" placeholder="Masukkan nama produk" className="name w-full text-[14px] md:text-[18px]" onChange={generateUrlValue}/>
+                            <input type="text" name="url" placeholder="Masukkan link url" value={url} disabled className="w-full text-center italic text-[12px] md:text-[13px] opacity-70 indent-0 -mt-1"/>
+                        </div>
+                        <div className="input-group">
+                            <p className="opacity-70 italic indent-5">Harga Online</p>
+                            <input type="text" name="onlinePrice" placeholder="Harga Online" onChange={(e)=>{setHargaOnline(e.target.value)}} value={hargaOnline} className="w-full text-[14px] md:text-[18px]"/>
+                        </div>
+                        <div className="input-group">
+                            <div className="offline-text flex gap-x-2">
+                                
+                                <p className="opacity-70 italic indent-5">Harga Offline</p>
+                                <input type="checkbox" name="coret" onClick={()=>{
+                                    if(coret) return setCoret(false)
+                                    else return setCoret(true)
+                                }}/>
+
+                            </div>
+                            
+
+                            <input type="text" name="offlinePrice" placeholder="Harga Offline" onChange={(e)=>{setHargaOffline(e.target.value)}} value={hargaOffline} className={`w-full text-[14px] md:text-[18px] ${coret ? 'line-through' : ''}`}/>
+                        </div>
+                        <div className="input-group">
+                            <p className="opacity-70 italic indent-5">Walk In Price</p>
+                            <input type="text" name="promo" placeholder="Harga Promo" onChange={(e)=>{setHargaPromo(e.target.value)}} value={hargaPromo} className="w-full text-[14px] md:text-[18px]"/>
+                        </div>
 
                     {/* <div className="diskon flex">
                         <p className="font-bold text-[14px] border-2 border-third pt-[10px] px-2">20%</p>
                         <input type="text" name="discount" placeholder="Diskon" className="bg-white indent-0" disabled value={diskon}/>
                     </div> */}
                     </div>
-                    <textarea name="description" placeholder="Masukkan deskripsi produk" className="h-[200px] indent-0"/>
+                    <textarea name="description" placeholder="Masukkan deskripsi produk" className="h-[200px] indent-0 text-[14px] md:text-[18px]"/>
 
                     <div className="select grid grid-cols-2 gap-x-20">
 
@@ -149,13 +183,11 @@ export default function AddProduct(){
 
                     </div>
 
-                    <div className="input-btm grid grid-cols-[2fr_1fr] gap-x-20 absolute w-full bottom-16">
-                        <input type="text" name="url" placeholder="Masukkan link url" value={url} disabled/>
-                        <button type="submit" className="border-2 border-third rounded-full text-[20px] font-semibold py-2 hover:bg-third hover:text-primary transition-all" onClick={onUploadForm}>Upload</button>
+                    <div className="input-btm absolute w-full bottom-16">
+                        <button type="submit" className="border-2 border-third rounded-full text-[20px] font-semibold py-2 hover:bg-third hover:text-primary transition-all px-8 w-full md:w-auto" onClick={onUploadForm}>Upload</button>
                     </div>
 
                     </form>
-                    
 
                     <div className="flex items-center justify-center w-full">
                     <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500">

@@ -1,7 +1,7 @@
 import { useParams } from "react-router"
 import { FaWhatsapp } from "react-icons/fa";
 import { useEffect, useState } from "react";
-import { getProductByName } from "../../action/produk.action";
+import { getProductByName, moneyConverter } from "../../action/produk.action";
 import { host } from "../../../libs/config";
 import watermark from '/utils/BMJTransparant.png';
 
@@ -21,22 +21,24 @@ export default function Product(){
         })
     }
 
-    function forwardWhatsapp(productName: string, harga: string){
-        const productLink = `https://bandarmusikjakarta.com/produk/${productName}`
+    function forwardWhatsapp(url: string, harga: string){
+        const productLink = `https://bandarmusikjakarta.com/produk/${url}`
         return open(`https://wa.me/62081929290560?text=Halo BMJ, Saya sedang mencari barang : ${productLink}, senilai ${harga} apakah tersedia?`, "blank")
     }
 
-    function ShowPromo({promo} : { promo : string}){
+    function ShowPromo({product} : { product : any}){
         return (
-            <div className="promo border-2 border-third px-4 py-2 rounded-2xl">
+            <button className="promo border-2 border-third px-4 py-2 rounded-2xl hover:scale-105 transition-all" onClick={()=>forwardWhatsapp(product.url, product.promo)}>
                 <p className="text-center rounded-3xl text-[15px] text-third font-bold">Walk in Price</p>
-                <p className="text-[26px] text-center md:text-left md:text-[30px] font-bold tracking-tight -mt-1 justify-self-center">{promo}</p>
-            </div>
+                <p className="text-[26px] text-center md:text-left md:text-[30px] font-bold tracking-tight -mt-1 justify-self-center">{moneyConverter(product.promo)}</p>
+            </button>
         )
     }
 
     if(!product) return false
     else return (
+        <div className="container">
+
         <div className="main w-full md:flex justify-between mt-10 md:mt-6 md:py-20 px-10 relative">
             <div className="area-gambar w-full md:w-[34%] relative z-10">
 
@@ -54,14 +56,14 @@ export default function Product(){
             <img className="gambar h-[100px] w-[100px] md:h-[400px] md:w-[400px] md:p-10 absolute z-0 top-[18px] left-[100px] md:top-[100px] md:left-[120px] opacity-40" src={watermark}/>
             <div className="tulisan flex flex-col gap-y-4 w-full md:w-[60%] mt-10 md:mt-0">
                 <div className="brandName flex">
-                    <div className="brand w-full flex md:block justify-center">
-                        <p className="font-semibold text-[12px] md:text-[16px] mb-[] md:mb-[-20px] underline">
+                    <div className="brand w-full md:block relative top-8 md:static md:top-0">
+                        <p className="font-semibold text-[12px] md:text-[16px] md:mb-[-20px] underline">
                             <a className="opacity-60 hover:opacity-100" href={`/kategori/${product.kategoriId}`}>{product.kategoriId} </a>
                             <a className="opacity-60 hover:opacity-100" href={`/brand/${product.brandId}`}>/ {product.brandId}</a>
                         </p>
                     </div>
                 </div>
-                <h1 className="text-[22px] md:text-[45px] font-bold mt-5 md:mt-0">{product.name}</h1>
+                <h1 className="text-[18px] md:text-[45px] font-bold mt-5 md:mt-0">{product.name}</h1>
                 <p className="font-bold opacity-70 text-[14px] md:text-[16px]">Deskripsi Produk</p>
                 <div className="garis h-[2px] w-[115px] md:w-[130px] bg-third rounded-full mt-[-8px]"/>
                 <p className="text-[12px] md:text-[14px] text-justify mt-[-12px]">{product.description}</p>
@@ -69,18 +71,18 @@ export default function Product(){
                     <div className="harga">
                         <div className={`price grid gap-x-10 ${product.promo !== null ? 'grid-cols-[1fr_1fr_2fr]' : 'grid-cols-[1fr_2fr_1fr]' }`}>
                             
-                        { product.onlinePrice && <div className={`online border-2 border-third px-4 py-2 rounded-2xl ${product.promo !== null ? 'opacity-80' : false}`}>
+                        { product.onlinePrice && <button className={`online border-2 border-third px-4 py-2 rounded-2xl ${product.promo !== null ? 'opacity-80' : false} hover:scale-105 transition-all hover:opacity-100`} onClick={()=>forwardWhatsapp(product.url, product.onlinePrice)}>
                             <p className="text-center rounded-3xl text-[15px] text-third font-bold">Online Price</p>
-                            <p className="text-[26px] text-center md:text-left md:text-[30px] font-bold tracking-tight -mt-1">{product.onlinePrice}</p>
-                        </div> }
+                            <p className="text-[26px] text-center md:text-left md:text-[30px] font-bold tracking-tight -mt-1">{moneyConverter(product.onlinePrice)}</p>
+                        </button> }
 
-                        { product.offlinePrice && <button className={`offline border-2 border-third px-4 py-2 rounded-2xl ${product.promo !== null ? 'opacity-80' : false} hover:cursor-pointer hover:opacity-100 transition-all`} onClick={()=>forwardWhatsapp(product.name, product.offlinePrice)}>
+                        { product.offlinePrice && <button className={`offline border-2 border-third px-4 py-2 rounded-2xl ${product.promo !== null ? 'opacity-80' : false} hover:cursor-pointer hover:opacity-100 transition-all hover:scale-105`} onClick={()=>forwardWhatsapp(product.url, product.offlinePrice)}>
                             <p className="text-center rounded-3xl text-[15px] text-third font-bold">Offline Price</p>
-                            <p className={`text-[26px] text-center md:text-left md:text-[30px] font-bold tracking-tight -mt-1 justify-self-center ${product.promo !== null ? 'line-through' : false}`}>{product.offlinePrice}</p>
+                            <p className={`text-[26px] text-center md:text-left md:text-[30px] font-bold tracking-tight -mt-1 justify-self-center ${product.promo !== null || product.offlinePrice.split(' ')[1] == 'true' ? 'line-through' : false}`}>{moneyConverter(product.offlinePrice)}</p>
                         </button> }
 
 
-                        { product.promo && <ShowPromo promo={product.promo}/> }
+                        { product.promo && <ShowPromo product={product}/> }
 
                         </div>
                             
@@ -96,6 +98,11 @@ export default function Product(){
                         </div>
                     </div>
             </div>
+        </div>
+
+            <iframe className="w-full h-[500px] rounded-3xl"
+                src="https://www.youtube.com/embed/tgbNymZ7vqY?controls=1">
+            </iframe>
         </div>
     )
 }

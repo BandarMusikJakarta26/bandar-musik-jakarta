@@ -25,7 +25,7 @@ export default function Footer(){
                 <ShopInformation/>
                 <SosmedInformation/>
             </div>
-            <div className="tautan md:gap-x-8 grid grid-cols-2 mt-8 md:mt-16">
+            <div className="tautan gap-x-2 md:gap-x-8 grid grid-cols-2 mt-8 md:mt-16">
                 <TautanLayout title={'Brand'}>
                     <ShowPageList page={'brand'} data={brands}/>
                 </TautanLayout>

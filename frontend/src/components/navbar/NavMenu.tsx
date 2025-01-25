@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, createContext } from "react"
 import LogoutButton from "./LogoutButton"
 import NavSearch from "./NavSearch"
 import NavLogo from "./NavLogo"
@@ -8,11 +8,15 @@ import NavLink from "./NavLink"
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FaRegWindowClose } from "react-icons/fa";
 import responsivePage from "../../action/screen.action"
+// import KategoriTab from "./KategoriTab"
+
+export const KategoriContext = createContext<any>(null)
 
 export default function NavMenu({ login, currentLogin } : { login: boolean, currentLogin: boolean }){
     const [ screen, setScreen ] = useState<number>(window.innerWidth)
     const [ pages, showPages ] = useState<boolean>(false)
     const [ auth, setAuth ] = useState<boolean>(false)
+    // const [ kategoriTab, setKategoriTab ] = useState<{hoverKategori: boolean, openKategori: boolean}>({ hoverKategori: false, openKategori: false })
 
     useEffect(()=>{ login || (!login && currentLogin) ? setAuth(true) : false })
     useEffect(()=>{ responsivePage(setScreen) }, [])
@@ -32,8 +36,18 @@ export default function NavMenu({ login, currentLogin } : { login: boolean, curr
                 </div>
                 <div className="garis w-full border-[1px] border-primary opacity-10"></div>
                 <NavLink isAuth={auth}/>
+{/* 
+                <KategoriContext.Provider value={setKategoriTab}>
+                </KategoriContext.Provider> */}
+
+
+
             </div>
             { auth && screen >= 768 ? <LogoutButton/> : false}
+            
+            {/* <KategoriContext.Provider value={setKategoriTab}>
+                { kategoriTab && <KategoriTab/> }
+            </KategoriContext.Provider> */}
         </div> 
         
     )

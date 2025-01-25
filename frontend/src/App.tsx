@@ -51,7 +51,7 @@ export default function App() {
       <BrowserRouter>
         <NavMenu login={login} currentLogin={currentLogin}/>
         <NavAdmin login={login} currentLogin={currentLogin}/>
-          <div className="main mx-auto md:w-[84%] pt-[126px] md:pt-[124px] box-border overflow-hidden">
+          <div className="main mx-auto md:w-[84%] pt-[130px] md:pt-[124px] box-border overflow-hidden">
             <Routes>
 
               <Route path="/" element={<Dashboard/>}/>

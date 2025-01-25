@@ -26,15 +26,20 @@ export default function Terbaru(){
 
     return (
       <>
-        <div className="terbaru mt-[140px] mb-[-30px] md:mb-[140px] rounded-3xl p-12 relative overflow-hidden flex justify-center items-center">
-          <div className="terbaru-text flex flex-col items-center relative z-10 bg-primary w-[30%] py-6 rounded-3xl">
-            <h1 className="text-[26px] md:text-[36px] uppercase font-light italic tracking-tight">Apa Yang</h1>
+        <div className="terbaru mt-[-120px] md:mt-[140px] mb-[-30px] md:mb-[140px] rounded-3xl p-12 relative overflow-hidden flex justify-center items-center flex-col md:flex-col">
+          
+          <img src={banner} alt={banner} className="w-full scale-150 block md:hidden rounded-2xl border-[1px] border-third hover:brightness-75 transition-all mb-1 md:mb-0"/>
+
+          <div className="terbaru-text flex flex-col items-center relative z-10 bg-none md:bg-primary md:w-[30%] py-6 rounded-3xl">
+
+            <h1 className="text-[24px] md:text-[36px] uppercase font-light italic tracking-tight">Apa Yang</h1>
             <h1 className="text-[60px] md:text-[80px] font-black tracking-tight -mt-[26px] md:-mt-[30px] font-bree-serif">Terbaru?</h1>
-            <a href="/terbaru" className="text-[20px] md:text-[24px] border-2 border-third px-10 py-1 md:py-2 hover:bg-third hover:text-primary transition-all">Lihat Terbaru</a>
-            <PiCursorFill size={40} className="bg-third text-primary rounded-full p-2 relative top-[-22px] left-[110px]"/>
+            <a href="/terbaru" className="text-[16px] md:text-[24px] border-2 border-third px-4 md:px-10 py-1 md:py-2 hover:bg-third hover:text-primary transition-all">Lihat Terbaru</a>
+            <PiCursorFill size={40} className="bg-third text-primary rounded-full p-2 relative top-[-22px] md:left-[110px] left-[72px]"/>
           </div>
-          <img src={banner} alt={banner} className="absolute top-[-140px] left-0 brightness-75 animation animate-[zoom-in_3s_ease_infinite]"/>
-          <p className="bg-third w-[100px] h-[100px] text-center leading-[100px] absolute rounded-full font-extrabold text-[24px] text-primary top-[30px] left-[530px] -rotate-6 z-20">New</p>
+
+          <img src={banner} alt={banner} className="absolute md:top-[-140px] left-0 brightness-75 animation animate-[zoom-in_3s_ease_infinite] hidden md:block"/>
+          <p className="bg-third w-[40px] h-[40px] leading-[40px] md:w-[100px] md:h-[100px] text-center md:leading-[100px] absolute rounded-full font-extrabold text-[12px] md:text-[24px] text-primary top-2 md:top-[30px] md:left-[530px] -rotate-6 z-20">New</p>
         </div>
       </>
     )

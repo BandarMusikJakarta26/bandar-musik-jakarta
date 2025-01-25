@@ -8,7 +8,7 @@ export default function LogoFooter(){
 
     return (
         <div className="gambar">
-            <img src={'/utils/BMJLogoFooter.png'} alt="bandarmusikjakartalogo" width={screen <= 768 ? 200 : 240}/>
+            <img src={'/utils/BMJLogoFooter.png'} alt="bandarmusikjakartalogo" width={screen <= 768 ? 180 : 240}/>
         </div>
     )
 }
