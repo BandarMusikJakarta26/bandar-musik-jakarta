@@ -11,7 +11,8 @@ export default {
         third: "#3e3f20"
       },
       fontFamily: {
-        "bree-serif" : ["bree-serif", "serif"]
+        "bree-serif" : ["bree-serif", "serif"],
+        "poppins": ['Poppins', 'sans-serif']
       },
       keyframes:{
         "zoom-in": {

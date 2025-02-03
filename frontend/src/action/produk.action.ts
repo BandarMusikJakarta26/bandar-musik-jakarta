@@ -17,27 +17,26 @@ export async function getProductByName(setProduct: React.SetStateAction<any[] | 
     return setProduct(response.data.produk)
 }
 
+export async function getProductByUrl(setProduct: React.SetStateAction<any[] | any>, url: string){
+    const response = await axiosClient.get(`api/produk/url/${url}`) as AxiosResponse
+    return setProduct(response.data.produk)
+}
+
 export async function getProducts(setProducts?: React.SetStateAction<any[] | any>){
     const response = await axiosClient.get(`api/produk`) as AxiosResponse
     if(!setProducts) return response.data.produk.length
     return setProducts(response.data.produk)
 }
 
-export function moneyConverter(money: any){
-    if(money.split(' ')){ money = money.split(' ')[0] }
-    money = money.split('Rp.')[1].split('')
-    if(money.length == 4){
-        money.splice(1,0,'.')
-    }else if(money.length == 5){
-        money.splice(2,0,'.')
-    }else if(money.length == 6){
-        money.splice(3,0,'.')
-    }else if(money.length == 7){
-        money.splice(1,0,'.')
-        money.splice(5,0,'.')
-    }else if(money.length == 8){
-        money.splice(2,0,'.')
-        money.splice(6,0,'.')
-    }
-    return `Rp.${money.join('')}`
+export function setCurrency(harga: string){
+    if(harga !== "Rp." && harga !== ""){
+        const number = Number(harga.split('Rp.')[1])
+        const currency = number.toLocaleString('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            maximumFractionDigits: 0,
+            minimumFractionDigits: 0
+        })
+        return currency
+    } else return harga
 }

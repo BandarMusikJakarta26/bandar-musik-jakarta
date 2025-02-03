@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('produk', function (Blueprint $table) {
             $table->uuid('id')->default(DB::raw('(UUID())'))->index();
             $table->string('name');
+            $table->string('pricelist')->nullable(true);
             $table->string('offlinePrice')->nullable(true);
             $table->string('onlinePrice')->nullable(true);
             $table->string('promo')->nullable(value: true);
@@ -23,6 +24,7 @@ return new class extends Migration
             $table->string('brandId');
             $table->string('kategoriId');
             $table->json('images')->nullable(true);
+            $table->string('stock')->nullable(true);
             $table->timestamps();
         });
     }

@@ -4,6 +4,9 @@ import { useNavigate } from "react-router"
 import { getBrands } from "../../action/brand.action"
 import { getCategories } from "../../action/kategori.action"
 import axiosClient from "../../../libs/axiosConfig"
+// import { moneyConverter } from "../../action/produk.action"
+import { FaPercent } from "react-icons/fa";
+import { setCurrency } from "../../action/produk.action"
 // import { checkAdmin } from "../../action/auth.action"
 
 export default function AddProduct(){
@@ -18,13 +21,18 @@ export default function AddProduct(){
     const [ hargaOnline, setHargaOnline ] = useState<string>('Rp.')
     const [ hargaOffline, setHargaOffline ] = useState<string>('Rp.')
     const [ hargaPromo, setHargaPromo ] = useState<string>('Rp.')
+    const [ hargaPrice, setHargaPrice ] = useState<string>('Rp.')
+    const [ hargaDiskon, setDiskon ] = useState<string>('Rp.')
     // const [ diskon, setDiskon ] = useState<string>('')
+    const [ potongan, setPotongan ] = useState<any>(0)
+    const [ stock, setStock ] = useState<any>(0)
     const [ categories, setCategories ] = useState<any[]>([])
     const [ files, setFiles ] = useState<FileList | null>(null)
     const [ video, setVideo ] = useState<File | null>(null)
     const [ checkCategory, getCategory ] = useState<any>(null)
     const [ checkBrand, getBrand ] = useState<any>(null)
     const [ coret, setCoret ] = useState<boolean>(false)
+
     const navigate = useNavigate()
 
     console.log(video)
@@ -53,6 +61,16 @@ export default function AddProduct(){
                 setCoret(false)
                 upload.append('offlinePrice', '')
             }
+            if(hargaPrice.trim() == "" || hargaPrice.trim() == "Rp."){ 
+                setCoret(false)
+                upload.append('pricelist', '')
+            }else{
+                upload.append('pricelist', hargaPrice)
+            }
+
+            if(stock == "" || !stock){
+                upload.append('stock', "0")
+            }else upload.append('stock', stock.toLocaleString())
 
             // const videoUpload = new FormData()
             // videoUpload.append('video', video!)
@@ -113,6 +131,18 @@ export default function AddProduct(){
     //     }
     // }
 
+    function setHargaDiskon(harga: string, potonganHarga?: string){
+        const hargaSatuan = parseInt(harga.split('Rp.')[1]) as number
+        let diskon
+        const potonganDiskon = potonganHarga || potongan
+        if(!potonganDiskon || parseInt(potonganDiskon) == 0) diskon = hargaSatuan
+        else {
+            const potong = (hargaSatuan*parseInt(potonganDiskon))/100
+            diskon = hargaSatuan - potong as any
+        }
+        setDiskon(`Rp.${diskon}`)
+    }
+
     function changeCategory(e:any){ getCategory(e.target.value) }
     function changeBrand(e:any){ getBrand(e.target.value) }
     function generateUrlValue(e:any){
@@ -133,15 +163,67 @@ export default function AddProduct(){
 
                     <form className="flex flex-col gap-y-6" onSubmit={(e)=>e.preventDefault()}>
 
-                    <div className="input-top grid md:grid-cols-[3fr_1fr_1fr_1fr] gap-x-12 gap-y-4 md:gap-y-0">
+                    <div className="input-top grid md:grid-cols-[3fr_1fr_1fr_1fr] gap-x-12 gap-y-4 md:gap-y-0 mb-8">
                         <div className="input-group">
                             <p className="opacity-70 italic indent-5">Nama Produk</p>
                             <input type="text" name="name" placeholder="Masukkan nama produk" className="name w-full text-[14px] md:text-[18px]" onChange={generateUrlValue}/>
                             <input type="text" name="url" placeholder="Masukkan link url" value={url} disabled className="w-full text-center italic text-[12px] md:text-[13px] opacity-70 indent-0 -mt-1"/>
                         </div>
                         <div className="input-group">
+                            <p className="opacity-70 italic indent-5">Pricelist</p>
+                            <input type="text" name="onlinePrice" placeholder="Pricelist" onChange={(e)=>{
+                                setHargaPrice(e.target.value)
+                                setHargaDiskon(e.target.value)
+                            }} value={hargaPrice} className="w-full text-[14px] md:text-[18px]"/>
+                            <p className="opacity-60 mt-2 text-[14px]">{setCurrency(hargaPrice)}</p>
+                        </div>
+                        <div className="input-group">
+                            <div className="offline-text flex gap-x-2">
+                                
+                                <p className="opacity-70 italic indent-5">Diskon</p>
+                                <input type="checkbox" name="coret" onClick={()=>{
+                                    if(coret) return setCoret(false)
+                                        else return setCoret(true)
+                                }}/>
+
+                            </div>
+
+                            <input type="text" name="hargaDiskon" placeholder="Harga Diskon" value={hargaDiskon} className={`w-full text-[14px] md:text-[18px] ${coret ? 'line-through' : ''}`} disabled/>
+                            <p className="opacity-60 mt-2 text-[14px]">{setCurrency(hargaDiskon)}</p>
+
+                        </div>
+
+                        <div className="toping grid grid-cols-2 gap-x-10">
+
+                        <div className="input-group relative">
+                            <p className="opacity-70 italic">Potongan</p>
+                            <input type="text" name="potongan" placeholder="0" onChange={(e)=>{
+                                setPotongan(e.target.value)
+                                if(hargaPrice.split('Rp.')[1]) setHargaDiskon(hargaPrice, e.target.value)
+                            }} value={potongan} className="w-full text-[14px] md:text-[18px] indent-0"/>
+                        </div>
+                        { parseInt(hargaPromo.split('Rp.')[1].trim()) ? <div className="input-group">
+                            <p className="opacity-70 italic">Stock</p>
+                            <input type="number" name="stock" placeholder="Stock" onChange={(e)=>{setStock(e.target.value)}} value={stock} className="w-full text-[14px] md:text-[18px] indent-0"/>
+                        </div> : false }
+                            
+                            <FaPercent size={13} className="text-third absolute top-[41px] right-[138px]"/>
+
+                        </div>
+
+                    {/* <div className="diskon flex">
+                        <p className="font-bold text-[14px] border-2 border-third pt-[10px] px-2">20%</p>
+                        <input type="text" name="discount" placeholder="Diskon" className="bg-white indent-0" disabled value={diskon}/>
+                    </div> */}
+                    </div>
+                    
+                    <div className="input-top grid md:grid-cols-[3fr_1fr_1fr_1fr] gap-x-12 md:gap-y-0 -mt-10">
+                        <div className="input-group"></div>
+
+                        <div className="input-group">
                             <p className="opacity-70 italic indent-5">Harga Online</p>
                             <input type="text" name="onlinePrice" placeholder="Harga Online" onChange={(e)=>{setHargaOnline(e.target.value)}} value={hargaOnline} className="w-full text-[14px] md:text-[18px]"/>
+                            <p className="opacity-40 mt-2 text-[14px]">{setCurrency(hargaOnline)}</p>
                         </div>
                         <div className="input-group">
                             <div className="offline-text flex gap-x-2">
@@ -155,11 +237,14 @@ export default function AddProduct(){
                             </div>
                             
 
-                            <input type="text" name="offlinePrice" placeholder="Harga Offline" onChange={(e)=>{setHargaOffline(e.target.value)}} value={hargaOffline} className={`w-full text-[14px] md:text-[18px] ${coret ? 'line-through' : ''}`}/>
+                            <input type="text" name="offlinePrice" placeholder="Harga Offline" onChange={(e)=>{ setHargaOffline(e.target.value)}} value={hargaOffline} className={`w-full text-[14px] md:text-[18px] ${coret ? 'line-through' : ''}`}/>
+                            <p className="opacity-40 mt-2 text-[14px]">{setCurrency(hargaOffline)}</p>
+
                         </div>
                         <div className="input-group">
                             <p className="opacity-70 italic indent-5">Walk In Price</p>
                             <input type="text" name="promo" placeholder="Harga Promo" onChange={(e)=>{setHargaPromo(e.target.value)}} value={hargaPromo} className="w-full text-[14px] md:text-[18px]"/>
+                            <p className="opacity-40 mt-2 text-[14px]">{setCurrency(hargaPromo)}</p>
                         </div>
 
                     {/* <div className="diskon flex">
@@ -167,6 +252,7 @@ export default function AddProduct(){
                         <input type="text" name="discount" placeholder="Diskon" className="bg-white indent-0" disabled value={diskon}/>
                     </div> */}
                     </div>
+
                     <textarea name="description" placeholder="Masukkan deskripsi produk" className="h-[200px] indent-0 text-[14px] md:text-[18px]"/>
 
                     <div className="select grid grid-cols-2 gap-x-20">

@@ -1,12 +1,14 @@
 import { host } from "../../libs/config"
 import { useEffect, useState } from "react"
 import responsivePage from "../action/screen.action"
-import { moneyConverter } from "../action/produk.action"
+import { setCurrency } from "../action/produk.action"
+import { AiFillFire } from "react-icons/ai";
 
 function DesktopUI({ products, according }: { products: any[], according: string }){
+
     return products.map((product, index)=>{
         return (
-            <a className="group card shadow-xl p-4 relative flex flex-col gap-y-3 bg-white hover:-translate-y-2  transition-all" key={index} href={`${according == "produk" ? `/admin/update/produk/${product.name}` : `/produk/${product.url}`}`}>
+            <a className="group card shadow-xl p-4 relative flex flex-col gap-y-3 bg-white hover:-translate-y-2  transition-all" key={index} href={`${according == "produk" ? `/admin/update/produk/${product.url}` : `/produk/${product.url}`}`}>
                 <div className="gambar bg-gradient-to-t from-primary to-gray-400 scale-100 group-hover:scale-[1.02] group-hover:brightness-[0.8] transition-all">
                     <div className="md:w-[350px] transition group">
                         <img src={`${host}/storage/${product.images[0]}`} className="group-hover:hidden"/>
@@ -16,13 +18,27 @@ function DesktopUI({ products, according }: { products: any[], according: string
                 <div className="name-product text-center md:text-left">
                     <h1 className="text-[20px] md:text-[18px] font-bold md:font-bold mb-1 md:mb-0 text-center">{product.name}</h1>
                     <p className="text-[14px] md:text-[14px] font-normal md:opacity-60 mt-[-3px] text-center italic">{product.kategoriId}</p>
-                    <p className="text-[30px] text-center font-bold tracking-tight">{product.promo ? moneyConverter(product.promo) : product.offlinePrice !== null ? moneyConverter(product.offlinePrice) : false}</p>
-                    <p className="text-[14px] font-bold line-through text-red-700 text-center -mt-[6px]">{product.promo ? moneyConverter(product.offlinePrice) : false}</p>
+                    <p className={`text-[30px] text-center font-bold tracking-tight ${product.offlinePrice && product.offlinePrice.split(' ')[1] ? 'line-through' : false}`}>{product.offlinePrice && product.offlinePrice.split(' ')[1] ? setCurrency(product.offlinePrice.split(' ')[0]) : product.offlinePrice ? setCurrency(product.offlinePrice) : false}</p>
+                    <p className={`text-[14px] font-bold text-red-700 text-center -mt-[6px] ${product.pricelist && product.pricelist.split(' ')[1] ? 'line-through' : false}`}>{product.pricelist && product.pricelist.split(' ')[1] ? setCurrency(product.pricelist.split(' ')[0]) : product.pricelist ? setCurrency(product.pricelist) : false}</p>
                 </div>
                 <div className="lihat flex justify-center items-center">
                     {according == "produk" ? <p className="text-center border-2 border-third px-2">Edit Produk</p> : <p className="text-center border-2 border-third px-3 group-hover:bg-third group-hover:text-primary transition-all">Lihat Detail</p> }
                 </div>
-                {product.promo && <p className="absolute top-[30px] left-7 text-[18px] bg-red-600 text-white px-[10px] rounded-md">Promo</p>}
+
+                {product.promo && product.stock && product.stock !== 0 ? <div className="absolute top-[30px] left-7 text-white rounded-3xl text-[14px] bg-sky-800 px-4 font-semibold py-[2px]">
+                    PROMO
+                </div>: false}
+                {product.promo && product.stock && product.stock !== 0 ? <div className="absolute top-[60px] left-2 text-white rounded-3xl text-[18px] bg-sky-800 px-4 -rotate-2">
+                    {setCurrency(product.promo)}
+                </div>: false}
+
+
+                {product.stock && product.stock !== 0 ? <div className="absolute top-[30px] right-[6px] text-white px-1 py-1 animate-bounce  bg-sky-800 rounded">
+                    <div className="satulagi border-2 border-sky-200 flex items-center gap-x-1 px-1">
+                        <AiFillFire size={18} className="text-primary"/>
+                        <span className="text-[20px]">{product.stock}</span><span className="text-[13px] italic mt-[2px]">tersisa</span>
+                    </div>
+                </div> : false}
             </a>
         )
     })
@@ -46,8 +62,9 @@ function MobileUI({ products }: { products: any[] }){
                 <div className="pb-2 w-full px-3">
                     <h1 className="text-[13px] md:text-[16px] font-semibold">{name}</h1>
                     <p className="text-[11px] font-normal opacity-70 italic">{product.kategoriId}</p>
-                    <p className="text-[15px] font-bold">{product.promo ? moneyConverter(product.promo) : product.offlinePrice !== null ? moneyConverter(product.offlinePrice) : false}</p>
-                    <p className="text-[11px] font-bold line-through text-red-700">{product.promo ? moneyConverter(product.offlinePrice) : false}</p>
+                    <p className="text-[15px] font-bold">{product.promo ? setCurrency(product.promo) : product.offlinePrice && product.offlinePrice.split(' ')[1] ? setCurrency(product.offlinePrice.split(' ')[0]) :
+                    product.offlinePrice ? setCurrency(product.offlinePrice) : false}</p>
+                    <p className="text-[11px] font-bold line-through text-red-700">{product.promo && product.offlinePrice ? setCurrency(product.offlinePrice.split(' ')[1] ? product.offlinePrice.split(' ')[0] : product.offlinePrice) : false}</p>
                 </div>
                 {product.promo && <p className="absolute top-[124PX] left-3 text-[9px] bg-red-600 text-white px-[10px] rounded-md">Promo</p>}
             </a>

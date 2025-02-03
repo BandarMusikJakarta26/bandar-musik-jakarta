@@ -47,7 +47,7 @@ export default function App() {
   },[])
       
   return (
-    <div className='w-full bg-primary text-third'> 
+    <div className='w-full bg-primary text-third font-poppins'> 
       <BrowserRouter>
         <NavMenu login={login} currentLogin={currentLogin}/>
         <NavAdmin login={login} currentLogin={currentLogin}/>
@@ -77,7 +77,7 @@ export default function App() {
               <Route path="/admin/tambah/kategori" element={login ? <AddCategory/> : <BlankPage/>}/>
               <Route path="/admin/tambah/terbaru" element={login ? <AddTerbaru/> : <BlankPage/>}/>
 
-              <Route path="/admin/update/produk/:name" element={login ? <UpdateProduct/> : <BlankPage/>}/>
+              <Route path="/admin/update/produk/:url" element={login ? <UpdateProduct/> : <BlankPage/>}/>
 
               <Route path='*' element={<BlankPage/>}/>
             </Routes>

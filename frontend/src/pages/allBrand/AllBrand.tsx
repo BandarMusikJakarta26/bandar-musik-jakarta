@@ -35,8 +35,8 @@ export default function AllBrand(){
         return brands.map((brand,index)=>{
             if(brand.substring(0,1) === alphabet){
                 return (
-                    <div className="brand" key={index+5}>
-                        <a href={`/brand/${brand}`} className="underline md:no-underline md:opacity-60 md:hover:opacity-100 transition-all">{brand}</a>
+                    <div className="brand" key={index}>
+                        <a href={`/brand/${brand}`} className="underline md:no-underline md:opacity-60 md:hover:opacity-100 transition-all text-[11px] md:text-[16px]">{brand}</a>
                     </div> )
             }
         })
@@ -50,7 +50,7 @@ export default function AllBrand(){
                         <div className="kotak-title w-[140px] md:h-[140px]">
                             <h1 className="text-[70px] md:text-[100px] font-black text-center leading-[130px]">{alphabet}</h1>
                         </div>
-                        <div className="w-full grid grid-cols-2 md:grid-cols-3 text-[14px] md:text-[20px] gap-y-3">
+                        <div className="w-full grid grid-cols-2 md:grid-cols-5 gap-y-3">
                             <ShowBrandGroup alphabet={alphabet}/>
                         </div>
                     </div>
@@ -60,7 +60,7 @@ export default function AllBrand(){
                 <div className="kotak-title absolute md:static md:w-140px md:h-[140px] top-1 md:top:0">
                     <h1 className="text-[30px] md:text-[100px] font-black text-center">{alphabet}</h1>
                 </div>
-                <div className="w-full grid grid-cols-2 md:grid-cols-3 text-[12px] md:text-[20px] gap-y-3 gap-x-6 md:gap-x-0 py-8 md:py-0 mt-5 md:mt-0">
+                <div className="w-full grid grid-cols-2 md:grid-cols-5 gap-y-2 md:gap-y-3 gap-x-3 md:gap-x-0 py-8 md:py-0 mt-5 md:mt-0">
                     <ShowBrandGroup alphabet={alphabet}/>
                 </div>
             </div>

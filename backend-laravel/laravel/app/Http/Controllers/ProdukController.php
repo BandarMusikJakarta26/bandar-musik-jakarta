@@ -41,6 +41,7 @@ class ProdukController extends Controller
         // GambarProduk::insert($imageData);
         $produk = Produk::create([
             'name'=>$body["name"],
+            'pricelist'=>$body["pricelist"],
             'onlinePrice'=>$body["onlinePrice"],
             'offlinePrice'=>$body["offlinePrice"],
             'promo'=>$body["promo"],
@@ -48,7 +49,8 @@ class ProdukController extends Controller
             'description'=>$body["description"],
             'brandId'=>$body["brand"],
             'kategoriId'=>$body["kategori"],
-            'images'=>json_encode($imageData)
+            'images'=>json_encode($imageData),
+            'stock'=>$body["stock"]
         ]);
 
         // $kategori = Kategori::where('title', $body["kategori"])->get()[0];
@@ -68,6 +70,11 @@ class ProdukController extends Controller
             $productsByBrand[$i]["images"] = json_decode($productsByBrand[$i]["images"], true);
         }
         return response()->json(["success"=>true, "produk"=>$productsByBrand], 200);
+    }
+
+    public function showByUrl(string $url){
+        $productsByUrl= Produk::where("url", $url)->first();
+        return response()->json(["success"=>true, "produk"=>$productsByUrl], 200);
     }
 
     /**
@@ -93,8 +100,8 @@ class ProdukController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
+    public function destroy(string $name){
+        $produk = Produk::where('name',$name)->delete();
+        if($produk) return response()->json(['success'=>true]);
     }
 }

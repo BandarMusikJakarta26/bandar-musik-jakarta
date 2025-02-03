@@ -29,6 +29,7 @@ Route::get('/brand/{name}', [BrandController::class, 'show']);
 Route::get('/kategori', [KategoriController::class, 'index']);
 
 Route::get('/produk', [ProdukController::class, 'index']);
+Route::get('/produk/url/{url}', [ProdukController::class, 'showByUrl']);
 Route::get('/produk/{params}', [ProdukController::class, 'show']);
 Route::get('/produk/brand/{brandName}', [ProdukController::class, 'showByBrand']);
 Route::get('/produk/kategori/{kategoriName}', [ProdukController::class, 'show']);

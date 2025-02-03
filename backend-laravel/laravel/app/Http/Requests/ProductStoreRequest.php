@@ -22,6 +22,7 @@ class ProductStoreRequest extends FormRequest
     {
         return [
             "name"=>["required", "string"],
+            "pricelist"=>["nullable","string"],
             "onlinePrice"=>["nullable","string"],
             "offlinePrice"=>["nullable","string"],
             "promo"=>["nullable", "string"],
@@ -29,7 +30,8 @@ class ProductStoreRequest extends FormRequest
             "kategori"=>["required","string"],
             "url"=>["required","string"],
             "description"=>["required","string"],
-            "images.*"=>["required", "image", "mimes:jpg,jpeg,png", "max:3000"]
+            "images.*"=>["required", "image", "mimes:jpg,jpeg,png", "max:3000"],
+            "stock"=>["nullable","string"]
         ];
     }
 }
