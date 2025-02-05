@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { host } from '../../../libs/config'
 import { FaRegPlusSquare } from "react-icons/fa";
 import responsivePage from "../../action/screen.action";
 import { deleteBrand, getBrands } from "../../action/brand.action";
 
-export default function GetBrand(){
+const GetBrand = function(){
 
     const [ brands, setBrands ] = useState<any[]>([])
     const [ screen, setScreen ] = useState<number>(window.innerWidth)
@@ -24,7 +24,7 @@ export default function GetBrand(){
         )
     }
 
-    async function deleteBrandById(name : string){
+    async function deleteBrandByName(name : string){
         const response = await deleteBrand(name)
         if(!response) return true
         return await getBrands(setBrands)
@@ -40,7 +40,7 @@ export default function GetBrand(){
                     </div>
                     <div className="nama-brand p-4 md:p-5 flex flex-col items-center gap-y-2">
                         <h1 className="md:text-[24px] font-semibold">{brand.name}</h1>
-                        <button className="bg-red-600 text-primary font-semibold rounded-full py-[2px] md:py-1 hover:brightness-90 w-[60px] md:w-[70px] text-[10px] md:text-[14px]" onClick={()=>deleteBrandById(brand.name)}>Delete</button>
+                        <button className="bg-red-600 text-primary font-semibold rounded-full py-[2px] md:py-1 hover:brightness-90 w-[60px] md:w-[70px] text-[10px] md:text-[14px]" onClick={()=>deleteBrandByName(brand.name)}>Delete</button>
                     </div>
                 </div>
                 )
@@ -68,3 +68,5 @@ export default function GetBrand(){
         </div>
     )
 }
+
+export default React.memo(GetBrand)

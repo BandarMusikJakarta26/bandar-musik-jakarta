@@ -1,16 +1,17 @@
-import axios  from "axios"
-import { useEffect, useState } from "react"
-import { host } from '../../../libs/config'
-import { FaRegPlusSquare } from "react-icons/fa";
-import responsivePage from "../../action/screen.action";
+import React, { lazy, Suspense, useEffect, useState } from "react"
+// import { host } from '../../../libs/config'
+// import responsivePage from "../../action/screen.action";
 // import { checkAdmin } from "../../action/auth.action";
 // import BlankPage from "../blank";
 import { getCategories } from "../../action/kategori.action";
+import LoadingComponent from "../../components/LoadingComponent";
 
-export default function GetCategory(){
+const DataCategory = lazy(()=>import("./category/DataCategory"))
+const KategoriKosong = lazy(()=>import("./category/KategoriKosong"))
+
+const GetCategory = function(){
 
     const [ categories, setCategories ] = useState<any[]>([])
-    const [ screen, setScreen ] = useState<number>(window.innerWidth)
 
     useEffect(()=>{
         async function fetchCategories(){
@@ -19,56 +20,16 @@ export default function GetCategory(){
         fetchCategories()
     }, [])
 
-    function CategoryKosong(){
-        return (
-            <div className="kosong w-full h-[70vh] flex flex-col items-center justify-center shadow-xl p-16">
-                <h1 className="text-[80px] font-bold tracking-tighter uppercase">Belum ada kategori</h1>
-                <a href="/admin/tambah/kategori" className="underline text-[22px]">Tambah Kategori?</a>
-            </div>
-        )
-    }
-
-    async function deleteCategory(id: string){
-        const response = await axios.get(`${host}/admin/hapus/kategori/${id}`)
-        if(!response.data.success) return true
-        setCategories(response.data.brands)
-        responsivePage(setScreen)
-    }
-
-    function DataCategory(){
-        function ShowCategory(){ 
-            return categories.map((category, index)=>{
-            return (
-                <div className="brandfield flex flex-col shadow-lg items-center" key={index+1}>
-                    <img src={`${host}/storage/${category.image}`} alt={category.name} />
-                    <div className="nama-brand p-5 flex flex-col items-center gap-y-2">
-                        <h1 className="text-[13px] md:text-[24px] font-semibold">{category.name}</h1>
-                        <button className="bg-red-600 text-primary font-semibold rounded-full py-[2px] md:py-1 hover:brightness-90 w-[60px] md:w-[70px] text-[10px] md:text-[14px]" onClick={()=>deleteCategory(category.id)}>Delete</button>
-                    </div>
-                </div>
-                )
-            })
-        }
-
-        return (
-            <>  
-                <div className="headbrand flex justify-between">
-                    <h1 className="text-[28px] md:text-[50px] font-bold tracking-tight">Daftar Category</h1>
-                </div>
-                <div className="showbrand grid grid-cols-2 gap-x-4 md:gap-x-8 gap-y-6 items-center">
-                    <ShowCategory/>
-                    <a href="/admin/tambah/kategori" className="opacity-80 hover:opacity-100 justify-self-center transition-all"><FaRegPlusSquare size={ screen <= 768 ? 70 : 260 }/></a>
-                </div>
-            </>
-        )
-    }
-
     // if(!admin) return <BlankPage/>
     return (
         <div className="w-full box-border pt-12 px-5 md:p-10">
             <div className="brandList w-full">
-                { categories.length == 0 ? <CategoryKosong/> : <DataCategory/> }
+                <Suspense fallback={<LoadingComponent/>}>
+                    { categories.length == 0 ? <KategoriKosong/> : <DataCategory categories={categories}/> }
+                </Suspense>
             </div>
         </div>
     )
 }
+
+export default React.memo(GetCategory)

@@ -9,7 +9,7 @@ export default function ProductList({ brand }:{ brand: string }){
     
     return (
         <>
-            { products.length > 0 && <ShowAllProducts products={products} according="brand"/> }
+            { products.length > 0 && <ShowAllProducts products={products} according="brand" deleteAction={false}/> }
         </>
     )
 }

@@ -13,7 +13,7 @@ export default function UpdateProduct(){
 
     const [ product, setProduct ] = useState<any>(null)
     const [ brands, setBrand ] = useState<any[]>([])
-    const [ urlbaru, setUrl ] = useState<string>('')
+    const [ urlBaru, setUrl ] = useState<string>('')
     const [ nameProduct, setNameProduct ] = useState<string>('')
     const [ hargaOnline, setHargaOnline ] = useState<string>('Rp.')
     const [ hargaOffline, setHargaOffline ] = useState<string>('Rp.')
@@ -29,12 +29,19 @@ export default function UpdateProduct(){
     // const [ video, setVideo ] = useState<File | null>(null)
     const [ checkCategory, getCategory ] = useState<any>(null)
     const [ checkBrand, getBrand ] = useState<any>(null)
+
+    const [ priceKosong, setPriceKosong ] = useState<boolean>(false)
+    const [ onlineKosong, setOnlineKosong ] = useState<boolean>(false)
+    const [ offlineKosong, setOfflineKosong ] = useState<boolean>(false)
+    const [ promoKosong, setPromoKosong ] = useState<boolean>(false)
+
     const [ coret, setCoret ] = useState<boolean>(false)
+    const [ coretPrice, setCoretPrice ] = useState<boolean>(false)
     const navigate = useNavigate()
 
     // console.log(video)
-    console.log(product)
-
+    console.log(nameProduct)
+    console.log(urlBaru)
     async function getDataBrands(){ return await getBrands(setBrand) }
     async function getDataCategories(){ return await getCategories(setCategories) }
 
@@ -44,56 +51,91 @@ export default function UpdateProduct(){
 
     async function getProductByUrl(setProduct: React.SetStateAction<any[] | any>, url: string){
         const response = await axiosClient.get(`api/produk/url/${url}`) as AxiosResponse
-        const data = response.data.produk
-        setNameProduct(data.name)
-        
-        const pricelist = data.pricelist && data.pricelist.split(' ')[1] ? data.pricelist.split(' ')[0].split('Rp.')[1] : data.pricelist ? data.pricelist.split('Rp.')[1] : hargaPrice
-        const offlinePrice = data.offlinePrice && data.offlinePrice.split(' ')[1] ? data.offlinePrice.split(' ')[0].split('Rp.')[1] : data.offlinePrice ? data.offlinePrice.split('Rp.')[1] : hargaOffline
-        const persentase = ((pricelist - offlinePrice)/pricelist)*100
 
-        setPotongan(persentase)
-        setHargaOnline(product.onlinePrice)
-        setHargaPrice(pricelist)
-        setHargaPromo(product.promo)
-        setStock(product.stock)
-        // setDeskripsi(product.description)
-        setHargaOffline(offlinePrice)
-        return setProduct(data)
+        return setProduct(response.data.produk)
     }
+
+    console.log(files)
 
     useEffect(()=>{
         getDataBrands()
         getDataCategories()
         getProductByUrl(setProduct, url!)
     }, [])
-    console.log(product)
     
     async function onUploadForm(){
         try{
-            const upload = new FormData(document.querySelector('form')!)
-            const promo = upload.get('promo') as string
-            if(promo.trim() == "" || promo.trim() == "Rp."){ upload.append('promo', '') }
+            const upload = new FormData(document.querySelector('form')!) as any
             
-            // const videoUpload = new FormData()
-            // videoUpload.append('video', video!)
-            if(files){
-                for(let i = 0; i < files!.length; i++){
-                    upload.append(`images[]`, files![i])
-                }
+            if(upload.get('newDescription') !== ""){
+                upload.delete('description')
+                upload.append('description', deskripsi)
             }
-            
-            // const progressBar = document.querySelector('progress')
-            // const config: AxiosRequestConfig<FormData> = {
-                //     onUploadProgress: function(progressEvent){
-                    //         const progress = (progressEvent.loqaded / progressEvent.total!)*100 as number
-            //         progressBar!.setAttribute('value', progress.toString())
-            //         progressBar!.previousElementSibling!.textContent = `${Math.round(progress)}%`
-            //         if(progress == 100) progressBar!.previousElementSibling!.textContent = `Upload Selesai`
+            if(upload.get('newPricelist') && upload.get('newPricelist')!.split('Rp.')[1]){
+                upload.delete('pricelist')
+                if(coretPrice){
+                    let pricelist = hargaPrice
+                    pricelist = `${pricelist} true`
+                    upload.append('pricelist', pricelist)
+                }else upload.append('pricelist', hargaPrice)
+            }else if((!upload.get('newPricelist') || upload.get('newPricelist') == "" || upload.get('newPricelist') == "Rp.") && priceKosong){
+                upload.delete('pricelist')
+                upload.append('pricelist', '')
+            }else if((!upload.get('newPricelist') || upload.get('newPricelist') == "" || upload.get('newPricelist') == "Rp.") && !priceKosong){
+                upload.delete('pricelist')
+                upload.append('pricelist', product.pricelist ? product.pricelist : '')
+            }
+
+            if(upload.get('newOnlinePrice') && upload.get('newOnlinePrice')!.split('Rp.')[1]){
+                upload.delete('onlinePrice')
+                upload.append('onlinePrice', hargaOnline)
+            }else if((!upload.get('newOnlinePrice') || upload.get('newOnlinePrice') == "" || upload.get('newOnlinePrice') == "Rp.") && onlineKosong){
+                upload.delete('onlinePrice')
+                upload.append('onlinePrice', '')
+            }else if((!upload.get('newOnlinePrice') || upload.get('newOnlinePrice') == "" || upload.get('newOnlinePrice') == "Rp.") && !onlineKosong){
+                upload.delete('onlinePrice')
+                upload.append('onlinePrice', product.onlinePrice ? product.onlinePrice : '')
+            }
+
+            // Offline Price
+            if(upload.get('newOfflinePrice') && upload.get('newOfflinePrice')!.split('Rp.')[1]){
+                upload.delete('offlinePrice')
+                if(coret){
+                    let offline = hargaOffline
+                    offline = `${offline} true`
+                    upload.append('offlinePrice', offline)
+                }else upload.append('offlinePrice', hargaOffline)
+            }else if((!upload.get('newOfflinePrice') || upload.get('newOfflinePrice') == "" || upload.get('newOfflinePrice') == "Rp.") && offlineKosong){
+                upload.delete('offlinePrice')
+                upload.append('offlinePrice', '')
+            }else if((!upload.get('newOfflinePrice') || upload.get('newOfflinePrice') == "" || upload.get('newOfflinePrice') == "Rp.") && !offlineKosong){
+                upload.delete('offlinePrice')
+                upload.append('offlinePrice', product.offlinePrice ? product.offlinePrice : '')
+            }
+
+            // Promo
+            if(upload.get('newPromo') && upload.get('newPromo')!.split('Rp.')[1]){
+                upload.delete('promo')
+                upload.append('promo', hargaPromo)
+            }else if((!upload.get('newPromo') || upload.get('newPromo') == "" || upload.get('newPromo') == "Rp.") && promoKosong){
+                upload.delete('promo')
+                upload.append('promo', '')
+            }
+            else if((!upload.get('newPromo') || upload.get('newPromo') == "" || upload.get('newPromo') == "Rp.") && !promoKosong){
+                upload.delete('promo')
+                upload.append('promo', product.promo ? product.promo : '')
+            }
+
+            // const promo = upload.get('promo') as string
+            // if(promo.trim() == "" || promo.trim() == "Rp."){ upload.append('promo', '') }
+        
+            // if(files){
+            //     for(let i = 0; i < files!.length; i++){
+            //         upload.append(`images[]`, files![i])
             //     }
             // }
-            // await axios.post(`${host}/admin/tambah/video-produk`, videoUpload, config)
 
-            await axiosClient.post(`api/update/produk`, upload)
+            await axiosClient.post(`api/update/produk/${product.url}`, upload)
             return navigate('/admin/produk')
         }catch(error:any){ console.log(error.response.data) }
         
@@ -147,13 +189,14 @@ export default function UpdateProduct(){
         formValue = formValue.split(" ").join("-").toLowerCase()
         formValue = formValue.split("")
         formValue = formValue.filter((value:string)=>value!=="/").join("")
+        const input = document.querySelector('.url')! as any
+        input.value = formValue
         return setUrl(formValue)
     }
     
-    console.log(hargaPrice)
     // if(!admin) return <BlankPage/>
-    return (
-           <div className="addProduct md:px-16 pt-16">
+    if(product) return (
+        <div className="addProduct md:px-16 pt-16">
                     <div className="w-full shadow-xl px-[20px] md:px-[50px] flex flex-col gap-y-2">
                         <h1 className="text-[30px] text-center md:text-left md:text-[48px] font-bold tracking-tight ">Update Produk</h1>
         
@@ -163,21 +206,45 @@ export default function UpdateProduct(){
         
                             <div className="input-top grid md:grid-cols-[3fr_1fr_1fr_1fr] gap-x-12 gap-y-4 md:gap-y-0 mb-8">
                                 <div className="input-group">
+
                                     <p className="opacity-70 italic indent-5">Nama Produk</p>
                                     <input type="text" name="name" placeholder="Masukkan nama produk" className="name w-full text-[14px] md:text-[18px]" onChange={(e: any)=>{
                                         setNameProduct(e.target.value)
                                         generateUrlValue(e)
-                                    }} value={nameProduct}/>
-                                    <input type="text" name="url" placeholder="Masukkan link url" value={urlbaru} disabled className="w-full text-center italic text-[12px] md:text-[13px] opacity-70 indent-0 -mt-1"/>
+                                    }} defaultValue={product.name}/>
+
+                                    <input type="text" name="url" placeholder="Masukkan link url" defaultValue={product.url} readOnly className="w-full text-center italic text-[12px] md:text-[13px] opacity-70 indent-0 -mt-1 url"/>
+
                                 </div>
+
+                                {/* Pricelist */}
                                 <div className="input-group">
-                                    <p className="opacity-70 italic indent-5">Pricelist</p>
-                                    <input type="text" name="onlinePrice" placeholder="Pricelist" onChange={(e)=>{
+                                    <div className="price-title flex gap-x-2">
+                                        <p className="opacity-70 italic indent-5">Pricelist</p>
+                                        <input type="checkbox" name="priceKosong" onClick={()=>{
+                                            if(priceKosong) return setPriceKosong(false)
+                                            else return setPriceKosong(true)
+                                        }}/>
+                                        <input type="checkbox" name="coretPrice" onClick={()=>{
+                                            if(coretPrice) return setCoretPrice(false)
+                                            else return setCoretPrice(true)
+                                        }} checked={coretPrice ? true : false}/>
+
+                                    </div>
+
+                                    <input type="text" name="newPricelist" placeholder="Pricelist" onChange={(e)=>{
                                         setHargaPrice(e.target.value)
                                         setHargaDiskon(e.target.value)
-                                    }} value={hargaPrice} className="w-full text-[14px] md:text-[18px]"/>
+                                    }} value={hargaPrice} className={`w-full text-[14px] md:text-[18px] ${coretPrice ? 'line-through' : ''}`}/>
+
+
+                                    {product.pricelist && <input type="text" name="pricelist" value={setCurrency(product.pricelist.split(' ')[1] ? product.pricelist.split(' ')[0] : product.pricelist )} readOnly className={`w-full text-center italic text-[12px] md:text-[13px] opacity-70 indent-0 -mt-1 ${product.pricelist.split(' ')[1] ? 'line-through' : ''}`}/>}
+
                                     <p className="opacity-60 mt-2 text-[14px]">{setCurrency(hargaPrice)}</p>
+
                                 </div>
+
+
                                 <div className="input-group">
                                     <div className="offline-text flex gap-x-2">
                                         
@@ -189,13 +256,15 @@ export default function UpdateProduct(){
         
                                     </div>
         
+                                {/* Diskon */}
                                     <input type="text" name="hargaDiskon" placeholder="Harga Diskon" value={hargaDiskon} className={`w-full text-[14px] md:text-[18px] ${coret ? 'line-through' : ''}`} disabled/>
                                     <p className="opacity-60 mt-2 text-[14px]">{setCurrency(hargaDiskon)}</p>
-        
+
                                 </div>
         
-                                <div className="toping grid grid-cols-2 gap-x-10">
+                                <div className="extra grid grid-cols-2 gap-x-10">
         
+                                {/* Potongan */}
                                 <div className="input-group relative">
                                     <p className="opacity-70 italic">Potongan</p>
                                     <input type="text" name="potongan" placeholder="0" onChange={(e)=>{
@@ -203,13 +272,14 @@ export default function UpdateProduct(){
                                         if(hargaPrice.split('Rp.')[1]) setHargaDiskon(hargaPrice, e.target.value)
                                     }} value={potongan} className="w-full text-[14px] md:text-[18px] indent-0"/>
                                 </div>
-                                { parseInt(hargaPromo.split('Rp.')[1].trim()) ? <div className="input-group">
+                                
+
+                                {/* Stock */}
+                                <div className="input-group">
                                     <p className="opacity-70 italic">Stock</p>
-                                    <input type="number" name="stock" placeholder="Stock" onChange={(e)=>{setStock(e.target.value)}} value={stock} className="w-full text-[14px] md:text-[18px] indent-0"/>
-                                </div> : false }
-                                    
+                                    <input type="number" name="stock" placeholder="Stock" onChange={(e)=>{setStock(e.target.value)}} defaultValue={product.stock ? stock+product.stock : stock} className="w-full text-[14px] md:text-[18px] indent-0"/>
+                                </div>
                                     <FaPercent size={13} className="text-third absolute top-[41px] right-[138px]"/>
-        
                                 </div>
         
                             {/* <div className="diskon flex">
@@ -221,30 +291,59 @@ export default function UpdateProduct(){
                             <div className="input-top grid md:grid-cols-[3fr_1fr_1fr_1fr] gap-x-12 md:gap-y-0 -mt-10">
                                 <div className="input-group"></div>
         
+                                {/* Harga Online */}
                                 <div className="input-group">
                                     <p className="opacity-70 italic indent-5">Harga Online</p>
-                                    <input type="text" name="onlinePrice" placeholder="Harga Online" onChange={(e)=>{setHargaOnline(e.target.value)}} value={hargaOnline} className="w-full text-[14px] md:text-[18px]"/>
+                                    <input type="checkbox" name="onlineKosong" onClick={()=>{
+                                            if(onlineKosong) return setOnlineKosong(false)
+                                                else return setOnlineKosong(true)
+                                    }}/>
+
+                                    <input type="text" name="newOnlinePrice" placeholder="Harga Online" onChange={(e)=>{setHargaOnline(e.target.value)}} value={hargaOnline} className="w-full text-[14px] md:text-[18px]"/>
+
+                                    {product.onlinePrice && <input type="text" name="onlinePrice" value={setCurrency(product.onlinePrice)} readOnly className="w-full text-center italic text-[12px] md:text-[13px] opacity-70 indent-0 -mt-1"/>}
+
                                     <p className="opacity-40 mt-2 text-[14px]">{setCurrency(hargaOnline)}</p>
                                 </div>
+
+                                {/* Harga Offline */}
                                 <div className="input-group">
                                     <div className="offline-text flex gap-x-2">
                                         
                                         <p className="opacity-70 italic indent-5">Harga Offline</p>
-                                        <input type="checkbox" name="coret" onClick={()=>{
+                                        <input type="checkbox" name="offlineKosong" onClick={()=>{
+                                            if(offlineKosong) return setOfflineKosong(false)
+                                                else return setOfflineKosong(true)
+                                        }}/>
+
+                                        <input type="checkbox" name="coret" className="coret" onClick={()=>{
                                             if(coret) return setCoret(false)
                                             else return setCoret(true)
-                                        }}/>
+                                        }} checked={coret ? true : false}/>
         
                                     </div>
                                     
         
-                                    <input type="text" name="offlinePrice" placeholder="Harga Offline" onChange={(e)=>{ setHargaOffline(e.target.value)}} value={hargaOffline} className={`w-full text-[14px] md:text-[18px] ${coret ? 'line-through' : ''}`}/>
+                                    <input type="text" name="newOfflinePrice" placeholder="Harga Offline" onChange={(e)=>{ setHargaOffline(e.target.value)}} value={hargaOffline} className={`w-full text-[14px] md:text-[18px] ${coret ? 'line-through' : ''}`}/>
+
+                                    {product.offlinePrice && <input type="text" name="offlinePrice" value={setCurrency(product.offlinePrice.split(' ')[1] ? product.offlinePrice.split(' ')[0] : product.offlinePrice )} readOnly className={`w-full text-center italic text-[12px] md:text-[13px] opacity-70 indent-0 -mt-1 ${product.offlinePrice.split(' ')[1] ? 'line-through' : ''}`}/>}
+
                                     <p className="opacity-40 mt-2 text-[14px]">{setCurrency(hargaOffline)}</p>
         
                                 </div>
+
+                                {/* Harga Promo */}
                                 <div className="input-group">
                                     <p className="opacity-70 italic indent-5">Walk In Price</p>
-                                    <input type="text" name="promo" placeholder="Harga Promo" onChange={(e)=>{setHargaPromo(e.target.value)}} value={hargaPromo} className="w-full text-[14px] md:text-[18px]"/>
+                                    <input type="checkbox" name="promoKosong" onClick={()=>{
+                                            if(promoKosong) return setPromoKosong(false)
+                                                else return setPromoKosong(true)
+                                    }}/>
+
+                                    <input type="text" name="newPromo" placeholder="Harga Promo" onChange={(e)=>{setHargaPromo(e.target.value)}} value={hargaPromo} className="w-full text-[14px] md:text-[18px]"/>
+
+                                    {product.promo && <input type="text" name="promo" value={setCurrency(product.promo)} readOnly className="w-full text-center italic text-[12px] md:text-[13px] opacity-70 indent-0 -mt-1"/>}
+
                                     <p className="opacity-40 mt-2 text-[14px]">{setCurrency(hargaPromo)}</p>
                                 </div>
         
@@ -254,17 +353,22 @@ export default function UpdateProduct(){
                             </div> */}
                             </div>
         
-                            <textarea name="description" placeholder="Masukkan deskripsi produk" className="h-[200px] indent-0 text-[14px] md:text-[18px]" value={deskripsi} onChange={(e:any)=>setDeskripsi(e.target.value)}/>
+                            {/* Deskripsi */}
+                            <textarea name="newDescription" placeholder="Masukkan deskripsi produk" className="h-[200px] indent-0 text-[14px] md:text-[18px]" value={deskripsi} onChange={(e:any)=>setDeskripsi(e.target.value)}/>
+
+                            {product.description && <textarea name="description" value={product.description} readOnly className="w-full text-justify italic text-[14px] md:text-[13px] opacity-70 indent-0 -mt-1 h-[300px]"/>}
         
                             <div className="select grid grid-cols-2 gap-x-20">
         
         <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 selectKategori" name="kategori" onChange={changeCategory}>
             <option className="font-semibold text-gray-400" disabled>Kategori</option>
+            { !checkCategory ? <option selected className="bg-gray-200">{product.kategoriId}</option> : false }
             <SelectCategory/>
         </select>
         
         <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 selectBrand" name="brand" onChange={changeBrand}>
             <option className="font-semibold text-gray-400" value="brand" disabled>Brand</option>
+            { !checkBrand ? <option selected className="bg-gray-200">{product.brandId}</option> : false }
             <SelectBrand/>
         </select>
         
@@ -299,7 +403,7 @@ export default function UpdateProduct(){
                         </div>
         
                     </div>
-                </div>
+        </div>
     )
 
 }

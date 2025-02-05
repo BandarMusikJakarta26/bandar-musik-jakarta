@@ -47,6 +47,10 @@ class ProdukController extends Controller
             'promo'=>$body["promo"],
             'url'=>$body["url"],
             'description'=>$body["description"],
+            'panjang'=>$body["panjang"],
+            'lebar'=>$body["lebar"],
+            'tinggi'=>$body["tinggi"],
+            'berat'=>$body["berat"],
             'brandId'=>$body["brand"],
             'kategoriId'=>$body["kategori"],
             'images'=>json_encode($imageData),
@@ -93,15 +97,32 @@ class ProdukController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id){
-        // Produk::update();
+    public function update(Request $request, string $url){
+        $produk = Produk::where("url", $url)->update([
+            "name"=> $request->name,
+            'pricelist'=>$request->pricelist,
+            'onlinePrice'=>$request->onlinePrice,
+            'offlinePrice'=>$request->offlinePrice,
+            'promo'=>$request->promo,
+            'url'=>$request->url,
+            'description'=>$request->description,
+            'panjang'=>$request->description,
+            'lebar'=>$request->description,
+            'tinggi'=>$request->description,
+            'berat'=>$request->description,
+            'brandId'=>$request->brand,
+            'kategoriId'=>$request->kategori,
+            'stock'=>$request->stock
+            // 'images'=>json_encode($imageData),
+        ]);
+        return response()->json(["success"=>true,"produk"=>$produk],200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $name){
-        $produk = Produk::where('name',$name)->delete();
-        if($produk) return response()->json(['success'=>true]);
+    public function destroy(string $url){
+        $produk = Produk::where('url',$url)->delete();
+        if($produk) return response()->json(['success'=>true, 'produk'=>$produk]);
     }
 }

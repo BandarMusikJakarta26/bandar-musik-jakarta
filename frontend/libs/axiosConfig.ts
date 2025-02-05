@@ -1,7 +1,8 @@
 import axios from 'axios'
 import { host } from './config'
+import { buildWebStorage, setupCache } from 'axios-cache-interceptor'
 
-const axiosClient = axios.create({ 
+let axiosClient = axios.create({ 
     baseURL: `${host}`,
     headers: {
         "X-Requested-with": "XMLHttpRequest",
@@ -13,6 +14,9 @@ const axiosClient = axios.create({
     },
     withCredentials: true,
     withXSRFToken: true
-})
+}) as any
+axiosClient = setupCache(axiosClient, { 
+    storage: buildWebStorage(sessionStorage, 'axios-cache:')
+ })
 
 export default axiosClient

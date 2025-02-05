@@ -21,6 +21,10 @@ return new class extends Migration
             $table->string('promo')->nullable(value: true);
             $table->string('url');
             $table->string('description');
+            $table->string('panjang')->nullable(true);
+            $table->string('lebar')->nullable(true);
+            $table->string('tinggi')->nullable(true);
+            $table->string('berat')->nullable(true);
             $table->string('brandId');
             $table->string('kategoriId');
             $table->json('images')->nullable(true);

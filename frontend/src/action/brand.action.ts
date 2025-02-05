@@ -3,8 +3,9 @@ import React from "react"
 import axiosClient from "../../libs/axiosConfig"
 // import { axiosConfig } from "../../libs/config"
 
-export async function getBrandsWithLimit(setBrands: React.SetStateAction<any[] | any>, limit: number){
+export async function getBrandsWithLimit(brands: any, setBrands: React.SetStateAction<any[] | any>, limit: number){
     try{
+        if(brands.length > 0) return setBrands(brands)
         const response = await axiosClient.get(`api/brand?limit=${limit}`) as AxiosResponse
         return setBrands(response.data.brands)
     }catch(err:any){

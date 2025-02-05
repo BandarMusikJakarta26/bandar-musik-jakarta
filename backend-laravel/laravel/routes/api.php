@@ -53,6 +53,7 @@ Route::post('/tambah/produk', [ProdukController::class, 'store']);
 Route::post('/tambah/kategori', [KategoriController::class, 'store']);
 // Route::post('/tambah/terbaru', [TerbaruController::class, 'store']);
 
-Route::post('/update/produk', [ProdukController::class, 'update']);
+Route::post('/update/produk/{url}', [ProdukController::class, 'update']);
 
 Route::get('/hapus/brand/{name}', [BrandController::class, 'destroy']);
+Route::get('/hapus/produk/{url}', [ProdukController::class, 'destroy']);

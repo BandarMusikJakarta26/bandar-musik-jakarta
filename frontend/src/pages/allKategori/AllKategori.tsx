@@ -12,8 +12,8 @@ export default function AllKategori(){
     function CategoryComponent(){
         return categories.map((category: any, index: number)=>{
             return (
-                <a className="card brightness-90 hover:brightness-100 transition-all rounded-3xl overflow-hidden" key={index} href={`/kategori/${category.name}`}>
-                   <img src={`${host}/storage/${category.image}`} alt={category.name}/>
+                <a className="card brightness-90 hover:brightness-100 transition-all rounded-3xl overflow-hidden" key={index} href={`/kategori/${category.title}`}>
+                   <img src={`${host}/storage/${category.image}`} alt={category.title}/>
                 </a>
             )
         })

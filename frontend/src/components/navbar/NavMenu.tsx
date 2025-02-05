@@ -1,5 +1,5 @@
 
-import { useState, useEffect, createContext } from "react"
+import React, { useState, useEffect, createContext } from "react"
 import LogoutButton from "./LogoutButton"
 import NavSearch from "./NavSearch"
 import NavLogo from "./NavLogo"
@@ -12,7 +12,7 @@ import responsivePage from "../../action/screen.action"
 
 export const KategoriContext = createContext<any>(null)
 
-export default function NavMenu({ login, currentLogin } : { login: boolean, currentLogin: boolean }){
+const NavMenu = function({ login, currentLogin } : { login: boolean, currentLogin: boolean }){
     const [ screen, setScreen ] = useState<number>(window.innerWidth)
     const [ pages, showPages ] = useState<boolean>(false)
     const [ auth, setAuth ] = useState<boolean>(false)
@@ -52,3 +52,5 @@ export default function NavMenu({ login, currentLogin } : { login: boolean, curr
         
     )
 }
+
+export default React.memo(NavMenu)
