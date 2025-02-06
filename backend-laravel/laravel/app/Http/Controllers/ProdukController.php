@@ -7,6 +7,7 @@ use App\Models\Kategori;
 use App\Models\Produk;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -106,10 +107,10 @@ class ProdukController extends Controller
             'promo'=>$request->promo,
             'url'=>$request->url,
             'description'=>$request->description,
-            'panjang'=>$request->description,
-            'lebar'=>$request->description,
-            'tinggi'=>$request->description,
-            'berat'=>$request->description,
+            'panjang'=>$request->panjang,
+            'lebar'=>$request->lebar,
+            'tinggi'=>$request->tinggi,
+            'berat'=>$request->berat,
             'brandId'=>$request->brand,
             'kategoriId'=>$request->kategori,
             'stock'=>$request->stock
@@ -124,5 +125,13 @@ class ProdukController extends Controller
     public function destroy(string $url){
         $produk = Produk::where('url',$url)->delete();
         if($produk) return response()->json(['success'=>true, 'produk'=>$produk]);
+    }
+
+    public function showByPromo(){
+        $produk = Produk::whereNotNull(['promo', 'stock'])->where('stock', '!=', '0')->get();
+        for($i=0;$i<count($produk); $i++){
+            $produk[$i]["images"] = json_decode($produk[$i]["images"], true);
+        }
+        if($produk) return response()->json(['success'=> true, 'produk'=>$produk]);
     }
 }

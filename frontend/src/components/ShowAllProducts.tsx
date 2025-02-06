@@ -69,7 +69,7 @@ const ShowAllProducts = function({ products, according, deleteAction}: { product
                 <input type="text" placeholder="Search"/>
             </div>
 
-            <div className="product-list w-full grid grid-cols-1 md:grid-cols-4 gap-y-4 md:gap-x-6 md:gap-y-10">
+            <div className="product-list w-full grid grid-cols-1 md:grid-cols-5 gap-y-4 md:gap-x-2 md:gap-y-10">
                 <DesktopUI products={currentProducts} according={according} deleteAction={deleteAction}/>
             </div>
             

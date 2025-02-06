@@ -34,6 +34,7 @@ import AddPromo from './pages/admin/addPromo.tsx'
 import UpdateProduct from './pages/admin/updateProduct.tsx'
 import Dashboard from './pages/dashboard/dashboard.tsx'
 import { isLoginStore } from '../libs/store.ts'
+import PromoPage from './pages/promo/PromoPage.tsx'
 // import axiosClient from '../libs/axiosConfig.ts'
 
 export default function App() {
@@ -61,7 +62,7 @@ export default function App() {
               <Route path="/terbaru" element={<AllTerbaru/>}/>
               <Route path="/about" element={<About/>}/>
               <Route path="/produk/:name" element={<Product/>}/>
-              <Route path="/promo" element={<Product/>}/>
+              <Route path="/promo" element={<PromoPage/>}/>
 
               <Route path="/user/login" element={<Login login={login}/>}/>
               <Route path="/user/register" element={<Register login={login}/>}/>

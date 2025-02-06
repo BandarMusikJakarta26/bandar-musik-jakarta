@@ -7,8 +7,8 @@ export default defineConfig({
   server: {
     proxy: {
       '*': { 
-        // target: 'http://localhost:8000',
-        target: 'https://backend.bandarmusikjakarta.com',
+        target: 'http://localhost:8000',
+        // target: 'https://backend.bandarmusikjakarta.com',
         secure: true
       }
     }

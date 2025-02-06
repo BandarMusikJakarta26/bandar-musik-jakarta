@@ -60,39 +60,44 @@ const AddProduct = function(){
         try{
             const upload = new FormData(document.querySelector('form')!)
 
-            const promo = upload.get('promo') as string
-            if(promo.trim() == ""){ upload.append('promo', '') }
-            if(hargaOnline.trim() == ""){ upload.append('onlinePrice', '') }
-            if(hargaOffline.trim() == ""){ 
-                setCoret(false)
-                upload.append('offlinePrice', '')
+            if(hargaPromo !== '' && !upload.get('namaPromo')){
+                upload.append('namaPromo', 'Promo')
             }
-            if(hargaPrice.trim() == ""){ 
-                setCoret(false)
-                upload.append('pricelist', '')
-            }
+            if(hargaPromo == "" && upload.get('namaPromo')){ upload.delete('namaPromo') }
+            console.log(upload.get('namaPromo'))
+            // const promo = upload.get('promo') as string
+            // if(promo.trim() == ""){ upload.append('promo', '') }
+            // if(hargaOnline.trim() == ""){ upload.append('onlinePrice', '') }
+            // if(hargaOffline.trim() == ""){ 
+            //     setCoret(false)
+            //     upload.append('offlinePrice', '')
+            // }
+            // if(hargaPrice.trim() == ""){ 
+            //     setCoret(false)
+            //     upload.append('pricelist', '')
+            // }
 
-            if(stock == "" || !stock){
-                upload.append('stock', "0")
-            }else upload.append('stock', stock.toLocaleString())
+            // if(stock == "" || !stock){
+            //     upload.append('stock', "0")
+            // }else upload.append('stock', stock.toLocaleString())
 
-            for(let i = 0; i < files!.length; i++){
-                upload.append(`images[]`, files![i])
-            }
+            // for(let i = 0; i < files!.length; i++){
+            //     upload.append(`images[]`, files![i])
+            // }
 
-            if(coret){
-                let offline = hargaOffline
-                offline = `${offline} true`
-                upload.append('offlinePrice', offline)
-            }
-            if(coretPrice){
-                let pricelist = hargaPrice
-                pricelist = `${pricelist} true`
-                upload.append('pricelist', pricelist)
-            }
+            // if(coret){
+            //     let offline = hargaOffline
+            //     offline = `${offline} true`
+            //     upload.append('offlinePrice', offline)
+            // }
+            // if(coretPrice){
+            //     let pricelist = hargaPrice
+            //     pricelist = `${pricelist} true`
+            //     upload.append('pricelist', pricelist)
+            // }
 
-            await axiosClient.post(`api/tambah/produk`, upload)
-            return navigate('/admin/produk')
+            // await axiosClient.post(`api/tambah/produk`, upload)
+            // return navigate('/admin/produk')
         }catch(error:any){ console.log(error) }
         finally{
             setLoading(false)

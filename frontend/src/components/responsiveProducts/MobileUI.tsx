@@ -14,17 +14,31 @@ export default function MobileUI({ products, according, deleteAction }: { produc
         }
         return (
             <ParentMobileUI product={product} index={index} according={according}>
-                <div className="gambar bg-gradient-to-t from-primary to-gray-400 p-1">
+                <div className="gambarnya overflow-hidden rounded-md">
+                <div className="gambar bg-gradient-to-t from-primary to-[#cdcdcd] p-1">
                     <div className="w-full">
                         <img src={`${host}/storage/${product.images[0]}`} className="group-hover:hidden"/>
                         <img src={product.images.length > 1 ? `${host}/storage/${product.images[1]}` : `${host}/storage/${product.images[0]}`} className="hidden group-hover:block"/>
                     </div>
                 </div>
-                <div className="pb-2 w-full px-3">
-                    <h1 className="text-[13px] md:text-[16px] font-semibold">{name}</h1>
-                    <p className="text-[11px] font-normal opacity-70 italic">{product.kategoriId}</p>
-                    <p className={`text-[15px] font-bold ${product.offlinePrice && product.offlinePrice.split(' ')[1] ? 'line-through' : false}`}>{product.offlinePrice && product.offlinePrice.split(' ')[1] ? setCurrency(product.offlinePrice.split(' ')[0]) : product.offlinePrice ? setCurrency(product.offlinePrice) : false}</p>
-                    <p className={`text-[11px] font-bold text-red-700 ${product.pricelist && product.pricelist.split(' ')[1] ? 'line-through' : false}`}>{product.pricelist && product.pricelist.split(' ')[1] ? setCurrency(product.pricelist.split(' ')[0]) : product.pricelist ? setCurrency(product.pricelist) : false}</p>
+
+                </div>
+
+                <div className={`${according == "admin" ? "pt-2" : "pt-4"} pb-4 w-full px-2`}>
+                    <h1 className="text-[11px] md:text-[16px] font-semibold">{name}</h1>
+                    <p className="text-[9px] font-normal opacity-70 italic mt-[2px]">{product.kategoriId}</p>
+
+                    <div className="garis h-[1px] bg-gray-300 w-full mt-1"></div>
+
+                    {product.offlinePrice || product.pricelist ? <div className="harga mt-1">
+                        <p className={`text-[12px] font-bold tracking-tight ${product.offlinePrice && product.offlinePrice.split(' ')[1] ? 'line-through' : false}`}>{product.offlinePrice && product.offlinePrice.split(' ')[1] ? setCurrency(product.offlinePrice.split(' ')[0]) : product.offlinePrice ? setCurrency(product.offlinePrice) : false}</p>
+                        
+                        { product.pricelist && <div className="pricelist flex gap-x-1">
+                            <p className="text-red-700 text-[9px] italic">Pricelist</p>
+                            <p className={`text-[9px] font-bold text-red-700 ${product.pricelist && product.pricelist.split(' ')[1] ? 'line-through' : false}`}>{product.pricelist && product.pricelist.split(' ')[1] ? setCurrency(product.pricelist.split(' ')[0]) : product.pricelist ? setCurrency(product.pricelist) : false}</p>
+                        </div>
+                        }
+                    </div> : false}
 
                     {according == "admin" ? 
                         <div className="admin grid grid-cols-3 gap-x-2 mt-2">
@@ -36,11 +50,22 @@ export default function MobileUI({ products, according, deleteAction }: { produc
 
                 </div>
                 
-                {product.promo && product.stock && product.stock > 0 ? <p className="absolute top-[124px] left-0 text-[9px] bg-red-600 text-white px-[8px] rounded-tl-md rounded-br-md flex items-center gap-x-[5px]"><i className="mt-[3px]">Promo</i><span className="text-[11px]">{setCurrency(product.promo)}</span></p> : false}
+                <div className="hargapromo absolute top-[144px] left-[0px] flex items-center">
 
-                {product.stock && product.stock !== 0 ? <div className="absolute top-[4px] right-[4px] text-white px-[6px]  bg-sky-700 rounded flex items-center gap-x-1 border-[1px] border-sky-300">
-                    <span className="text-[13px]">{product.stock}</span><span className="text-[9px] italic mt-[2px]">tersisa</span>
+                {product.promo && product.stock && product.stock !== 0 ? <div className=" text-white text-[9px] bg-teal-600 px-2 py-[1px] italic">
+                    Walk-in
+                </div>: false}
+
+                {product.promo && product.stock && product.stock !== 0 ? <div className=" text-third text-[10px] bg-[#fafafa] flex gap-x-1 items-center px-1 font-semibold border-[1px] border-gray-300">
+                    {setCurrency(product.promo)}
+                </div>: false}
+
+                </div>
+
+                {product.promo && product.stock && product.stock > 0 ? <div className="absolute top-[0px] right-[0px] rounded flex items-center gap-x-1 bg-teal-600 text-white px-1">
+                    <span className="text-[12px] font-bold">{product.stock}</span><span className="text-[9px] italic mt-[2px]">tersisa</span>
                 </div> : false}
+
             </ParentMobileUI>
 
         )
