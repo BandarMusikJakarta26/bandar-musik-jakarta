@@ -6,8 +6,8 @@ export async function getProductByBrand(setProductByBrand: React.SetStateAction<
     return setProductByBrand(productsByBrand.data.produk)
 }
 
-export async function getProductByCategory(setProductByCategory: React.SetStateAction<any[] | any>, category: string){
-    const response = await axiosClient.get(`api/produk/kategori/${category}`) as AxiosResponse
+export async function getProductByCategory(setProductByCategory: React.SetStateAction<any[] | any>, kategoriName: string){
+    const response = await axiosClient.get(`api/produk/kategori/${kategoriName}`) as AxiosResponse
     return setProductByCategory(response.data.produk)
 }
 
@@ -22,7 +22,7 @@ export async function getProductByUrl(setProduct: React.SetStateAction<any[] | a
 }
 
 export async function getProducts(products?: any, setProducts?: React.SetStateAction<any[] | any>){
-    if(products.length > 0) return setProducts(products)
+    if(products && products.length > 0) return setProducts(products)
     const response = await axiosClient.get(`api/produk`) as AxiosResponse
     if(!setProducts) return response.data.produk.length
     return setProducts(response.data.produk)

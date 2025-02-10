@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('pricelist')->nullable(true);
             $table->string('offlinePrice')->nullable(true);
             $table->string('onlinePrice')->nullable(true);
+            $table->string('namaPromo')->nullable(value: true);
             $table->string('promo')->nullable(value: true);
             $table->string('url');
             $table->string('description');

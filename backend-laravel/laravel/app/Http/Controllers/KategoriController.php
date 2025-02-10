@@ -47,6 +47,11 @@ class KategoriController extends Controller
         //
     }
 
+    public function showByTitle(string $title){
+        $category= Kategori::where("title", $title)->first();
+        return response()->json(["success"=>true, "category"=>$category], 200);
+    }
+
     /**
      * Update the specified resource in storage.
      */

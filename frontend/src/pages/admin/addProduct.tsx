@@ -60,44 +60,47 @@ const AddProduct = function(){
         try{
             const upload = new FormData(document.querySelector('form')!)
 
+            if(hargaPromo == '' && !upload.get('namaPromo')){
+                upload.append('namaPromo', '')
+            }
             if(hargaPromo !== '' && !upload.get('namaPromo')){
                 upload.append('namaPromo', 'Promo')
             }
             if(hargaPromo == "" && upload.get('namaPromo')){ upload.delete('namaPromo') }
-            console.log(upload.get('namaPromo'))
-            // const promo = upload.get('promo') as string
-            // if(promo.trim() == ""){ upload.append('promo', '') }
-            // if(hargaOnline.trim() == ""){ upload.append('onlinePrice', '') }
-            // if(hargaOffline.trim() == ""){ 
-            //     setCoret(false)
-            //     upload.append('offlinePrice', '')
-            // }
-            // if(hargaPrice.trim() == ""){ 
-            //     setCoret(false)
-            //     upload.append('pricelist', '')
-            // }
 
-            // if(stock == "" || !stock){
-            //     upload.append('stock', "0")
-            // }else upload.append('stock', stock.toLocaleString())
+            const promo = upload.get('promo') as string
+            if(promo.trim() == ""){ upload.append('promo', '') }
+            if(hargaOnline.trim() == ""){ upload.append('onlinePrice', '') }
+            if(hargaOffline.trim() == ""){ 
+                setCoret(false)
+                upload.append('offlinePrice', '')
+            }
+            if(hargaPrice.trim() == ""){ 
+                setCoret(false)
+                upload.append('pricelist', '')
+            }
 
-            // for(let i = 0; i < files!.length; i++){
-            //     upload.append(`images[]`, files![i])
-            // }
+            if(stock == "" || !stock){
+                upload.append('stock', "0")
+            }else upload.append('stock', stock.toLocaleString())
 
-            // if(coret){
-            //     let offline = hargaOffline
-            //     offline = `${offline} true`
-            //     upload.append('offlinePrice', offline)
-            // }
-            // if(coretPrice){
-            //     let pricelist = hargaPrice
-            //     pricelist = `${pricelist} true`
-            //     upload.append('pricelist', pricelist)
-            // }
+            for(let i = 0; i < files!.length; i++){
+                upload.append(`images[]`, files![i])
+            }
 
-            // await axiosClient.post(`api/tambah/produk`, upload)
-            // return navigate('/admin/produk')
+            if(coret){
+                let offline = hargaOffline
+                offline = `${offline} true`
+                upload.append('offlinePrice', offline)
+            }
+            if(coretPrice){
+                let pricelist = hargaPrice
+                pricelist = `${pricelist} true`
+                upload.append('pricelist', pricelist)
+            }
+
+            await axiosClient.post(`api/tambah/produk`, upload)
+            return navigate('/admin/produk')
         }catch(error:any){ console.log(error) }
         finally{
             setLoading(false)
@@ -305,7 +308,7 @@ const AddProduct = function(){
                             </select>
                         </div>
                         <div className="input-group relative">
-                            <p className="opacity-70 italic indent-5">Harga {checkPromo !== '' ? checkPromo : 'Promo' }</p>
+                            <p className="opacity-70 italic indent-5">{checkPromo ? checkPromo : 'Promo' }</p>
                             <input type="text" name="promo" placeholder="0" onChange={(e)=>{setHargaPromo(e.target.value)}} value={hargaPromo} className="w-full text-[14px] md:text-[18px] tambah indent-[30px]"/>
                             <p className="opacity-40 mt-2 text-[14px] absolute top-[30px] right-5">{setCurrency(hargaPromo)}</p>
                             <p className="py-1 px-2 bg-gray-200 rounded-md absolute top-[32px] left-[8px]">Rp</p>

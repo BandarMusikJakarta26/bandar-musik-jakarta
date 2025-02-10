@@ -50,10 +50,16 @@ export default function MobileUI({ products, according, deleteAction }: { produc
 
                 </div>
                 
+                {product.promo && product.stock && product.stock > 0 ? <p className="text-[10px] absolute top-0 left-0 bg-teal-600 text-white px-2 py-[1px] rounded-md">
+                    Promo
+                </p>: false }
+
                 <div className="hargapromo absolute top-[144px] left-[0px] flex items-center">
 
                 {product.promo && product.stock && product.stock !== 0 ? <div className=" text-white text-[9px] bg-teal-600 px-2 py-[1px] italic">
-                    Walk-in
+                    <span className="text-white text-[8px] bg-teal-600 py-[2px]">{!product.namaPromo ? 'Promo' : 
+                    product.namaPromo
+                }</span>
                 </div>: false}
 
                 {product.promo && product.stock && product.stock !== 0 ? <div className=" text-third text-[10px] bg-[#fafafa] flex gap-x-1 items-center px-1 font-semibold border-[1px] border-gray-300">
@@ -62,7 +68,7 @@ export default function MobileUI({ products, according, deleteAction }: { produc
 
                 </div>
 
-                {product.promo && product.stock && product.stock > 0 ? <div className="absolute top-[0px] right-[0px] rounded flex items-center gap-x-1 bg-teal-600 text-white px-1">
+                {product.stock && product.stock > 0 ? <div className="absolute top-[0px] right-[0px] rounded flex items-center gap-x-1 bg-teal-600 text-white px-1">
                     <span className="text-[12px] font-bold">{product.stock}</span><span className="text-[9px] italic mt-[2px]">tersisa</span>
                 </div> : false}
 

@@ -3,11 +3,18 @@
 import { useEffect, useState } from 'react';
 import { getCategories } from '../../action/kategori.action';
 import { host } from '../../../libs/config';
+import LoadingPage from '../../components/LoadingPage';
 
 export default function AllKategori(){
     const [ categories, setCategories ] = useState<any[] | any>([])
+    const [ loading, setLoading ] = useState<boolean>(true)
 
-    useEffect(()=>{ getCategories(setCategories) }, [])
+    useEffect(()=>{ 
+        setTimeout(()=>{
+            getCategories(setCategories)
+            setLoading(false)
+        }, 1000)
+    }, [])
 
     function CategoryComponent(){
         return categories.map((category: any, index: number)=>{
@@ -19,7 +26,8 @@ export default function AllKategori(){
         })
     }
 
-    return (
+    if(loading) return <LoadingPage/>
+    else return (
         <div className="main w-full grid md:grid-cols-3 gap-8 px-6">
             <CategoryComponent/>
         </div>

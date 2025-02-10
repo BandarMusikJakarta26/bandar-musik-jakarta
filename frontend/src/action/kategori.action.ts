@@ -3,9 +3,11 @@ import axiosClient from "../../libs/axiosConfig"
 import { AxiosError } from "axios"
 
 export async function getCategories(setCategories?: React.SetStateAction<any[] | any>){
-    const response = await axiosClient.get(`api/kategori`)
-    if(!setCategories) return response.data.categories.length
-    return setCategories(response.data.categories)
+    try{
+        const response = await axiosClient.get(`api/kategori`)
+        if(!setCategories) return response.data.categories.length
+        return setCategories(response.data.categories)
+    }catch(err){ if(err instanceof AxiosError) return err.message }
 }
 
 export async function getCategoriesWithLimit(categories: any, setCategories?: React.SetStateAction<any[] | any>){
@@ -19,8 +21,8 @@ export async function getCategoriesWithLimit(categories: any, setCategories?: Re
     }
 }
 
-export async function getCategoryByName(setCategory: React.SetStateAction<any[] | any>, name: string){
-    const response = await axiosClient.get(`api/kategori/${name}`)
+export async function getCategoryByName(setCategory: React.SetStateAction<any[] | any>, title: string){
+    const response = await axiosClient.get(`api/kategori/${title}`)
     return setCategory(response.data.category)
 }
 

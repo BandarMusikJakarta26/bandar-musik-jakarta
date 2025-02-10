@@ -25,6 +25,7 @@ class ProductStoreRequest extends FormRequest
             "pricelist"=>["nullable","string"],
             "onlinePrice"=>["nullable","string"],
             "offlinePrice"=>["nullable","string"],
+            "namaPromo"=>["nullable", "string"],
             "promo"=>["nullable", "string"],
             "brand"=>["required","string"],
             "kategori"=>["required","string"],

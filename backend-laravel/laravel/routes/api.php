@@ -27,13 +27,14 @@ Route::get('/brand', [BrandController::class, 'index']);
 Route::get('/brand/{name}', [BrandController::class, 'show']);
 
 Route::get('/kategori', [KategoriController::class, 'index']);
+Route::get('/kategori/{title}', [KategoriController::class, 'showByTitle']);
 
 Route::get('/produk', [ProdukController::class, 'index']);
 Route::get('/produk/promo', [ProdukController::class, 'showByPromo']);
 Route::get('/produk/url/{url}', [ProdukController::class, 'showByUrl']);
 Route::get('/produk/{params}', [ProdukController::class, 'show']);
 Route::get('/produk/brand/{brandName}', [ProdukController::class, 'showByBrand']);
-Route::get('/produk/kategori/{kategoriName}', [ProdukController::class, 'show']);
+Route::get('/produk/kategori/{kategoriName}', [ProdukController::class, 'showByCategory']);
 
 Route::get('/search', [SearchController::class, 'nullSearch']);
 Route::get('/search/{keyword}', [SearchController::class, 'search']);

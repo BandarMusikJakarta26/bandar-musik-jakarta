@@ -2,6 +2,7 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { host } from "../../../libs/config"
 import responsivePage from "../../action/screen.action"
+import LoadingPage from "../../components/LoadingPage"
 
 export default function AllBrand(){
     const [brands, setBrands] = useState<any[]>([])
@@ -10,14 +11,16 @@ export default function AllBrand(){
     const [screen, setScreen] = useState<number>(window.innerWidth)
     const alphabets = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
-    async function getAllBrand(){
-        const response = await axios.get(`${host}/api/brand?name=true`)
-        setBrands(response.data.brands.map((brand:{name: string})=>brand.name))
+    function getAllBrand(){
+        return setTimeout(async()=>{
+            const response = await axios.get(`${host}/api/brand?name=true`)
+            setLoading(false)
+            return setBrands(response.data.brands.map((brand:{name: string})=>brand.name))
+        }, 1000)
     }
 
     useEffect(()=>{
         getAllBrand()
-        setLoading(false)
         responsivePage(setScreen)
     }, [])
 
@@ -90,10 +93,6 @@ export default function AllBrand(){
     
             </div>
         )
-    }
-
-    function LoadingPage(){
-        return <h1>Loading</h1>
     }
 
     if(loading) return <LoadingPage/>

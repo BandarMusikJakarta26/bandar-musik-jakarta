@@ -10,7 +10,14 @@ export default function DesktopUI({ products, according, deleteAction = false }:
         return (
             <ParentDesktopUI product={product} index={index} according={according}>
            
-                <div className="gambar bg-gradient-to-t from-[#fafafa] to-[#ccc] group-hover:to-[#aaa] transition-all rounded-lg">
+                <div className="gambar bg-gradient-to-t from-[#fafafa] to-[#ccc] group-hover:to-[#aaa] transition-all rounded-lg relative overflow-hidden">
+
+                {product.promo && product.stock && product.stock > 0 ? <p className="text-[13px] absolute top-[-20px] left-[-46px] bg-red-600 text-white px-8 rounded-md -rotate-45 uppercase font-bold pt-10 pb-[1px]">
+                    Promo
+                </p>: false }
+
+                {product.promo && product.stock && product.stock > 0 ? <div className="absolute top-[8px] left-[8px] bg-primary p-1 rounded-full z-20"></div>: false }
+
                     <div className="md:w-[100%] transition group">
                         <img src={`${host}/storage/${product.images[0]}`} className="group-hover:hidden"/>
                         <img src={product.images.length > 1 ? `${host}/storage/${product.images[1]}` : `${host}/storage/${product.images[0]}`} className="hidden group-hover:block"/>
@@ -59,15 +66,14 @@ export default function DesktopUI({ products, according, deleteAction = false }:
 
                 </div>
 
-                {product.promo && product.stock && product.stock !== 0 ? <div className="absolute top-[256px] left-[8px] text-white text-[11px] bg-teal-600 px-4 py-[1px] italic">
-                    Walk-in
+                {product.promo && product.stock && product.stock !== 0 ? <div className="absolute top-[256px] left-[8px] flex flex-col">
+                    <span className="text-white text-[11px] bg-red-600 px-3 py-[2px] animate-zoom-in">{!product.namaPromo ? 'Promo' : product.namaPromo}</span>
                 </div>: false}
-                {product.promo && product.stock && product.stock !== 0 ? <div className="absolute top-[278px] left-[8px] text-third text-[13px] bg-[#fafafa] flex gap-x-1 items-center rounded-tr-xl px-2 font-semibold py-[2px] border-[1px] border-gray-400">
-                    <IoMdPricetag size={21} className="bg-teal-600 text-white rounded-full p-1"/>
+                {product.promo && product.stock && product.stock !== 0 ? <div className="absolute top-[278px] left-[8px] text-third text-[13px] bg-[#fafafa] flex gap-x-1 items-center rounded-tr-xl px-2 font-semibold py-[2px] border-[1px] border-gray-400 animate-zoom-in">
+                    <IoMdPricetag size={21} className="bg-red-600 text-white rounded-full p-1"/>
                     {setCurrency(product.promo)}
                 </div>: false}
-                {product.promo && product.stock && product.stock > 0 ? <div className="absolute top-[278px] right-[14px] text-third px-2 border-[1px] border-gray-300 rounded flex items-center gap-x-1">
-                    {/* <AiFillFire size={18} className="text-primary"/> */}
+                {product.stock && product.stock > 0 ? <div className="absolute top-[278px] right-[14px] text-third px-2 border-[1px] border-gray-300 rounded flex items-center gap-x-1 bg-[#fafafa]">
                     <span className="text-[16px] font-extrabold">{product.stock}</span><span className="text-[11px] italic -mt-[1px]">tersisa</span>
                 </div> : false}
             

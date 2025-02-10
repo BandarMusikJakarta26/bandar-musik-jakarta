@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router"
 import { getBrands } from "../../action/brand.action"
 import { getCategories } from "../../action/kategori.action"
-import axiosClient from "../../../libs/axiosConfig"
 import { FaPercent } from "react-icons/fa";
 import { getProductByUrl, setCurrency } from "../../action/produk.action"
 import LoadingPage from "../../components/LoadingPage"
+import axiosClient from "../../../libs/axiosConfig";
 
 const UpdateProduct = function(){
     const { url } = useParams()
@@ -71,6 +71,9 @@ const UpdateProduct = function(){
         try{
             const upload = new FormData(document.querySelector('form')!) 
 
+            if((hargaPromo == "" && product.promo) && !upload.get('namaPromo')){ upload.append('namaPromo', 'Promo') }
+            if((hargaPromo == "" && !product.promo) && upload.get('namaPromo')){ upload.delete('namaPromo') }
+
             if(upload.get('pricelist') && coretPrice){
                 const pricelist = upload.get('pricelist')
                 upload.delete('pricelist')
@@ -81,37 +84,6 @@ const UpdateProduct = function(){
                 upload.delete('offlinePrice')
                 upload.append('offlinePrice', `${offline} true`)
             }
-
-            // const promo = upload.get('promo') as string
-            // if(promo.trim() == ""){ upload.append('promo', '') }
-            // if(hargaOnline.trim() == ""){ upload.append('onlinePrice', '') }
-            // if(hargaOffline.trim() == ""){ 
-            //     setCoret(false)
-            //     upload.append('offlinePrice', '')
-            // }
-            // if(hargaPrice.trim() == ""){ 
-            //     setCoret(false)
-            //     upload.append('pricelist', '')
-            // }
-
-            // if(stock == "" || !stock){
-            //     upload.append('stock', "0")
-            // }else upload.append('stock', stock.toLocaleString())
-
-            // // for(let i = 0; i < files!.length; i++){
-            // //     upload.append(`images[]`, files![i])
-            // // }
-
-            // if(coret){
-            //     let offline = hargaOffline
-            //     offline = `${offline} true`
-            //     upload.append('offlinePrice', offline)
-            // }
-            // if(coretPrice){
-            //     let pricelist = hargaPrice
-            //     pricelist = `${pricelist} true`
-            //     upload.append('pricelist', pricelist)
-            // }
 
             await axiosClient.post(`api/update/produk/${url!}`, upload)
             return navigate('/admin/produk')
@@ -328,11 +300,12 @@ const UpdateProduct = function(){
                                 <p className="opacity-70 italic indent-5">Nama Promo</p>
                                 <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 select-tambah" name="namaPromo" onChange={changePromo}>
                                     <option className="font-semibold text-gray-400" disabled selected>Promo</option>
+                                    {product && product.namaPromo && !checkPromo ? <option value={product.namaPromo} selected>{product.namaPromo}</option> : false}
                                     <SelectPromo/>
                                 </select>
                             </div>
                             <div className="input-group relative">
-                                <p className="opacity-70 italic indent-5">Harga {checkPromo !== '' ? checkPromo : 'Promo' }</p>
+                                <p className="opacity-70 italic indent-5">{checkPromo ? checkPromo : 'Promo' }</p>
                                 <input type="text" name="promo" placeholder="0" onChange={(e)=>{setHargaPromo(e.target.value)}} 
                                 defaultValue={product && product.promo && hargaPromo == "" ? product.promo : hargaPromo }
                                 className="w-full text-[14px] md:text-[18px] tambah indent-[30px]"/>

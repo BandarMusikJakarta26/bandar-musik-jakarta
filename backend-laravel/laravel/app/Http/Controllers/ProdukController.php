@@ -40,11 +40,12 @@ class ProdukController extends Controller
             }
         };
         // GambarProduk::insert($imageData);
-        $produk = Produk::create([
+        Produk::create([
             'name'=>$body["name"],
             'pricelist'=>$body["pricelist"],
             'onlinePrice'=>$body["onlinePrice"],
             'offlinePrice'=>$body["offlinePrice"],
+            'namaPromo'=>$body["namaPromo"],
             'promo'=>$body["promo"],
             'url'=>$body["url"],
             'description'=>$body["description"],
@@ -104,6 +105,7 @@ class ProdukController extends Controller
             'pricelist'=>$request->pricelist,
             'onlinePrice'=>$request->onlinePrice,
             'offlinePrice'=>$request->offlinePrice,
+            'namaPromo'=>$request->namaPromo,
             'promo'=>$request->promo,
             'url'=>$request->url,
             'description'=>$request->description,
@@ -133,5 +135,18 @@ class ProdukController extends Controller
             $produk[$i]["images"] = json_decode($produk[$i]["images"], true);
         }
         if($produk) return response()->json(['success'=> true, 'produk'=>$produk]);
+    }
+
+    public function showByCategory(string $kategoriName){
+        $productsByCategory= Produk::where("kategoriId", $kategoriName)->orderBy("name", "asc")->get();
+        for($i=0;$i<count($productsByCategory); $i++){
+            $productsByCategory[$i]["images"] = json_decode($productsByCategory[$i]["images"], true);
+        }
+        return response()->json(["success"=>true, "produk"=>$productsByCategory], 200);
+    }
+
+    public function searchProductByNameFromBrand(){
+
+        $produk = Produk::where([["name","like","%".$keyword."%"], ["brandId", $brandName]])->take(20)->orderBy('name', 'asc')->get();
     }
 }

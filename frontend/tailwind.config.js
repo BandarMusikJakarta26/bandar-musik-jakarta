@@ -18,15 +18,15 @@ export default {
         "zoom-in": {
           "0%": {
             opacity: 1,
-            transform: "scale3d(1, 1, 1)",
+            transform: "scale3d(1, 1, 1) translateX(0px)",
           },
           "50%": {
             opacity: 1,
-            transform: "scale3d(1.4, 1.4, 1.4)",
+            transform: "scale3d(1, 1, 1) translateX(5px)",
           },
           "100%": {
             opacity: 1,
-            transform: "scale3d(1, 1, 1)",
+            transform: "scale3d(1, 1, 1) translateX(0px)",
           },
         }, "zoom-out": {
           "0%": {
@@ -41,6 +41,9 @@ export default {
             transform: "scale3d(0.3, 0.3, 0.3)",
           },
         }
+      },
+      animation: {
+        "zoom-in": "zoom-in 0.9s infinite ease-in"
       }
     },
   },
