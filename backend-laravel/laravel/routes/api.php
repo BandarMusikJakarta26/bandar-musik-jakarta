@@ -35,6 +35,7 @@ Route::get('/produk/url/{url}', [ProdukController::class, 'showByUrl']);
 Route::get('/produk/{params}', [ProdukController::class, 'show']);
 Route::get('/produk/brand/{brandName}', [ProdukController::class, 'showByBrand']);
 Route::get('/produk/kategori/{kategoriName}', [ProdukController::class, 'showByCategory']);
+Route::get('/produk/search', [ProdukController::class, 'searchProductByNameFromBrand']);
 
 Route::get('/search', [SearchController::class, 'nullSearch']);
 Route::get('/search/{keyword}', [SearchController::class, 'search']);
@@ -47,6 +48,7 @@ Route::controller(\App\Http\Controllers\API\AuthController::class)->group(functi
     
     Route::get('/get-cookie', 'getCookie');
     Route::get('/cookie/{token}', 'setCookie');
+    Route::get('/destroy-cookie', 'destroyCookie');
     Route::get('/logout', 'logout');
 });
 

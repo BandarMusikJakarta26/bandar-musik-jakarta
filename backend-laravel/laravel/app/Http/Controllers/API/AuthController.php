@@ -64,6 +64,10 @@ class AuthController extends Controller
         $cookie = Cookie::forget('access-token');
         return response()->json(['success'=>true,'message'=> 'Berhasil Logout'],200)->withCookie($cookie);
     }
+    public function destroyCookie(){
+        $cookie = Cookie::forget('access-token');
+        return response()->json(['success'=>true,'message'=> 'Berhasil Logout'],200)->withCookie($cookie);
+    }
 
     public function setCookie(Request $request){
         $cookie = Cookie::make("access-token", $request["token"], 60 * 24, null, null, false, true, false, "Lax");

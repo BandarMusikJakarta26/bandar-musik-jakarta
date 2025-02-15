@@ -41,7 +41,12 @@ export async function isLogin(){
 }
 
 export async function doLogout(navigate: NavigateFunction){
-    const token = await axiosClient.get(`api/get-cookie`)
-    await axiosClient.get(`api/logout`, { headers: { 'Authorization': `Bearer ${token.data.cookie}` } })
-    return navigate(0)
+    try{
+        const token = await axiosClient.get(`api/get-cookie`)
+        await axiosClient.get(`api/logout`, { headers: { 'Authorization': `Bearer ${token.data.cookie}` } })
+        return navigate(0)
+    }catch(err: any){
+        await axiosClient.get('api/destroy-cookie')
+        return navigate(0)
+    }
 }

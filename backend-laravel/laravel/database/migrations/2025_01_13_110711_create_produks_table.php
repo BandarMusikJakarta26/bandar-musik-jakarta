@@ -30,6 +30,9 @@ return new class extends Migration
             $table->string('kategoriId');
             $table->json('images')->nullable(true);
             $table->string('stock')->nullable(true);
+            $table->tinyInteger('pajak');
+            $table->tinyInteger('kirim');
+            $table->tinyInteger('pasang');
             $table->timestamps();
         });
     }

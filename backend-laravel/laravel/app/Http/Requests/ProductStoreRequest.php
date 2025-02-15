@@ -36,7 +36,10 @@ class ProductStoreRequest extends FormRequest
             "tinggi"=>["nullable", "string"],
             "berat"=>["nullable", "string"],
             "images.*"=>["required", "image", "mimes:jpg,jpeg,png", "max:3000"],
-            "stock"=>["nullable","string"]
+            "stock"=>["nullable","string"],
+            "pajak"=>["required","string"],
+            "kirim"=>["required","string"],
+            "pasang"=>["required","string"]
         ];
     }
 }

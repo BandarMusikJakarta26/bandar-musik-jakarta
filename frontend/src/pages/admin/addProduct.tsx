@@ -58,8 +58,28 @@ const AddProduct = function(){
 
     async function onUploadForm(){
         try{
-            const upload = new FormData(document.querySelector('form')!)
-
+            const upload = new FormData(document.querySelector('form')!) as any
+            if(upload.get('pajak') == "on"){
+                upload.delete('pajak')
+                upload.append('pajak', 1)
+            }else{
+                upload.delete('pajak')
+                upload.append('pajak', 0)
+            }
+            if(upload.get('kirim') == "on"){
+                upload.delete('kirim')
+                upload.append('kirim', 1)
+            }else{
+                upload.delete('kirim')
+                upload.append('kirim', 0)
+            }
+            if(upload.get('pasang') == "on"){
+                upload.delete('pasang')
+                upload.append('pasang', 1)
+            }else{
+                upload.delete('pasang')
+                upload.append('pasang', 0)
+            }
             if(hargaPromo == '' && !upload.get('namaPromo')){
                 upload.append('namaPromo', '')
             }
@@ -141,7 +161,7 @@ const AddProduct = function(){
                     <form className="flex flex-col gap-y-6" onSubmit={(e)=>e.preventDefault()}>
 
                     <div className="input-top gap-x-12 gap-y-4 md:gap-y-0 mb-8">
-                        <div className="input-group grid grid-cols-[6fr_1fr] gap-x-10">
+                        <div className="input-group grid grid-cols-[20fr_1fr] gap-x-4">
                             <div className="nama">
 
                             <p className="opacity-70 italic indent-5">Nama Produk</p>
@@ -149,14 +169,11 @@ const AddProduct = function(){
                             <input type="text" name="url" placeholder="Masukkan link url" value={url} readOnly className="w-full text-center italic text-[12px] md:text-[13px] opacity-80 indent-0 mt-1 bg-white"/>
 
                             </div>
-                            <div className="berat relative">
-
-                            <p className="opacity-70 italic indent-5">Berat</p>
-                            <input type="text" name="berat" placeholder="Berat" className="name w-full text-[14px] md:text-[18px] tambah indent-0"/>
-                            <p className="opacity-60 absolute top-[37px] right-6">gram</p>
-
+                        
+                            <div className="pajak flex gap-x-2 items-center relative -top-3">
+                                <p className="opacity-70 italic indent-5">Pajak</p>   
+                                <input type="checkbox" name="pajak" className="w-5 h-5 rounded-xl"/>
                             </div>
-                            
 
                         </div>
                     </div>
@@ -168,11 +185,16 @@ const AddProduct = function(){
 
                     {/* Ukuran */}
                     <div className="dimensiheader flex gap-x-3 items-center mt-10">
-                        <h1 className="text-[22px] font-semibold tracking-tight">Ukuran</h1>
+                        <h1 className="text-[22px] font-semibold tracking-tight">Berat dan Ukuran</h1>
                     </div>
 
-                    <div className="dimensi grid grid-cols-3 gap-x-10 -mt-3 mb-2">
+                    <div className="dimensi grid grid-cols-4 gap-x-10 -mt-3 mb-2">
 
+                    <div className="berat relative">
+                        <p className="opacity-70 italic indent-5">Berat</p>
+                        <input type="text" name="berat" placeholder="Berat" className="name w-full text-[14px] md:text-[18px] tambah indent-0"/>
+                        <p className="opacity-60 absolute top-[37px] right-6">gram</p>
+                    </div>
                     <div className="input-group relative">
                             <p className="opacity-70 italic">Panjang</p>
                             <input type="text" name="panjang" placeholder="Panjang" onChange={(e)=>{
@@ -344,6 +366,25 @@ const AddProduct = function(){
                         }} disabled={loading}>{loading ? "Loading" : "Upload"}</button>
                     </div>
 
+                    <div className="info-tambahan flex justify-between my-10">
+
+                  
+                    <h1 className="text-[22px] font-semibold tracking-tight -mt-[6px]">Jasa</h1>
+                
+                    <div className="kotak-jasa flex gap-x-8">
+
+                    <div className="pajak flex gap-x-2 items-center relative">
+                            <p className="opacity-70 italic indent-5">Gratis Pengiriman</p>   
+                            <input type="checkbox" name="kirim" className="w-5 h-5 rounded-xl"/>
+                    </div>
+                    <div className="pajak flex gap-x-2 items-center">
+                            <p className="opacity-70 italic indent-5">Gratis Pemasangan</p>   
+                            <input type="checkbox" name="pasang" className="w-5 h-5 rounded-xl"/>
+                    </div>
+
+                    </div>
+
+                    </div>
                     </form>
 
                     <div className="flex items-center justify-center w-full">

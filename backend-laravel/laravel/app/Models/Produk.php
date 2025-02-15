@@ -10,7 +10,7 @@ class Produk extends Model
 {
     use HasFactory;
     protected $table = "produk";
-    protected $fillable = ['name', 'pricelist', 'offlinePrice', 'onlinePrice', 'namaPromo', 'promo', 'description', 'panjang', 'lebar', 'tinggi', 'berat', 'url','brandId', 'kategoriId', 'images', 'stock'];
+    protected $fillable = ['name', 'pricelist', 'offlinePrice', 'onlinePrice', 'namaPromo', 'promo', 'description', 'panjang', 'lebar', 'tinggi', 'berat', 'url','brandId', 'kategoriId', 'images', 'stock', 'pajak', 'kirim', 'pasang'];
     protected $casts = [ 'images' => 'array' ];
     protected function images(): Attribute
     {

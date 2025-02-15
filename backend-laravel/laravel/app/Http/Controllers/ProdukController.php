@@ -56,7 +56,10 @@ class ProdukController extends Controller
             'brandId'=>$body["brand"],
             'kategoriId'=>$body["kategori"],
             'images'=>json_encode($imageData),
-            'stock'=>$body["stock"]
+            'stock'=>$body["stock"],
+            'pajak'=>$body["pajak"],
+            'kirim'=>$body["kirim"],
+            'pasang'=>$body["pasang"],
         ]);
 
         // $kategori = Kategori::where('title', $body["kategori"])->get()[0];
@@ -115,7 +118,10 @@ class ProdukController extends Controller
             'berat'=>$request->berat,
             'brandId'=>$request->brand,
             'kategoriId'=>$request->kategori,
-            'stock'=>$request->stock
+            'stock'=>$request->stock,
+            'pajak'=>$request->pajak,
+            'kirim'=>$request->kirim,
+            'pasang'=>$request->pasang,
             // 'images'=>json_encode($imageData),
         ]);
         return response()->json(["success"=>true,"produk"=>$produk],200);
@@ -145,8 +151,10 @@ class ProdukController extends Controller
         return response()->json(["success"=>true, "produk"=>$productsByCategory], 200);
     }
 
-    public function searchProductByNameFromBrand(){
-
-        $produk = Produk::where([["name","like","%".$keyword."%"], ["brandId", $brandName]])->take(20)->orderBy('name', 'asc')->get();
+    public function searchProductByNameFromBrand(Request $request){
+        if($request->has("keyword")){
+            $produk = Produk::where([["name","like","%".$request->keyword."%"], ["brandId", $request->brandName]])->take(20)->orderBy('name', 'asc')->get();
+            return response()->json(["success"=>true, "produk"=>$produk], 200);
+        }else return response()->json(["success"=>true], 200);
     }
 }

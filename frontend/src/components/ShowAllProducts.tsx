@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import responsivePage from "../action/screen.action"
 import DesktopUI from "./responsiveProducts/DekstopUI"
 import MobileUI from "./responsiveProducts/MobileUI"
+import axiosClient from "../../libs/axiosConfig"
 
 function ShowPagination({ pagesNumber, currentPage, setCurrentPage }: { pagesNumber: any[], currentPage: number,setCurrentPage: React.SetStateAction<any>}){
     const totalPage = Math.floor(pagesNumber.length/20)
@@ -24,6 +25,11 @@ const ShowAllProducts = function({ products, according, deleteAction}: { product
     const currentProducts = products.slice(firstPostPage, lastPostPage)
 
     useEffect(()=>{ responsivePage(setScreen) })
+
+    async function searchProducts(keyword: string){
+        const response = await axiosClient(`/api/produk/search?keyword=${keyword}&brandName=BOSS`)
+        console.log(response)
+    }
 
     if(screen <= 768 ) return (
         <>
@@ -66,7 +72,7 @@ const ShowAllProducts = function({ products, according, deleteAction}: { product
                 </select>
 
                 </div>
-                <input type="text" placeholder="Search"/>
+                <input type="text" placeholder="Search" onChange={(e:any)=>searchProducts(e.target.value)}/>
             </div>
 
             <div className="product-list w-full grid grid-cols-1 md:grid-cols-5 gap-y-4 md:gap-x-2 md:gap-y-10">

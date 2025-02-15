@@ -69,7 +69,29 @@ const UpdateProduct = function(){
 
     async function onUploadForm(){
         try{
-            const upload = new FormData(document.querySelector('form')!) 
+            const upload = new FormData(document.querySelector('form')!) as any
+
+            if(upload.get('pajak') == "on"){
+                upload.delete('pajak')
+                upload.append('pajak', 1)
+            }else{
+                upload.delete('pajak')
+                upload.append('pajak', 0)
+            }
+            if(upload.get('kirim') == "on"){
+                upload.delete('kirim')
+                upload.append('kirim', 1)
+            }else{
+                upload.delete('kirim')
+                upload.append('kirim', 0)
+            }
+            if(upload.get('pasang') == "on"){
+                upload.delete('pasang')
+                upload.append('pasang', 1)
+            }else{
+                upload.delete('pasang')
+                upload.append('pasang', 0)
+            }
 
             if((hargaPromo == "" && product.promo) && !upload.get('namaPromo')){ upload.append('namaPromo', 'Promo') }
             if((hargaPromo == "" && !product.promo) && upload.get('namaPromo')){ upload.delete('namaPromo') }
@@ -140,14 +162,10 @@ const UpdateProduct = function(){
                                 <input type="text" name="url" placeholder="Masukkan link url" defaultValue={product && product.url} readOnly className="w-full text-center italic text-[12px] md:text-[13px] opacity-80 indent-0 mt-1 bg-white url"/>
     
                                 </div>
-                                <div className="berat relative">
-    
-                                <p className="opacity-70 italic indent-5">Berat</p>
-                                <input type="text" name="berat" placeholder="Berat" className="name w-full text-[14px] md:text-[18px] tambah indent-0" defaultValue={product && product.berat} />
-                                <p className="opacity-60 absolute top-[37px] right-6">gram</p>
-    
+                                <div className="pajak flex gap-x-2 items-center relative -top-3">
+                                    <p className="opacity-70 italic indent-5">Pajak</p>   
+                                    <input type="checkbox" name="pajak" className="w-5 h-5 rounded-xl" defaultChecked={product.pajak == 1 ? true : false}/>
                                 </div>
-                                
     
                             </div>
                         </div>
@@ -159,11 +177,17 @@ const UpdateProduct = function(){
     
                         {/* Ukuran */}
                         <div className="dimensiheader flex gap-x-3 items-center mt-10">
-                            <h1 className="text-[22px] font-semibold tracking-tight">Ukuran</h1>
+                            <h1 className="text-[22px] font-semibold tracking-tight">Berat dan Ukuran</h1>
                         </div>
     
-                        <div className="dimensi grid grid-cols-3 gap-x-10 -mt-3 mb-2">
+                        <div className="dimensi grid grid-cols-4 gap-x-10 -mt-3 mb-2">
     
+                        <div className="berat relative">
+                            <p className="opacity-70 italic indent-5">Berat</p>
+                            <input type="text" name="berat" placeholder="Berat" className="name w-full text-[14px] md:text-[18px] tambah indent-0" defaultValue={product && product.berat}/>
+                            <p className="opacity-60 absolute top-[37px] right-6">gram</p>
+                        </div>
+                        
                         <div className="input-group relative">
                                 <p className="opacity-70 italic">Panjang</p>
                                 <input type="text" name="panjang" placeholder="Panjang" onChange={(e)=>{
@@ -337,6 +361,28 @@ const UpdateProduct = function(){
     </select>
     
                         </div>
+
+                   {/* JASA */}
+                   <div className="info-tambahan flex justify-between my-10">
+
+                  
+<h1 className="text-[22px] font-semibold tracking-tight -mt-[6px]">Jasa</h1>
+
+<div className="kotak-jasa flex gap-x-8">
+
+<div className="pajak flex gap-x-2 items-center relative">
+        <p className="opacity-70 italic indent-5">Gratis Pengiriman</p>   
+        <input type="checkbox" name="kirim" className="w-5 h-5 rounded-xl" defaultChecked={product.kirim == 1 ? true : false}/>
+</div>
+<div className="pajak flex gap-x-2 items-center">
+        <p className="opacity-70 italic indent-5">Gratis Pemasangan</p>   
+        <input type="checkbox" name="pasang" className="w-5 h-5 rounded-xl" defaultChecked={product.pasang == 1 ? true : false}/>
+</div>
+
+</div>
+
+</div>
+
     
                         <div className="input-btm absolute w-full bottom-16">
                             <button type="submit" className="border-2 border-third rounded-full text-[20px] font-semibold py-2 hover:bg-third hover:text-primary transition-all px-8 w-full" onClick={()=>{
