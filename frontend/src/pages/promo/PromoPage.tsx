@@ -7,10 +7,10 @@ const PromoPage = function(){
     useEffect(()=>{ getProductByPromo(products, setProducts) }, [])
 
     return (
-        <div className="mobile px-6 md:px-0 flex flex-col gap-y-8">
+        <div className="mobile px-6 md:px-0 flex flex-col gap-y-8 mt-8">
             {/* <BrandTitle brand={brand}/> */}
             {/* <div className="line w-full h-[2px] bg-third"></div> */}
-            <ShowAllProducts according="promo" products={products} deleteAction={false}/>
+            <ShowAllProducts according="promo" products={products} deleteAction={false} setProducts={setProducts} login={false}/>
         </div>
     )
 }

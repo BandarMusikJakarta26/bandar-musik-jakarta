@@ -25,7 +25,7 @@ const GetCategory = function(){
         <div className="w-full box-border pt-12 px-5 md:p-10">
             <div className="brandList w-full">
                 <Suspense fallback={<LoadingComponent/>}>
-                    { categories.length == 0 ? <KategoriKosong/> : <DataCategory categories={categories}/> }
+                    { categories.length == 0 ? <KategoriKosong/> : <DataCategory categories={categories} setCategories={setCategories}/> }
                 </Suspense>
             </div>
         </div>

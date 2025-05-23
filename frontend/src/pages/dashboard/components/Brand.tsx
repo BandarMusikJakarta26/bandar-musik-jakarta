@@ -8,7 +8,7 @@ const BrandList = lazy(()=>import("./BrandList"))
 export default function Brand(){
     const [ brands, setBrands ] = useState<any[]>([])
 
-    useEffect(()=>{ getBrandsWithLimit(brands, setBrands, 20) }, [])
+    useEffect(()=>{ getBrandsWithLimit(brands, setBrands) }, [])
 
     return (
         <div className="brand mt-[100px]">

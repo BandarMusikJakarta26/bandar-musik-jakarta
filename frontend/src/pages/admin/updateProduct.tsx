@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react"
-import { useNavigate, useParams } from "react-router"
+import { useLocation, useNavigate, useParams } from "react-router"
 import { getBrands } from "../../action/brand.action"
 import { getCategories } from "../../action/kategori.action"
 import { FaPercent } from "react-icons/fa";
 import { getProductByUrl, setCurrency } from "../../action/produk.action"
 import LoadingPage from "../../components/LoadingPage"
 import axiosClient from "../../../libs/axiosConfig";
+import axios from "axios";
 
 const UpdateProduct = function(){
+    const apiKey= "45c165ab4a045f50b07dfac796b661d704f06269"
     const { url } = useParams()
     console.log(url)
     // const [ image, setImage ] = useState<number>(0)
@@ -43,6 +45,7 @@ const UpdateProduct = function(){
     console.log(urlName)
 
     const navigate = useNavigate()
+    const location = useLocation()
 
     const promos = ['Walk-in', 'Akhir Tahun', 'Cuci Gudang']
 
@@ -69,7 +72,26 @@ const UpdateProduct = function(){
 
     async function onUploadForm(){
         try{
-            const upload = new FormData(document.querySelector('form')!) as any
+            const el = document.querySelector('.formUpdate')! as any
+            const upload = new FormData(el) as any
+
+            if(upload.get('offlinePrice') == 0){
+                upload.delete('offlinePrice')
+            }
+
+            if(hargaOffline && hargaOffline.includes('.')){
+                const nominalOffline = hargaOffline.split('').filter((curr: any)=>curr!=='.')
+                upload.delete('offlinePrice')
+                upload.append('offlinePrice', nominalOffline.join(''))
+            }
+            
+            if(product.offlinePrice && !hargaOffline){
+                upload.delete('offlinePrice')
+                upload.append('offlinePrice', product.offlinePrice)
+            }
+
+            console.log('submit', upload.get('offlinePrice'))
+            console.log('display', hargaOffline)
 
             if(upload.get('pajak') == "on"){
                 upload.delete('pajak')
@@ -106,9 +128,37 @@ const UpdateProduct = function(){
                 upload.delete('offlinePrice')
                 upload.append('offlinePrice', `${offline} true`)
             }
+            
+            if(upload.get('stock') == "" || !upload.get('stock')){
+                if(upload.get('preorder')){
+                    upload.delete('stock')
+                    upload.append('stock', "-1")
+                }
+                else{
+                    upload.delete('stock')
+                    upload.append('stock', "0")
+                }
+            }
+
+            if(upload.get('offlinePrice') && parseInt(upload.get('offlinePrice')) > 0){
+                // const response = await axios.get(`https://api.getgeoapi.com/v2/currency/convert?api_key=${apiKey}&from=IDR&to=USD&amount=${upload.get('offlinePrice')}&format=json`)
+                const offline = upload.get('offlinePrice')
+                // let usd = response.data.rates.USD.rate_for_amount as string
+                // usd = Number.parseFloat(usd).toFixed(2)
+                upload.delete('offlinePrice')
+                // upload.append('offlinePrice', `${offline} ${usd}`)
+                upload.append('offlinePrice', `${offline}`)
+               
+            }else if(upload.get('offlinePrice') && hargaOffline == ""){
+                const response = await axios.get(`https://api.getgeoapi.com/v2/currency/convert?api_key=${apiKey}&from=IDR&to=USD&amount=${product.offlinePrice.split(' ')[1] ? product.offlinePrice.split(' ')[0] : product.offlinePrice }&format=json`)
+                let usd = response.data.rates.USD.rate_for_amount as string
+                usd = Number.parseFloat(usd).toFixed(2)
+                upload.delete('offlinePrice')
+                upload.append('offlinePrice', `${product.offlinePrice} ${usd}`)
+            }
 
             await axiosClient.post(`api/update/produk/${url!}`, upload)
-            return navigate('/admin/produk')
+            return navigate(location.state.previousUrl)
         }catch(error:any){ console.log(error) }
         finally{
             setLoading(false)
@@ -151,13 +201,14 @@ const UpdateProduct = function(){
     
                     <div className="form flex flex-col gap-y-6 relative pb-36">
     
-                        <form className="flex flex-col gap-y-6" onSubmit={(e)=>e.preventDefault()}>
+                        <form className="flex flex-col gap-y-6 formUpdate" onSubmit={(e)=>e.preventDefault()}>
     
                         <div className="input-top gap-x-12 gap-y-4 md:gap-y-0 mb-8">
                             <div className="input-group grid grid-cols-[6fr_1fr] gap-x-10">
                                 <div className="nama">
     
                                 <p className="opacity-70 italic indent-5">Nama Produk</p>
+
                                 <input type="text" name="name" placeholder="Masukkan nama produk" className="name w-full text-[14px] md:text-[18px] tambah indent-0" onChange={generateUrlValue} defaultValue={product && product.name}/>
                                 <input type="text" name="url" placeholder="Masukkan link url" defaultValue={product && product.url} readOnly className="w-full text-center italic text-[12px] md:text-[13px] opacity-80 indent-0 mt-1 bg-white url"/>
     
@@ -302,8 +353,22 @@ const UpdateProduct = function(){
                                     </div>
                                 </div>
 
-                                <input type="text" name="offlinePrice" placeholder="0" onChange={(e)=>{ setHargaOffline(e.target.value)}} defaultValue={product.offlinePrice ? product.offlinePrice.split(' ')[1] ? product.offlinePrice.split(' ')[0] : product.offlinePrice : hargaOffline } className={`w-full text-[14px] md:text-[18px] tambah indent-[30px] ${coret ? 'line-through' : ''}`}/>
-                                <p className={`opacity-60 mt-2 text-[14px] absolute top-[30px] right-5  ${coret ? 'line-through' : ''}`}>{product && product.offlinePrice && hargaOffline == "" ? product.offlinePrice.split(' ')[1] ? setCurrency(product.offlinePrice.split(' ')[0]) : setCurrency(product.offlinePrice) : setCurrency(hargaOffline)}</p>
+                                <input type="text" name="offlinePrice" placeholder={product.offlinePrice ? product.offlinePrice.split(' ')[0]
+                                        .replace(/\D/g, "")
+                                        .replace(/\B(?=(\d{3})+(?!\d))/g, ".") : 0}
+                                        
+                                    onChange={(e)=>{ 
+                                    setHargaOffline(e.target.value
+                                        .replace(/\D/g, "")
+                                        .replace(/\B(?=(\d{3})+(?!\d))/g, "."))
+                                }} 
+                               
+                                value={hargaOffline && hargaOffline}
+
+                                defaultValue={product.offlinePrice ? product.offlinePrice.split(' ')[1] ? product.offlinePrice.split(' ')[0] : product.offlinePrice : hargaOffline }
+                                
+                                className={`w-full text-[14px] md:text-[18px] tambah indent-[30px] ${coret ? 'line-through' : ''}`}/>
+
                                 <p className="py-1 px-2 bg-gray-200 rounded-md absolute top-[32px] left-[8px]">Rp</p>
 
                             </div>
@@ -337,11 +402,17 @@ const UpdateProduct = function(){
                                 <p className="py-1 px-2 bg-gray-200 rounded-md absolute top-[32px] left-[8px]">Rp</p>
                             </div>
                             <div className="input-group">
+                            <div className="head-stock flex justify-between">
                                 <p className="opacity-70 italic">Stock</p>
+                                <div className="po flex items-center gap-x-1">
+                                    <input type="checkbox" name="preorder" defaultChecked={product.stock == -1 ? true : false}/>
+                                    <p className="text-[12px] italic text-gray-500">Pre-Order</p>
+                                </div>
+                            </div>
                                 <input type="number" name="stock" placeholder="Stock" onChange={(e)=>{
                                     if(parseInt(e.target.value) < 0) setStock(0)
                                     else setStock(e.target.value)
-                                }} defaultValue={product && product.stock ? product.stock : stock} className="w-full text-[14px] md:text-[18px] indent-0 tambah"/>
+                                }} defaultValue={product && product.stock >= 0 ? product.stock : stock} className="w-full text-[14px] md:text-[18px] indent-0 tambah"/>
                             </div>
                         </div>
     
@@ -390,8 +461,9 @@ const UpdateProduct = function(){
                                 return onUploadForm()
                             }} disabled={loading}>{loading ? "Loading" : "Save"}</button>
                         </div>
-    
+
                         </form>
+
     
                         {/* <div className="flex items-center justify-center w-full">
                         <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500">

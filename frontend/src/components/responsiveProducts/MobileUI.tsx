@@ -25,8 +25,21 @@ export default function MobileUI({ products, according, deleteAction }: { produc
                 </div>
 
                 <div className={`${according == "admin" ? "pt-2" : "pt-4"} pb-4 w-full px-2`}>
-                    <h1 className="text-[11px] md:text-[16px] font-semibold">{name}</h1>
+                    <h1 className="text-[11px] md:text-[16px] font-semibold h-[35px]">{name}</h1>
                     <p className="text-[9px] font-normal opacity-70 italic mt-[2px]">{product.kategoriId}</p>
+                    
+                    {product.stock && product.stock > 0 ? <div className=" 
+                 text-green-500 text-[8px] italic font-semibold z-10">
+                    In-Stock
+                </div> : false}
+                {(product.stock && product.stock == 0) || !product.stock ? <div className=" 
+                 text-red-500 text-[8px] italic font-semibold">
+                    On-Stock
+                </div> : false}
+                {product.stock && product.stock < 0 ? <div className="
+                 text-orange-500 text-[8px] italic font-semibold">
+                    Pre-Order
+                </div> : false}
 
                     <div className="garis h-[1px] bg-gray-300 w-full mt-1"></div>
 
@@ -68,7 +81,7 @@ export default function MobileUI({ products, according, deleteAction }: { produc
 
                 </div>
 
-                {product.stock && product.stock > 0 ? <div className="absolute top-[0px] right-[0px] rounded flex items-center gap-x-1 bg-teal-600 text-white px-1">
+                {product.promo && product.stock && product.stock > 0 ? <div className="absolute top-[0px] right-[0px] rounded flex items-center gap-x-1 bg-teal-600 text-white px-1">
                     <span className="text-[12px] font-bold">{product.stock}</span><span className="text-[9px] italic mt-[2px]">tersisa</span>
                 </div> : false}
 

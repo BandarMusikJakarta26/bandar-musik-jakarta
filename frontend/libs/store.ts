@@ -1,3 +1,4 @@
+import { createContext } from 'react'
 import { create } from 'zustand'
 
 type isLogin = {
@@ -6,8 +7,22 @@ type isLogin = {
     logout: ()=>void
 }
 
+type currencyHandle = {
+    usd: boolean,
+    setUsd: ()=>void
+    unsetUsd: ()=>void
+}
+
+export const changeCurrency = create<currencyHandle>((set)=>({
+    usd: false,
+    setUsd: () => set({ usd: true }),
+    unsetUsd: () => set({ usd: false })
+}))
+
 export const isLoginStore = create<isLogin>((set)=>({
     login: false,
     loggedIn: ()=>set({ login: true }),
     logout: ()=>set({ login: false })
 }))
+
+export const UsdContext = createContext<boolean | null>(null)

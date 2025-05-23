@@ -10,12 +10,13 @@ import { BiSolidRightArrow } from "react-icons/bi";
 import { FaRegWindowClose } from "react-icons/fa"; 
 import { LuPackageSearch } from "react-icons/lu";
 import { TiZoomInOutline } from "react-icons/ti";
-// import BlankPage from "../blank";
 import LoadingPage from "../../components/LoadingPage";
 import { BsArrowRightCircle } from "react-icons/bs";
 import responsivePage from "../../action/screen.action";
-// import { TbTruckDelivery } from "react-icons/tb";
-
+import ZoomImage from "./ZoomImage";
+import { IoMdCloseCircleOutline } from "react-icons/io";
+import { BsCheckCircle } from "react-icons/bs";
+import { TbSquareRoundedArrowRight } from "react-icons/tb";
 
 export default function Product(){
     const { name } = useParams()
@@ -30,6 +31,7 @@ export default function Product(){
     const [ offlineActive, setOfflineActive ] = useState<boolean>(false)
     const [ promoActive, setPromoActive ] = useState<boolean>(false)
     const [ imageContent, showImageContent ] = useState<boolean>(false)
+    const [ deskContent, showDeskContent ] = useState<boolean>(false)
 
     useEffect(()=>{
         if(product) setProduct(product)
@@ -70,34 +72,29 @@ export default function Product(){
         )
     }
 
-    function generateDesk(deskripsi :string){
-        const tulisan = deskripsi.split('\r\n').filter(tulis=>tulis!=="")
-        const lists = tulisan.filter(tulis=>tulis.includes('*'))
-        const desk = deskripsi.split('*')[0]
-        
-        if(lists.length > 0){
-            function ShowDeskList(){
-                return lists.map((list: string, index: number)=>{
-                    return <div key={index} className="flex mb-2 md:px-8 px-3">
-                        <div className="listing w-[10%] md:flex md:justify-end pr-2">
-                            <div className="point w-[7px] h-[7px] bg-third rounded-full relative top-[6px] md:top-2"></div>
-                        </div>
-                        <div className="text w-full">
-                            <p className="md:ml-3 font-semibold text-left">{list.split('*')[1].trim()}</p>
-                        </div>
-                    </div>
-                })
-            }
+    function getSpecification(spec: string){
+        let specs = spec.split('Spesifikasi :')[1] || spec.split('Spesification :')[1] as any
+        specs = specs.split('\r\n\r\n')[0]
+        specs = specs.split('\r\n').filter((spec: any)=>spec !== "")
+        return specs.map((spek: any, index: number)=>{ return <li className={`border-b-[1px] list-none border-gray-400 p-4 grid grid-cols-[1fr_24fr] ${index%2 == 0 ? 'bg-primary' : 'bg-gray-200'}`}>
+            <BsCheckCircle size={18} className="text-teal-800 mt-[2px]"/>
+            <span>{spek.split('* ')[1]}</span>
+        </li> })
+    }
 
-            return (
-                <>
-                    <p className="whitespace-pre-line">{desk}</p>
-                    <br />
-                    <ShowDeskList/> 
-                </>
-            )
-        }
-        else return <p className="whitespace-pre-line">{desk}</p>
+    function getFeature(spec: string){
+        let specs = spec.split('Fitur :')[1] || spec.split('Features :')[1] as any
+        specs = specs.split('\r\n\r\n')[0]
+        specs = specs.split('\r\n').filter((spec: any)=>spec !== "")
+        return specs.map((spek: any, index: number)=>{ return <li className={`border-b-[1px] list-none border-gray-400 p-4 grid grid-cols-[1fr_24fr] ${index%2 == 0 ? 'bg-primary' : 'bg-gray-200'}`}>
+            <BsCheckCircle size={18} className="text-teal-800 mt-[2px]"/>
+            <span>{spek.split('* ')[1]}</span>
+        </li> })
+    }
+
+    function generateDesk(deskripsi :string){
+        const desk = deskripsi.split('\r\n')[0]
+        return <p className="whitespace-pre-line">{desk}</p>
     }
 
     let deskripsiSingkat = product && product.description.split('\n')[0] as any
@@ -107,13 +104,13 @@ export default function Product(){
         }
     }
 
-    function ShowFullImage({ img }: { img:string }){
+    function ShowFullImage({ img, alt }: { img:string, alt: string }){
         return (
                 <div className={`image-content absolute z-50 w-full h-[100%] bg-[#202020] top-0 left-0 overflow-hidden`}>
                     <div className="outer-img w-full flex justify-center items-center h-full p-10">
                         <div className="kotak-img bg-primary rounded-2xl relative">
                             <FaRegWindowClose size={screen <= 768 ? 30 : 48} className="text-third absolute top-2 right-3 hover:cursor-pointer z-30" onClick={()=>showImageContent(false)}/>
-                            <img src={img} className="relative z-20 w-full md:h-[80vh]"/>
+                            <img src={img} className="relative z-20 w-full md:h-[80vh]" alt={alt}/>
                             <img className="gambar md:h-full md:w-full p-10 md:p-32 absolute z-0 top-[6px] left-[10px] md:top-[0px] md:left-[0px] opacity-20" src={watermark}/>
                         </div>
                     </div>
@@ -125,7 +122,7 @@ export default function Product(){
     else if(product && !loading)return (
         <>
         
-        {imageContent && <ShowFullImage img={active ? active : `${host}/storage/${product.images[0]}`}/>}
+        {imageContent && <ShowFullImage img={active ? active : `${host}/storage/${product.images[0]}`} alt={product.name}/>}
 
         <div className={`product ${imageContent ? 'hidden' : 'visible' }`} id="produk">
 
@@ -134,10 +131,10 @@ export default function Product(){
             <div className="area-gambar w-[100%] md:w-[40%] relative z-10 mx-auto md:mx-0">
 
             <div className="gambar h-auto px-10 mb-3 relative">
-                <div className="group gambar-produk w-full h-full border-[1px] md:border-2 border-gray-300 md:border-gray-200">
-                    {product.images.length > 0 ? <img src={active ? active : `${host}/storage/${product.images[0]}`} className="relative z-10"/> : false}
+                <div className="group gambar-produk w-full h-full border-[1px] md:border-2 border-gray-300 md:border-gray-200 relative overflow-hidden">
+                    {product.images.length > 0 ? <ZoomImage src={active ? active : `${host}/storage/${product.images[0]}`} width="100%" height="100%" alt={product.name}/> : false}
                 </div>
-                <button onClick={()=>showImageContent(true)} className="top-0 -left-2 absolute md:top-[20px] md:left-[60px] rounded-full p-1 border-[1px] bg-white">
+                <button onClick={()=>showImageContent(true)} className="top-0 -left-2 absolute md:top-[20px] md:left-[60px] rounded-full p-1 border-[1px] bg-white z-10">
                     <TiZoomInOutline size={screen <= 768 ? 28 : 40} className="text-third"/>
                 </button>
                 {screen <= 768 &&<img className="gambar h-full p-4 absolute z-0 top-0 left-[42px] opacity-20" src={watermark}/>}
@@ -272,10 +269,22 @@ export default function Product(){
             </div>
             </div>
 
-            <div className="desk px-6 py-8 md:px-28 md:py-10 md:bg-white rounded-3xl md:mx-20 mx-6 mt-8 md:mt-10 border-[1px] border-gray-300 md:border-0" id="deskripsi">
-                <p className="font-bold opacity-70 text-[14px] md:text-[24px]">Deskripsi Produk</p>
+            <div className="desk px-6 py-8 md:px-28 md:py-10  rounded-3xl mx-6 md:mx-0 mt-8 md:mt-10 border-[1px] border-gray-300 md:border-none md:bg-white" id="deskripsi">
+                <div className="desk-head flex justify-between">
+                    <p className="font-bold opaity-70 text-[14px] md:text-[24px]">Deskripsi Produk</p>
+                    <div className="desk-dll flex gap-x-4 items-center">
+                        { product.description.includes("Spesifikasi :") || product.description.includes("Spesification :") ? <a className="flex items-center gap-x-1 justify-center border-[1px] border-third w-[150px] text-center rounded-xl py-1 cursor-pointer hover:bg-third hover:text-primary transition-all" onClick={()=>showDeskContent(true)}>
+                            Spesifikasi
+                            <TbSquareRoundedArrowRight size={24} className="animate-zoom-in"/>
+                        </a>  : false }
+                        { product.description.includes("Fitur :") || product.description.includes("Features :") ? <a className="flex items-center gap-x-1 justify-center border-[1px] border-third w-[150px] text-center rounded-xl py-1 cursor-pointer hover:bg-third hover:text-primary transition-all" onClick={()=>showDeskContent(true)}>
+                            Fitur
+                            <TbSquareRoundedArrowRight size={24} className="animate-zoom-in"/>
+                        </a>  : false }
+                    </div>
+                </div>
                 <div className="garis h-[2px] w-[122px] md:w-[190px] bg-third rounded-full opacity-65 mt-1"/>
-                <div className="text-[12px] md:text-[18px] text-justify mt-2 md:mt-4">{generateDesk(product.description)}</div>
+                <div className="text-[12px] md:text-[16px] leading-8 text-justify mt-2 md:mt-4">{generateDesk(product.description)}</div>
                 <iframe className="w-full h-[200px] md:h-[500px] rounded-xl md:rounded-3xl mt-20"
                     src="https://www.youtube.com/embed/tgbNymZ7vqY?controls=1">
                 </iframe>
@@ -287,8 +296,25 @@ export default function Product(){
             </div>
         </div>
 
+        <div className={`deskripsi-tambahan w-full h-[100vh] fixed top-0 left-[2000px] z-[70] ${deskContent ? '-translate-x-[1200px]' : 'translate-x-0'} transition duration-1000`}>
+            <IoMdCloseCircleOutline size={60} className="text-third absolute top-[50%] left-[-40px] p-2 bg-primary rounded-bl-full rounded-tl-full z-[80] cursor-pointer" onClick={()=>showDeskContent(false)}/>
+            <div className="konten-deskripsi w-full h-full bg-primary relative px-20 py-14 flex flex-col gap-y-8 overflow-scroll">
+                { (product.description.split('Spesifikasi :')[1] || product.description.split('Spesification :')[1]) && <div className="spek">
+                    <h1 className="text-[36px] text-third font-bold tracking-tight">Spesifikasi</h1>
+                    <div className="w-[54%]">{ getSpecification(product.description) }</div>
+                </div>}
+                { (product.description.split('Fitur :')[1] || product.description.split('Features :')[1])  && <div className="fitur">
+                    <h1 className="text-[36px] text-third font-bold tracking-tight">Fitur</h1>
+                    <div className="w-[54%]">{ getFeature(product.description) }</div>
+                </div> }
+            </div>
+        </div>
+        <div className={`overlah fixed w-full left-0 top-0 h-[100vh] bg-black ${deskContent ? 'opacity-70 z-[60]' : 'opacity-0 z-[-1]'} transition duration-1000`}></div>
 
         </>
     )
     else <LoadingPage/>
 }
+
+
+

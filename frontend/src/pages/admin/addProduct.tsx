@@ -5,8 +5,11 @@ import { getCategories } from "../../action/kategori.action"
 import axiosClient from "../../../libs/axiosConfig"
 import { FaPercent } from "react-icons/fa";
 import { setCurrency } from "../../action/produk.action"
+// import axios from "axios"
 
 const AddProduct = function(){
+    // const apiKey= "45c165ab4a045f50b07dfac796b661d704f06269"
+
     const [ image, setImage ] = useState<number>(0)
     const [ brands, setBrand ] = useState<any[]>([])
     const [ url, setUrl ] = useState<string>('')
@@ -58,7 +61,9 @@ const AddProduct = function(){
 
     async function onUploadForm(){
         try{
-            const upload = new FormData(document.querySelector('form')!) as any
+            const form = document.querySelector('.addForm') as HTMLFormElement
+            const upload = new FormData(form) as any
+
             if(upload.get('pajak') == "on"){
                 upload.delete('pajak')
                 upload.append('pajak', 1)
@@ -89,19 +94,27 @@ const AddProduct = function(){
             if(hargaPromo == "" && upload.get('namaPromo')){ upload.delete('namaPromo') }
 
             const promo = upload.get('promo') as string
-            if(promo.trim() == ""){ upload.append('promo', '') }
+
+            if(promo == ""){ upload.append('promo', '') }
             if(hargaOnline.trim() == ""){ upload.append('onlinePrice', '') }
             if(hargaOffline.trim() == ""){ 
                 setCoret(false)
                 upload.append('offlinePrice', '')
+            }else{
+                upload.append('offlinePrice', hargaOffline)
             }
+            
             if(hargaPrice.trim() == ""){ 
                 setCoret(false)
                 upload.append('pricelist', '')
             }
 
             if(stock == "" || !stock){
-                upload.append('stock', "0")
+                if(upload.get('preorder')){
+                    upload.append('stock', "-1")
+                }else{
+                    upload.append('stock', "0")
+                }
             }else upload.append('stock', stock.toLocaleString())
 
             for(let i = 0; i < files!.length; i++){
@@ -117,6 +130,15 @@ const AddProduct = function(){
                 let pricelist = hargaPrice
                 pricelist = `${pricelist} true`
                 upload.append('pricelist', pricelist)
+            }
+            
+            if(hargaOffline && parseInt(hargaOffline) > 0){
+                // const response = await axios.get(`https://api.getgeoapi.com/v2/currency/convert?api_key=${apiKey}&from=IDR&to=USD&amount=${hargaOffline}&format=json`)
+                // let usd = response.data.rates.USD.rate_for_amount as any
+                // usd = Number.parseFloat(usd).toFixed(2)
+                upload.delete('offlinePrice')
+                upload.append('offlinePrice', `${hargaOffline}`)
+                // upload.append('offlinePrice', `${hargaOffline} ${usd}`)
             }
 
             await axiosClient.post(`api/tambah/produk`, upload)
@@ -158,7 +180,7 @@ const AddProduct = function(){
 
                 <div className="form flex flex-col gap-y-6 relative pb-36">
 
-                    <form className="flex flex-col gap-y-6" onSubmit={(e)=>e.preventDefault()}>
+                    <form className="flex flex-col gap-y-6 addForm" onSubmit={(e)=>e.preventDefault()}>
 
                     <div className="input-top gap-x-12 gap-y-4 md:gap-y-0 mb-8">
                         <div className="input-group grid grid-cols-[20fr_1fr] gap-x-4">
@@ -336,7 +358,13 @@ const AddProduct = function(){
                             <p className="py-1 px-2 bg-gray-200 rounded-md absolute top-[32px] left-[8px]">Rp</p>
                         </div>
                         <div className="input-group">
-                            <p className="opacity-70 italic">Stock</p>
+                            <div className="head-stock flex justify-between">
+                                <p className="opacity-70 italic">Stock</p>
+                                <div className="po flex items-center gap-x-1">
+                                    <input type="checkbox" name="preorder"/>
+                                    <p className="text-[12px] italic text-gray-500">Pre-Order</p>
+                                </div>
+                            </div>
                             <input type="number" name="stock" placeholder="Stock" onChange={(e)=>{
                                 if(parseInt(e.target.value) < 0) setStock(0)
                                 else setStock(e.target.value)

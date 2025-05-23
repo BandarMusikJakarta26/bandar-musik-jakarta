@@ -7,6 +7,9 @@ const dataSet= [
     { data: 'Brand', jumlah: 0 },
     { data: 'Kategori', jumlah: 0 },
     { data: 'Produk', jumlah: 0 },
+    { data: 'In-Stock', jumlah: 0 },
+    { data: 'On-Stock', jumlah: 0 },
+    { data: 'Pre-Order', jumlah: 0 },
 ]
 
 export default function AdminDashboard(){
@@ -20,7 +23,10 @@ export default function AdminDashboard(){
         return setDataGroup([
             { data: 'Brand', jumlah: jumlahBrand },
             { data: 'Kategori', jumlah: jumlahKategori },
-            { data: 'Produk', jumlah: jumlahProduk },
+            { data: 'Produk', jumlah: jumlahProduk.inStock + jumlahProduk.onStock + jumlahProduk.preOrder },
+            { data: 'In-Stock', jumlah: jumlahProduk.inStock },
+            { data: 'On-Stock', jumlah: jumlahProduk.onStock },
+            { data: 'Pre-Order', jumlah: jumlahProduk.preOrder },
         ])
     }
 
@@ -43,7 +49,7 @@ export default function AdminDashboard(){
         <div className="dashboard pt-[44px] px-4">
             <h1 className="text-[30px] font-bold tracking-tight">Halo Admin!</h1>
 
-            <div className="statistik grid grid-cols-3 gap-x-6 mt-3">
+            <div className={`statistik grid grid-cols-3 gap-x-6 gap-y-10 mt-3`}>
                 <DisplayData/>
             </div>
         </div>

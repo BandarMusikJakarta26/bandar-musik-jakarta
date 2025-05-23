@@ -23,7 +23,7 @@ export default function NavAdmin({ login, currentLogin }: { login: boolean, curr
     
     if(login || (!login && currentLogin)){
         return ( 
-            <div className={`nav-admin fixed top-[123px] left-0 bg-second text-[8px] md:text-[20px] text-third flex justify-center w-full drop-shadow-xl gap-x-4 md:gap-x-5 py-2 z-40`}>
+            <div className={`nav-admin fixed top-[128px] md:top-[108px] left-0 bg-second text-[8px] md:text-[20px] text-third flex justify-center w-full drop-shadow-xl gap-x-4 md:gap-x-5 py-2 z-40`}>
                 <ShowMenu/>
             </div>
 

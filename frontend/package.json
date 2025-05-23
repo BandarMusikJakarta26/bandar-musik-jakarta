@@ -12,6 +12,7 @@
   "dependencies": {
     "@cloudinary/react": "^1.13.1",
     "@cloudinary/url-gen": "^1.21.0",
+    "@gsap/react": "^2.1.2",
     "@hookform/resolvers": "^3.9.1",
     "@lordicon/react": "^1.10.1",
     "@smakss/react-scroll-direction": "^4.2.0",
@@ -19,6 +20,7 @@
     "axios": "^1.7.9",
     "axios-cache-interceptor": "^1.6.2",
     "framer-motion": "^11.13.3",
+    "gsap": "^3.12.7",
     "lord-icon-element": "^4.1.2",
     "lottie-web": "^5.12.2",
     "react": "^18.3.1",

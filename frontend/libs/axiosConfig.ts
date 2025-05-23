@@ -17,6 +17,6 @@ let axiosClient = axios.create({
 }) as any
 axiosClient = setupCache(axiosClient, { 
     storage: buildWebStorage(sessionStorage, 'axios-cache:')
- })
+})
 
 export default axiosClient

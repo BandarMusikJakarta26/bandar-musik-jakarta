@@ -7,12 +7,13 @@ import { getBrandByName } from "../../action/brand.action"
 import LoadingPage from "../../components/LoadingPage"
 import BlankPage from "../blank"
 
-export default function Brand(){
+export default function Brand({ login }:{ login: boolean }){
+
     const { name } = useParams()
         const [ brand, setBrand ] = useState<any | false>(false)
         const [ loading, setLoading ] = useState<boolean>(false)
 
-        useEffect(()=>{ getBrandByName(setBrand, setLoading, name!) }, [])
+        useEffect(()=>{ getBrandByName(setBrand, setLoading, name!)}, [])
 
         if(loading) return ( <LoadingPage/> )
         if(!loading && !brand) return ( <BlankPage/> )
@@ -21,7 +22,7 @@ export default function Brand(){
                 <div className="mobile px-6 md:px-0 flex flex-col gap-y-8">
                     <BrandTitle brand={brand}/>
                     <div className="line w-full h-[2px] bg-third"></div>
-                    <ProductList brand={brand.name} />
+                    <ProductList brand={brand.name} login={login}/>
                 </div>
             </>
         )

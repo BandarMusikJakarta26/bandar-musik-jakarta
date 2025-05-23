@@ -14,7 +14,7 @@ export default function MainFooter(){
 
     useEffect(()=>{
         getCategoriesWithLimit(categories, setCategories) 
-        getBrandsWithLimit(brands,setBrands, 30)
+        getBrandsWithLimit(brands, setBrands, 30)
     }, [])
 
     return (

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router"
 // import { checkAdmin } from "../../action/auth.action"
 // import BlankPage from "../blank"
 import { createCategory } from "../../action/kategori.action"
+import { parentsKategori, subParentsKategori } from "../../../libs/kategoriParent"
 
 export default function AddCategory(){
     // const [ admin, isAdmin ] = useState<boolean>(false) 
@@ -12,6 +13,8 @@ export default function AddCategory(){
     const [ gambar, setGambar ] = useState<Blob | null>(null)
     const [ image, setImage ] = useState<any | null>(null)
     const [ name, setName ] = useState<string>('')
+    const [ parent, setParent ] = useState<string | null>(null)
+    const [ subParent, setSubParent ] = useState<string | null>(null)
     const [ loading, setLoading ] = useState<boolean>(false)
     const navigate = useNavigate()
 
@@ -21,6 +24,9 @@ export default function AddCategory(){
             const form = new FormData()
             form.append('title', name)
             form.append('image', gambar!)
+            form.append('bigParent', parent!)
+            form.append('subParent', subParent!)
+     
             const response = await createCategory(form)
             setLoading(false)
             if(response.data.success) return navigate('/admin/kategori')
@@ -45,6 +51,18 @@ export default function AddCategory(){
                         setGambar(e.target.files![0]) 
                         previewFile(e.target.files![0])
                     }} required/>
+                    <select name="parent" onChange={(e)=>setParent(e.target.value)}>
+                        <option disabled>Parent</option>
+                        { parentsKategori.map((parent: string)=>{
+                            return <option value={parent}>{parent}</option>
+                        }) }
+                    </select>
+                    <select name="subparent" onChange={(e)=>setSubParent(e.target.value)}>
+                        <option disabled>Subparent</option>
+                        { subParentsKategori.map((sb: string)=>{
+                            return <option value={sb}>{sb}</option>
+                        }) }
+                    </select>
                     <div className="kotab-btn flex justify-center">
                         <button type="submit" onClick={submitKategori} disabled={loading} className="disabled:bg-third border-2 border-third px-8 mt-4 hover:bg-third disabled:text-primary hover:text-primary text-[14px]">Kirim</button>
                     </div>

@@ -34,15 +34,15 @@ const GetBrand = function(){
         function ShowBrand(){ 
             return brands.map((brand, index)=>{
             return (
-                <div className="brandfield flex flex-col shadow-lg items-center" key={index+1}>
-                    <div className="gambar md:p-0 p-3">
+                <a className="brandfield flex flex-col border-[1px] border-gray-300 items-center group" key={index+1} href={`/brand/${brand.name}`}>
+                    <div className="gambar md:px-8 px-3 pt-2 md:pt-0 group-hover:scale-110 transition-all">
                         <img src={`${host}/storage/${brand.image}`} alt="" />
                     </div>
                     <div className="nama-brand p-4 md:p-5 flex flex-col items-center gap-y-2">
-                        <h1 className="md:text-[24px] font-semibold">{brand.name}</h1>
-                        <button className="bg-red-600 text-primary font-semibold rounded-full py-[2px] md:py-1 hover:brightness-90 w-[60px] md:w-[70px] text-[10px] md:text-[14px]" onClick={()=>deleteBrandByName(brand.name)}>Delete</button>
+                        <h1 className="md:text-[15px] text-[11px] text-center font-semibold">{brand.name}</h1>
+                        <button className="bg-red-600 text-primary font-semibold rounded-full py-[1px] hover:brightness-90 w-[54px] md:w-[70px] text-[10px] md:text-[12px]" onClick={()=>deleteBrandByName(brand.name)}>Delete</button>
                     </div>
-                </div>
+                </a>
                 )
             })
         }
@@ -52,9 +52,9 @@ const GetBrand = function(){
                 <div className="headbrand flex justify-between">
                     <h1 className="text-[30px] md:text-[50px] font-bold tracking-tight">Daftar Brand</h1>
                 </div>
-                <div className="showbrand grid grid-cols-3 md:grid-cols-5 gap-x-4 md:gap-x-8 gap-y-6 ">
+                <div className="showbrand grid grid-cols-3 md:grid-cols-6">
                     <ShowBrand/>
-                    <a href="/admin/tambah/brand" className="opacity-80 hover:opacity-100 transition-all self-center justify-self-center"><FaRegPlusSquare size={ screen <= 768 ? 70 : 260 }/></a>
+                    <a href="/admin/tambah/brand" className="opacity-80 hover:opacity-100 transition-all self-center justify-self-center"><FaRegPlusSquare size={ screen <= 768 ? 70 : 150 }/></a>
                 </div>
             </>
         )

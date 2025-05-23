@@ -41,15 +41,3 @@ input, textarea{
 input:focus, textarea:focus, input:active, textarea:active {
   outline: none;
 }
-
-.tambah{
-  border: 1px #ddd solid;
-  border-radius: 10px;
-  background-color: #fafafa;
-}
-
-.tambah:focus, .select-tambah:focus{
-  border: 2px rgb(155, 227, 255) solid;
-}
-
-
