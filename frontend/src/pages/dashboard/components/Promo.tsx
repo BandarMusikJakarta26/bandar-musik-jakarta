@@ -1,26 +1,41 @@
 import { LuCircleArrowRight } from "react-icons/lu";
 import { RiDiscountPercentFill } from "react-icons/ri";
+import { promos } from "../../../../libs/store";
 
 // import banner from '/utils/Slide1.png'
 
 export default function Promo(){
+    const headlinePromo = promos as string[]
+
+    function PromoBanner(){
+        return headlinePromo.map((promo, index)=>{
+            return (
+                <h1 key={index} className="bg-purple-500 p-16 rounded-2xl">{promo}</h1>
+            )
+        })
+    }
+
     return (
         <div className="main md:grid grid-cols-[2.5fr_1.5fr] gap-x-10 mt-10 md:mt-28 items-center">
 
             <div className="koleksi-promo grid grid-cols-1 gap-y-4 rotate-45 md:rotate-0 scale-75 md:scale-100">
 
-            <div className="promo grid grid-cols-2 md:grid-cols-[2fr_1fr] gap-x-3 md:gap-x-4 md:mr-10">
+            <div className="grid grid-cols-2 gap-6">
+                <PromoBanner/>
+            </div>
+            {/* <div className="promo grid grid-cols-2 md:grid-cols-[2fr_1fr] gap-x-3 md:gap-x-4 md:mr-10">
                 <a href="/promo" className="bg-white h-[140px] md:h-60 rounded-3xl hover:brightness-75 transition-all overflow-hidden relative">
                 </a>
                 <a href="/promo" className="bg-white h-[140px] md:h-60 rounded-3xl hover:brightness-75 transition-all overflow-hidden relative">
                 </a>
             </div>
+
             <div className="promo grid grid-cols-2 md:grid-cols-[1fr_2fr] gap-x-4 md:ml-10">
                 <a href="/promo" className="bg-white h-[140px] md:h-60 rounded-3xl hover:brightness-75 transition-all overflow-hidden">
                 </a>
                 <a href="/promo" className="bg-white h-[140px] md:h-60 rounded-3xl hover:brightness-75 transition-all overflow-hidden hidden md:block">
                 </a>
-            </div>
+            </div> */}
 
             <RiDiscountPercentFill size={60} className="text-second absolute bottom-20 right-20 -rotate-45 opacity-100 md:opacity-0"/>
 

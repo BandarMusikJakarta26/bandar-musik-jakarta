@@ -38,6 +38,7 @@ import PromoPage from './pages/promo/PromoPage.tsx'
 import UpdateProductCategory from './pages/admin/UpdateProductCategory.tsx'
 import PencarianPage from './pages/pencarian/PencarianPage.tsx'
 import UpdateCategory from './pages/admin/UpdateCategory.tsx'
+import PromoSatuan from './pages/promo/PromoSatuan.tsx'
 
 // import axiosClient from '../libs/axiosConfig.ts'
 
@@ -71,6 +72,7 @@ export default function App() {
               <Route path="/about" element={<About/>}/>
               <Route path="/produk/:name" element={<Product/>}/>
               <Route path="/promo" element={<PromoPage/>}/>
+              <Route path="/promo/:title" element={<PromoSatuan/>}/>
               <Route path="/pencarian" element={<PencarianPage/>}/>
 
               <Route path="/user/login" element={<Login login={login}/>}/>

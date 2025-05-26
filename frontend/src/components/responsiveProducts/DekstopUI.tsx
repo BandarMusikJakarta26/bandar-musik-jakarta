@@ -8,6 +8,7 @@ import { useContext } from "react"
 import { UsdContext } from "../../../libs/store"
 import { BiDollar } from "react-icons/bi";
 import { useNavigate } from "react-router"
+import disc from '../../../public/utils/disc.png'
 
 export default function DesktopUI({ products, according, deleteAction = false }: { products: any[], according: string, deleteAction: any }){
     const context = useContext(UsdContext)
@@ -19,9 +20,11 @@ export default function DesktopUI({ products, according, deleteAction = false }:
            
                 <div className="gambar border-[1px] border-gray-200 group-hover:border-gray-300 bg:primary group-hover:bg-gray-200 transition-all rounded-lg relative overflow-hidden">
 
-                {product.promo && product.stock && product.stock > 0 ? <p className="text-[10px] absolute top-[-23px] left-[-46px] bg-red-600 text-white px-8 rounded-md -rotate-45 uppercase font-bold pt-10 pb-[1px]">
+                {product.promo && product.stock && product.stock > 0 && product.namaPromo !== "Java Jazz" ? <p className="text-[10px] absolute top-[-23px] left-[-46px] bg-red-600 text-white px-8 rounded-md -rotate-45 uppercase font-bold pt-10 pb-[1px]">
                     Promo
                 </p>: false }
+
+                {product.promo && product.stock && product.stock > 0 && product.namaPromo == "Java Jazz" ? <img src={disc} alt={disc} className="absolute top-[5px] left-[5px] w-10 z-20"/> : false }
 
                     <div className="md:w-[100%] transition group relative">
                         <img src={`${host}/storage/${product.images[0]}`} className={`translate-y-0 opacity-100 ${product.images.length > 1 && 'group-hover:translate-y-[280px] group-hover:opacity-0'} transition duration-700`}/>
@@ -41,14 +44,14 @@ export default function DesktopUI({ products, according, deleteAction = false }:
 
                     <div className="harga">
 
-                    {context && product.offlinePrice ? <p className={`text-[20px] font-bold tracking-tight inline flex items-center ${product.offlinePrice && product.offlinePrice.includes('true') ? 'line-through' : false}`}><BiDollar size={22} /> { product.offlinePrice.split(' ')[1] }</p> : false }
+                    {context && product.offlinePrice ? <p className={`text-[20px] text-red-600 font-bold tracking-tight inline flex items-center ${product.offlinePrice && product.offlinePrice.includes('true') ? 'line-through' : false}`}><BiDollar size={22} /> { product.offlinePrice.split(' ')[1] }</p> : false }
 
-                    {!context && <p className={`text-[18px] font-bold tracking-tight inline ${product.offlinePrice && product.offlinePrice.includes('true') ? 'line-through' : false}`}>{product.offlinePrice && product.offlinePrice.split(' ')[1] ? setCurrency(product.offlinePrice.split(' ')[0]) : product.offlinePrice ? setCurrency(product.offlinePrice) : false}</p>}
+                    {!context && <p className={`text-[18px] text-red-600 font-bold tracking-tight inline ${product.offlinePrice && product.offlinePrice.includes('true') ? 'line-through' : false}`}>{product.offlinePrice && product.offlinePrice.split(' ')[1] ? setCurrency(product.offlinePrice.split(' ')[0]) : product.offlinePrice ? setCurrency(product.offlinePrice) : false}</p>}
 
                     { product.pricelist &&
-                        <div className="pricelist flex items-center gap-x-1">
-                            <p className="text-[11px] text-red-600 tracking-tight italic">Pricelist</p>
-                            <p className={`text-[11px] font-semibold text-red-600 -mt-[2px] ${product.pricelist && product.pricelist.split(' ')[1] ? 'line-through' : false}`}>{product.pricelist && product.pricelist.split(' ')[1] ? setCurrency(product.pricelist.split(' ')[0]) : product.pricelist ? setCurrency(product.pricelist) : false}</p>
+                        <div className="pricelist flex xitems-center gap-x-1">
+                            <p className="text-[11px] text-third tracking-tight italic">Pricelist</p>
+                            <p className={`text-[11px] font-semibold text-third -mt-[2px] ${product.pricelist && product.pricelist.split(' ')[1] ? 'line-through' : false}`}>{product.pricelist && product.pricelist.split(' ')[1] ? setCurrency(product.pricelist.split(' ')[0]) : product.pricelist ? setCurrency(product.pricelist) : false}</p>
                         </div>
                     }
 
@@ -76,9 +79,9 @@ export default function DesktopUI({ products, according, deleteAction = false }:
                 </div>
 
                 {product.promo && product.stock && product.stock !== 0 ? <div className="absolute top-[224px] left-[8px] flex flex-col">
-                    <span className="text-white text-[10px] bg-red-600 px-2 py-[1px] animate-zoom-in">{!product.namaPromo ? 'Promo' : product.namaPromo}</span>
+                    <span className={`text-white text-[12px] bg-red-600 px-2 py-[0px] animate-zoom-in ${product.namaPromo.toLowerCase() == "java jazz" ? 'bg-purple-700' : '' }`}>{!product.namaPromo ? 'Promo' : product.namaPromo}</span>
                 </div>: false}
-                {product.promo && product.stock && product.stock !== 0 ? <div className="absolute top-[240px] left-[8px] text-third text-[12px] bg-primary flex gap-x-1 items-center rounded-tr-xl px-2 font-semibold py-[2px] border-[1px] border-gray-300 animate-zoom-in">
+                {product.promo && product.stock && product.stock !== 0 ? <div className="absolute top-[240px] left-[8px] text-third bg-primary flex gap-x-1 items-center rounded-tr-xl px-2 font-semibold py-[2px] border-[1px] border-gray-300 animate-zoom-in text-[16px]">
                     <IoMdPricetag size={16} className="bg-red-600 text-white rounded-full p-[3px]"/>
                     {setCurrency(product.promo)}
                 </div>: false}

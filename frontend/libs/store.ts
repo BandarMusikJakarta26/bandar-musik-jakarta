@@ -26,3 +26,5 @@ export const isLoginStore = create<isLogin>((set)=>({
 }))
 
 export const UsdContext = createContext<boolean | null>(null)
+
+export const promos = ['Walk-in', 'Akhir Tahun', 'Cuci Gudang', 'Java Jazz']

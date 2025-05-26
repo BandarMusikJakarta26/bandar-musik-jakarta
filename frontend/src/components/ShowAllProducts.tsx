@@ -6,7 +6,7 @@ import axiosClient from "../../libs/axiosConfig"
 import { FaChevronLeft, FaChevronRight, FaRegPlusSquare } from "react-icons/fa";
 import { FaAnglesLeft, FaAnglesRight } from "react-icons/fa6";
 import { useParams, useSearchParams } from "react-router"
-import { getProductBrandByCategory, getProductByBrand, getProductByCategory, getProductCategoryByBrand } from "../action/produk.action"
+import getProductByPromo, { getProductBrandByCategory, getProductByBrand, getProductByCategory, getProductCategoryByBrand } from "../action/produk.action"
 import { IoSearchSharp } from "react-icons/io5";
 import { host } from "../../libs/config"
 import { getBrandByName, getBrandName } from "../action/brand.action"
@@ -218,18 +218,23 @@ const ShowAllProducts = function({ products, according, deleteAction, setProduct
     const firstPostPage = lastPostPage - productPerPage
     const currentProducts = products.slice(firstPostPage, lastPostPage)
 
-    async function searchProducts(keyword: string, kategoriParams: string | null, brandParams: string | null, brand: string | undefined, kategori: string | undefined){
+    async function searchProducts(keyword: string, kategoriParams: string | null, brandParams: string | null, brand: string | undefined, kategori: string | undefined, according: string){
         try{
+
             let response : AxiosResponse | undefined
             if(kategoriParams || kategori) response = await axiosClient(`api/produk/search/${keyword}?kategori=${kategoriParams ? kategoriParams : kategori}`)
             else if(brandParams || brand) response = await axiosClient(`api/produk/search/${keyword}?brand=${brandParams ? brandParams : brand}`)
             else response = await axiosClient(`api/produk/search/${keyword}`)
 
+            if(according.toLowerCase() == "promo") response = await axiosClient(`api/produk/search/${keyword}?promo=${params.title && params.title}`)
+
+            if(response!.data.produk.length == 0 && according.toLowerCase() == "promo") return getProductByPromo(setProducts, params.title)
             if(response!.data.produk.length == 0 && brand) return getProductByBrand(setProducts, brand!)
             if(response!.data.produk.length == 0 && kategori) return getProductByCategory(setProducts, kategori!)
             if(response!.data.produk) return setProducts(response!.data.produk)
         }catch(err){
             let errResponse : AxiosResponse | null
+            if(according.toLowerCase() == "promo") return getProductByPromo(setProducts, params.title)
             if(brand || brandParams) return getProductByBrand(setProducts, brand ? brand! : brandParams! )
             else if(kategori || kategoriParams) return getProductByCategory(setProducts, kategori ? kategori! : kategoriParams!)
             else errResponse = await axiosClient(`api/produk`)
@@ -267,7 +272,7 @@ const ShowAllProducts = function({ products, according, deleteAction, setProduct
             </div>
 
             <div className="searching relative">
-                    <input type="text" placeholder="Cari Produk" onChange={(e:any)=>searchProducts(e.target.value, searchParams.get('kategori') && searchParams.get('kategori'), searchParams.get('brand') && searchParams.get('brand'), params.name && params.name, params.title && params.title)} className="w-full text-[12px] py-2 rounded-3xl bg-gray-200"/>
+                    <input type="text" placeholder="Cari Produk" onChange={(e:any)=>searchProducts(e.target.value, searchParams.get('kategori') && searchParams.get('kategori'), searchParams.get('brand') && searchParams.get('brand'), params.name && params.name, params.title && params.title, according)} className="w-full text-[12px] py-2 rounded-3xl bg-gray-200"/>
                     <IoSearchSharp size={20} className="text-gray-400 absolute top-2 left-4"/>
             </div>
 
@@ -309,12 +314,13 @@ const ShowAllProducts = function({ products, according, deleteAction, setProduct
                         {according == "admin" && 'Daftar Produk' }
                         {according == "category" && params.title }
                         {according == "brand" && params.name }
+                        {according.toLowerCase() == "promo" && `Promo ${params && params.title ? params.title : ''}` }
                     </p>
                     <p className="text-[13px] text-third font-normal -mt-1">Terdapat <span className="font-semibold">{products.length}</span> produk terkait.
                     </p>
                 </div>
                 <div className="searching relative">
-                    <input type="text" placeholder="Cari Produk" onChange={(e:any)=>searchProducts(e.target.value, searchParams.get('kategori') && searchParams.get('kategori'), searchParams.get('brand') && searchParams.get('brand'), params.name && params.name, params.title && params.title)} className="w-full text-[14px] py-2 rounded-3xl bg-gray-200 border-[1px] border-gray-300"/>
+                    <input type="text" placeholder="Cari Produk" onChange={(e:any)=>searchProducts(e.target.value, searchParams.get('kategori') && searchParams.get('kategori'), searchParams.get('brand') && searchParams.get('brand'), params.name && params.name, params && params.title!, according)} className="w-full text-[14px] py-2 rounded-3xl bg-gray-200 border-[1px] border-gray-300"/>
                     <IoSearchSharp size={24} className="text-gray-400 absolute top-2 left-4"/>
                 </div>
                 <div className="kanan flex justify-end gap-x-6">

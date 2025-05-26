@@ -37,7 +37,7 @@ const AddProduct = function(){
 
     const navigate = useNavigate()
 
-    const promos = ['Walk-in', 'Akhir Tahun', 'Cuci Gudang']
+    const promos = ['Walk-in', 'Akhir Tahun', 'Cuci Gudang', 'Java Jazz']
 
     async function getDataBrands(){
         if(brands.length > 0) setBrand(brands)
