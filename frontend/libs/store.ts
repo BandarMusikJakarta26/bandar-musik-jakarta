@@ -26,3 +26,15 @@ export const isLoginStore = create<isLogin>((set)=>({
 }))
 
 export const UsdContext = createContext<boolean | null>(null)
+
+export interface IPromo {
+    title: string, duration?: string, img: string
+}
+
+export const promos: IPromo[] = [
+    {title: 'Java Jazz', duration: '29 Mei - 1 Juni', img: '../../../public/utils/JavaJazzBG.png'},
+    {title: 'Walk-In', img: '../../../public/utils/walkin.png'},
+    {title: 'Kemerdekaan', img: '../../../public/utils/kemerdekaan.png'},
+    {title: 'Cuci Gudang', img: '../../../public/utils/cucigudang.png'},
+    {title: 'Akhir Tahun', img: '../../../public/utils/akhirtahun.png'},
+]

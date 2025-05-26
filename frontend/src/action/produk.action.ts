@@ -81,9 +81,9 @@ export function setCurrency(harga: string){
     } else return harga
 }
 
-export default async function getProductByPromo(products?: any, setProducts?: React.SetStateAction<any[] | any>){
+export default async function getProductByPromo(products?: any, setProducts?: React.SetStateAction<any[] | any>, title?: string){
     if(products.length > 0) return setProducts(products)
-    const response = await axiosClient.get('api/produk/promo')
+    const response = await axiosClient.get(`api/produk/promo?title=${title}`)
     if(response.data.success) return setProducts(response.data.produk)
     
 }

@@ -47,7 +47,7 @@ const UpdateProduct = function(){
     const navigate = useNavigate()
     const location = useLocation()
 
-    const promos = ['Walk-in', 'Akhir Tahun', 'Cuci Gudang']
+    const promos = ['Walk-in', 'Akhir Tahun', 'Cuci Gudang', 'Java Jazz']
 
     async function getDataBrands(){
         if(brands.length > 0) setBrand(brands)
@@ -141,13 +141,13 @@ const UpdateProduct = function(){
             }
 
             if(upload.get('offlinePrice') && parseInt(upload.get('offlinePrice')) > 0){
-                // const response = await axios.get(`https://api.getgeoapi.com/v2/currency/convert?api_key=${apiKey}&from=IDR&to=USD&amount=${upload.get('offlinePrice')}&format=json`)
+                const response = await axios.get(`https://api.getgeoapi.com/v2/currency/convert?api_key=${apiKey}&from=IDR&to=USD&amount=${upload.get('offlinePrice')}&format=json`)
                 const offline = upload.get('offlinePrice')
-                // let usd = response.data.rates.USD.rate_for_amount as string
-                // usd = Number.parseFloat(usd).toFixed(2)
+                let usd = response.data.rates.USD.rate_for_amount as string
+                usd = Number.parseFloat(usd).toFixed(2)
                 upload.delete('offlinePrice')
-                // upload.append('offlinePrice', `${offline} ${usd}`)
-                upload.append('offlinePrice', `${offline}`)
+                upload.append('offlinePrice', `${offline} ${usd}`)
+                // upload.append('offlinePrice', `${offline}`)
                
             }else if(upload.get('offlinePrice') && hargaOffline == ""){
                 const response = await axios.get(`https://api.getgeoapi.com/v2/currency/convert?api_key=${apiKey}&from=IDR&to=USD&amount=${product.offlinePrice.split(' ')[1] ? product.offlinePrice.split(' ')[0] : product.offlinePrice }&format=json`)
