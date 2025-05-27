@@ -36,7 +36,7 @@ const NavMenu = function({ login, currentLogin, convertUsd, setUsdConverter } : 
                 { auth && screen <= 768 ? <LogoutButton/> : false}
                 { screen <= 768 && <button onClick={()=>showPages(true)}><GiHamburgerMenu size={30}/></button> }
             </div>
-            <div className={`${!pages && screen <= 768 ? 'translate-x-[400px]' : 'translate-x-0'} flex links gap-x-6 absolute flex-col top-[0] left-0 bg-third w-full text-primary md:flex-row md:static md:flex md:bg-primary md:text-third md:items-center h-[100vh] md:h-auto transition duration-1000`}>
+            <div className={`${!pages && screen <= 768 ? 'translate-x-[480px]' : 'translate-x-0'} flex links gap-x-6 absolute flex-col top-[0] left-0 bg-third w-full text-primary md:flex-row md:static md:flex md:bg-primary md:text-third md:items-center h-[100vh] md:h-auto transition duration-1000`}>
                 <div className={`flex navbar-head px-8 py-5 justify-between ${!pages && screen > 768 ? 'hidden' : ''}`}>
                     <h1 className="text-[20px]">Halaman</h1>
                     <button onClick={()=>showPages(false)} ><FaRegWindowClose size={26} className="opacity-50 hover:opacity-100"/></button>

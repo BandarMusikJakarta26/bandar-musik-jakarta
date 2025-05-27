@@ -28,7 +28,11 @@ export default function MobileUI({ products, according, deleteAction }: { produc
                     <h1 className="text-[11px] md:text-[16px] font-semibold h-[35px]">{name}</h1>
                     <p className="text-[9px] font-normal opacity-70 italic mt-[2px]">{product.kategoriId}</p>
                     
-                    {product.stock && product.stock > 0 ? <div className=" 
+                    {product.stock && product.stock > 0 && product.promo ? <div className=" 
+                 text-blue-600 text-[8px] italic font-semibold z-10">
+                    Check Stock
+                </div> : false}
+                    {product.stock && product.stock > 0 && !product.promo ? <div className=" 
                  text-green-500 text-[8px] italic font-semibold z-10">
                     In-Stock
                 </div> : false}
@@ -44,11 +48,11 @@ export default function MobileUI({ products, according, deleteAction }: { produc
                     <div className="garis h-[1px] bg-gray-300 w-full mt-1"></div>
 
                     {product.offlinePrice || product.pricelist ? <div className="harga mt-1">
-                        <p className={`text-[12px] font-bold tracking-tight ${product.offlinePrice && product.offlinePrice.split(' ')[1] ? 'line-through' : false}`}>{product.offlinePrice && product.offlinePrice.split(' ')[1] ? setCurrency(product.offlinePrice.split(' ')[0]) : product.offlinePrice ? setCurrency(product.offlinePrice) : false}</p>
+                        <p className={`text-[12px] text-red-700 font-bold tracking-tight ${product.offlinePrice && product.offlinePrice.split(' ')[1] ? 'line-through' : false}`}>{product.offlinePrice && product.offlinePrice.split(' ')[1] ? setCurrency(product.offlinePrice.split(' ')[0]) : product.offlinePrice ? setCurrency(product.offlinePrice) : false}</p>
                         
                         { product.pricelist && <div className="pricelist flex gap-x-1">
-                            <p className="text-red-700 text-[9px] italic">Pricelist</p>
-                            <p className={`text-[9px] font-bold text-red-700 ${product.pricelist && product.pricelist.split(' ')[1] ? 'line-through' : false}`}>{product.pricelist && product.pricelist.split(' ')[1] ? setCurrency(product.pricelist.split(' ')[0]) : product.pricelist ? setCurrency(product.pricelist) : false}</p>
+                            <p className="text-third text-[9px] italic">Pricelist</p>
+                            <p className={`text-[9px] font-bold ${product.pricelist && product.pricelist.split(' ')[1] ? 'line-through' : false}`}>{product.pricelist && product.pricelist.split(' ')[1] ? setCurrency(product.pricelist.split(' ')[0]) : product.pricelist ? setCurrency(product.pricelist) : false}</p>
                         </div>
                         }
                     </div> : false}
@@ -63,13 +67,13 @@ export default function MobileUI({ products, according, deleteAction }: { produc
 
                 </div>
                 
-                {product.promo && product.stock && product.stock > 0 ? <p className="text-[10px] absolute top-0 left-0 bg-teal-600 text-white px-2 py-[1px] rounded-md">
+                {product.promo && product.stock && product.stock > 0 && product.namaPromo.toLowerCase() !== "java jazz" ? <p className="text-[10px] absolute top-0 left-0 bg-teal-600 text-white px-2 py-[1px] rounded-md">
                     Promo
                 </p>: false }
 
-                <div className="hargapromo absolute top-[144px] left-[0px] flex items-center">
+                <div className="hargapromo absolute top-[158px] left-[0px] flex items-center">
 
-                {product.promo && product.stock && product.stock !== 0 ? <div className=" text-white text-[9px] bg-teal-600 px-2 py-[1px] italic">
+                {product.promo && product.stock && product.stock !== 0 ? <div className=" text-white text-[9px] bg-teal-600 px-2 py-[1px] italic border-[1px] border-teal-600">
                     <span className="text-white text-[8px] bg-teal-600 py-[2px]">{!product.namaPromo ? 'Promo' : 
                     product.namaPromo
                 }</span>
