@@ -15,6 +15,10 @@ export default function DesktopUI({ products, according, deleteAction = false }:
     const navigate = useNavigate()
 
     return products.map((product, index)=>{
+
+        // product.name = product.name.length > 48 ? product.name.substring(0, 48) : product.name
+        // console.log(product.name, product.name.length)
+
         return (
                 <ParentDesktopUI product={product} index={index} according={according}>
            
@@ -36,7 +40,12 @@ export default function DesktopUI({ products, according, deleteAction = false }:
 
                 <div className="name-product text-center md:text-left">
                     <p className="text-[14px] md:text-[11px] font-normal md:opacity-70 italic">{product.kategoriId}</p>
-                    <h1 className="text-[20px] md:text-[14px] font-bold md:font-bold mb-1 md:mb-0 h-[62px] overflow-hidden">{product.name}</h1>
+                    <h1 className="text-[20px] md:text-[14px] font-bold md:font-bold mb-1 md:mb-2 h-[40px] overflow-hidden">{product.name}</h1>
+
+                    <div className="jasa flex gap-x-2 text-[8.5px] h-[20px] text-teal-700 items-center">
+                        {product.kirim == 1 && <p className="border-[1px] border-teal-700 px-2 py-[3px] rounded-xl italic">Gratis Kirim</p>}
+                        {product.pasang == 1 && <p className="border-[1px] border-teal-700 px-2 py-[3px] rounded-xl italic">Gratis Pasang</p>}
+                    </div>
 
                     <div className="garis h-[1px] w-full bg-gray-300 mt-3"></div>
 
@@ -79,7 +88,7 @@ export default function DesktopUI({ products, according, deleteAction = false }:
                 </div>
 
                 {product.promo && product.stock && product.stock !== 0 ? <div className="absolute top-[215px] left-[8px] flex flex-col">
-                    <span className={`text-white text-[10px] bg-red-600 px-2 py-[0px] animate-zoom-in ${product.namaPromo.toLowerCase() == "java jazz" ? 'bg-purple-700' : '' }`}>{!product.namaPromo ? 'Promo' : product.namaPromo}</span>
+                    <span className={`text-white text-[10px] bg-red-600 px-2 py-[0px] animate-zoom-in ${product.namaPromo.toLowerCase() == "java jazz" ? 'bg-purple-700' : '' }`}>{!product.namaPromo ? 'Promo' : product.namaPromo.toLowerCase() == "java jazz" ? `${product.namaPromo} 2025` : product.namaPromo}</span>
                 </div>: false}
                 {product.promo && product.stock && product.stock !== 0 ? <div className="absolute top-[230px] left-[8px] text-third bg-primary flex gap-x-1 items-center rounded-tr-xl px-2 font-semibold py-[2px] border-[1px] border-gray-300 animate-zoom-in text-[13px]">
                     <IoMdPricetag size={16} className="bg-red-600 text-white rounded-full p-[3px]"/>

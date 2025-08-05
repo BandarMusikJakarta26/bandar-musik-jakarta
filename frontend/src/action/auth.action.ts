@@ -36,6 +36,7 @@ export async function checkAdmin(): Promise<boolean>{
 
 export async function isLogin(){
     const response = await axiosClient.get(`api/get-cookie`) as AxiosResponse
+    console.log(response)
     if(response.data.success) return true
     else return false
 }

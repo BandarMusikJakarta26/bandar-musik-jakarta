@@ -17,7 +17,7 @@ function ShowParents({ parents, categories, categoryActive, setCategoryActive }:
 
     return parents.length > 0 && parents.map((parent: any)=>{
         return (
-            <p className={`tombol border-[1px] border-b-third  border-gray-200 px-6 py-3 cursor-pointer flex justify-between items-center ${(categoryActive && categoryActive.parent == parent) || (!categoryActive && parent == "Semua")  ? 'border-third pl-10 bg-gradient-to-l from-primary to-second font-semibold text-[20px]' : 'bg-primary'} hover:pl-10 hover:bg-[#fafafa] transition-all`} onMouseEnter={()=>{
+            <p className={`tombol border-[1px] border-b-third  border-gray-200 px-5 md:px-6 py-3 cursor-pointer flex justify-between items-center ${(categoryActive && categoryActive.parent == parent) || (!categoryActive && parent == "Semua")  ? 'border-third pl-10 bg-gradient-to-l from-primary to-second font-semibold md:text-[20px]' : 'bg-primary'} hover:pl-10 hover:bg-[#fafafa] transition-all text-[12px]`} onMouseEnter={()=>{
                     if(parent == "Semua"){ return setCategoryActive(null) }
                     else categories.forEach((category: any)=>{
                         return category.parent == parent && setCategoryActive(category)
@@ -60,13 +60,13 @@ function CategorySection({ parents }: { parents: any[] }){
     return parents.map((parent, index)=>{
             if(parent !== "Semua")return (
                 <>
-                    <div className={` bg-gray-100 flex flex-col gap-y-4 p-10 rounded-3xl ml-10 
+                    <div className={` bg-gray-100 flex flex-col md:gap-y-4 p-6 md:p-10 rounded-3xl ml-5 md:ml-10 
                         ${categoryActive && categoryActive.parent == parent ? 'visible' : !categoryActive ? 'visible' : 'hidden' }
                     `} key={index}>
                     <div className="header">
                         <h1 className='text-[40px] font-bold tracking-tight text-third'>{parent && parent}</h1>
                     </div>
-                    <div className="w-full grid grid-cols-3 gap-4">
+                    <div className="w-full grid md:grid-cols-3 gap-4">
                         <ShowSubCategory categories={categories} parent={parent}/>
                     </div>
                     </div>
@@ -76,11 +76,11 @@ function CategorySection({ parents }: { parents: any[] }){
 }
 
     return (
-        <div className="root grid grid-cols-[1fr_3fr] mt-10">
-                <div className="showParent">
+        <div className="root grid md:grid-cols-[1fr_3fr] mt-10">
+                <div className="showParent grid grid-cols-2">
                     <ShowParents categories={categories} parents={parents} setCategoryActive={setCategoryActive} categoryActive={categoryActive}/>
                 </div>
-                <div className="category category-section flex flex-col gap-y-8 h-[700px] overflow-y-scroll">
+                <div className="category category-section flex flex-col gap-y-8 md:h-[700px] overflow-y-scroll">
                     <CategorySection parents={parents}/>
                 </div>
         </div>

@@ -9,6 +9,7 @@ export default function ProductList({ brand, login }:{ brand: string, login: boo
 
     useEffect(()=>{
         if(searchParams.get('kategori')) getProductByBrandQueryCategory(setProductByBrand, brand!, searchParams.get('kategori')!)
+        if(searchParams.get('minimal') && searchParams.get('maximal')) getProductByBrand(setProductByBrand, brand!, searchParams.get('minimal')!, searchParams.get('maximal')!)
         else getProductByBrand(setProductByBrand, brand!)
     },[])
     

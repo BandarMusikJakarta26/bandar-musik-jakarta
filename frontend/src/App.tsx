@@ -39,6 +39,10 @@ import UpdateProductCategory from './pages/admin/UpdateProductCategory.tsx'
 import PencarianPage from './pages/pencarian/PencarianPage.tsx'
 import UpdateCategory from './pages/admin/UpdateCategory.tsx'
 import PromoSatuan from './pages/promo/PromoSatuan.tsx'
+import NewsPage from './pages/news/NewsPage.tsx'
+import AddNews from './pages/admin/addNews.tsx'
+import axiosClient from '../libs/axiosConfig.ts'
+import axios from 'axios'
 
 // import axiosClient from '../libs/axiosConfig.ts'
 
@@ -53,6 +57,14 @@ export default function App() {
   // useEffect(()=>{ getAllCookies() }, [getAllCookies])
   useEffect(()=>{ checkLogin() },[])
       
+  useEffect(()=>{
+    async function testing(){
+      const response = await axiosClient.get('/users')
+      console.log(response)
+    }
+    testing()
+  }, [])
+  
   return (
 
     <UsdContext.Provider value={convertUsd}>
@@ -70,10 +82,11 @@ export default function App() {
               <Route path="/kategori/:title" element={<Kategori login={login}/>}/>
               <Route path="/terbaru" element={<AllTerbaru/>}/>
               <Route path="/about" element={<About/>}/>
-              <Route path="/produk/:name" element={<Product/>}/>
-              <Route path="/promo" element={<PromoPage/>}/>
+              <Route path="/produk/:name" element={<Product login={login}/>}/>
+              <Route path="/promo" element={<PromoPage login={login}/>}/>
               <Route path="/promo/:title" element={<PromoSatuan/>}/>
               <Route path="/pencarian" element={<PencarianPage/>}/>
+              <Route path="/news" element={<NewsPage login={login}/>}></Route>
 
               <Route path="/user/login" element={<Login login={login}/>}/>
               <Route path="/user/register" element={<Register login={login}/>}/>
@@ -87,6 +100,8 @@ export default function App() {
               {/* <Route path="/admin/produk" element={ <GetProduct/> }/> */}
               <Route path="/admin/produk" element={login ? <GetProduct/> : <BlankPage/>}/>
               {/* <Route path="/admin/tambah/brand" element={ <AddBrand/> }/> */}
+              <Route path="/admin/tambah/news" element={login ? <AddNews/> : <BlankPage/>}/>
+
               <Route path="/admin/tambah/brand" element={login ? <AddBrand/> : <BlankPage/>}/>
               {/* <Route path="/admin/tambah/promo" element={ <AddPromo/> }/> */}
               <Route path="/admin/tambah/promo" element={login ? <AddPromo/> : <BlankPage/> }/>
@@ -98,7 +113,7 @@ export default function App() {
               <Route path="/admin/tambah/terbaru" element={login ? <AddTerbaru/> : <BlankPage/>}/>
 
               {/* <Route path="/admin/update/produk/:url" element={ <UpdateProduct/> }/> */}
-              <Route path="/admin/update/produk/:url" element={login ? <UpdateProduct/> : <BlankPage/>}/>
+              <Route path="/admin/update/produk/:url" element={<UpdateProduct/>}/>
               <Route path="/admin/update/category/:title" element={login ? <UpdateCategory/> : <BlankPage/>}/>
               <Route path="/admin/produk/category" element={login ? <UpdateProductCategory/> : <BlankPage/> }/>
 

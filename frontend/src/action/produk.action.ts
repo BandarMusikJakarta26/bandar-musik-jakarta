@@ -1,14 +1,24 @@
 import { AxiosResponse } from "axios"
 import axiosClient from "../../libs/axiosConfig"
 
-export async function getProductByBrand(setProductByBrand: React.SetStateAction<any[] | any>, brandName: string){
-    const productsByBrand = await axiosClient.get(`api/produk/brand/${brandName}`) as AxiosResponse
+export async function getProductByBrand(setProductByBrand: React.SetStateAction<any[] | any>, brandName: string, hargaMin?: string, hargaMax?: string){
+    const productsByBrand = hargaMin && hargaMax ? await axiosClient.get(`api/produk/brand/${brandName}?minimal=${hargaMin}&maximal=${hargaMax}`) : await axiosClient.get(`api/produk/brand/${brandName}`) as AxiosResponse
     return setProductByBrand(productsByBrand.data.produk)
 }
 
-export async function getProductByCategory(setProductByCategory: React.SetStateAction<any[] | any>, kategoriName: string){
-    const response = await axiosClient.get(`api/produk/kategori/${kategoriName}`) as AxiosResponse
-    return setProductByCategory(response.data.produk)
+export async function getNewestProduct(setTerbaru: React.SetStateAction<any[] | any>, kategori? :string, brand? :string){
+    let newest
+    if(brand) newest = await axiosClient.get(`api/produk/terbaru?brand=${brand}`) as AxiosResponse
+    else if(kategori) newest = await axiosClient.get(`api/produk/terbaru?kategori=${kategori}`) as AxiosResponse
+    else newest = await axiosClient.get(`api/produk/terbaru`) as AxiosResponse
+    return setTerbaru(newest.data.produk)
+}
+
+export async function getProductByCategory(setProductByCategory: React.SetStateAction<any[] | any>, kategoriName: string, hargaMin?: string, hargaMax?: string){
+    try{
+        const response = hargaMin && hargaMax ? await axiosClient.get(`api/produk/kategori/${kategoriName}?minimal=${hargaMin}&maximal=${hargaMax}`) : await axiosClient.get(`api/produk/kategori/${kategoriName}`) as AxiosResponse
+        return setProductByCategory(response.data.produk)
+    }catch(err){ console.log(err) }
 }
 
 export async function getProductBrandByCategory(setBrands: React.SetStateAction<any[] | any>, kategoriName: string){
@@ -34,8 +44,13 @@ export async function getProductByCategoryQueryBrand(setProductByCategory: React
 }
 
 export async function getProductByName(setProduct: React.SetStateAction<any[] | any>, name: string){
-    const response = await axiosClient.get(`api/produk/${name}`) as AxiosResponse
-    return setProduct(response.data.produk)
+    try{
+        const response = await axiosClient.get(`api/produk/${name}`) as AxiosResponse
+        console.log(response)
+        return setProduct(response.data.produk)
+    }catch(err){
+        console.log(err)
+    }
 }
 
 export async function getProductByUrl(setProduct: React.SetStateAction<any[] | any>, url: string){
@@ -81,9 +96,18 @@ export function setCurrency(harga: string){
     } else return harga
 }
 
-export default async function getProductByPromo(products?: any, setProducts?: React.SetStateAction<any[] | any>, title?: string){
+export default async function getProductByPromo(products?: any, setProducts?: React.SetStateAction<any[] | any>, title?: string, hargaMin?: string, hargaMax?: string){
     if(products.length > 0) return setProducts(products)
-    const response = await axiosClient.get(`api/produk/promo?title=${title}`)
+    const response = hargaMin && hargaMax ? await axiosClient.get(`api/produk/promo?title=${title}&minimal=${hargaMin}&maximal=${hargaMax}`) : await axiosClient.get(`api/produk/promo?title=${title}`)
     if(response.data.success) return setProducts(response.data.produk)
     
+}
+
+export async function getWishlistProduct(wishlist: any[], products: any, setProducts: React.SetStateAction<any[] | any>){
+    try{
+        if(products.length > 0) return setProducts(products)
+        const response = await axiosClient.post(`api/produk/wishlist`, { wishlist: wishlist })
+
+        if(response.data.success) return setProducts(response.data.produk)
+    }catch(err){ console.log(err) }
 }

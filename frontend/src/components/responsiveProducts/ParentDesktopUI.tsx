@@ -1,24 +1,35 @@
 import { useEffect, useState } from "react";
 import { PiPaperPlaneTiltBold } from "react-icons/pi"
 import { FcLike } from "react-icons/fc"
-import axiosClient from "../../../libs/axiosConfig";
-import { AxiosResponse } from "axios";
+import { wishlistStore } from "../../../libs/store";
 
 export default function ParentDesktopUI({ product, according, index, children }: { product: any, according: string, index: number, children: any }){
     const [copied, setCopied] = useState<boolean>(false);
     const [cursor, setCursor] = useState<boolean>(false);
     const [like, setLike] = useState<boolean>(false)
+    const wishlist = wishlistStore((state)=>state.wishlist)
+    const tambahList = wishlistStore((state)=>state.tambahList)
 
     useEffect(()=>{
-        async function likeAction(){
-            try{
-                const response = await axiosClient.get(`/wishlist`) as AxiosResponse
-                console.log(response)
-            }catch(err){
-                console.log(err)
-            }
-        }
-        likeAction()
+        // async function likeAction(){
+        //     try{
+        //         const response = await axiosClient.get(`/wishlist`) as AxiosResponse
+        //         console.log(response)
+        //     }catch(err){
+        //         console.log(err)
+        //     }
+        // }
+        // likeAction()
+        
+        if(localStorage.getItem("wishlist")){
+            JSON.parse(localStorage.getItem("wishlist")!).map((list: any)=>{
+                if(list == product.url){
+                    setLike(true)
+                    tambahList(wishlist+1)
+                } 
+            })
+        }else { setLike(false) }
+        
     }, [like])
 
     function copyLink(){
@@ -43,7 +54,18 @@ export default function ParentDesktopUI({ product, according, index, children }:
     else return (
         <div className="user relative">
                   <div className="absolute bottom-[226px] right-[54px] z-20 border-[1px] border-gray-200 flex items-center p-2 rounded-full bg-white">
-                        <button onClick={()=>like ? setLike(false) : setLike(true)}>
+                        <button onClick={()=>{
+                            if(!like){
+                                const getWishlist = localStorage.getItem("wishlist")
+                                // localStorage.removeItem('wishlist')
+                                if(!getWishlist) localStorage.setItem("wishlist", JSON.stringify([product.url]))
+                                else{
+                                const wishlist = JSON.parse(localStorage.getItem("wishlist")!) as any[]
+                                localStorage.setItem("wishlist", JSON.stringify([product.url, ...wishlist]))
+                                }
+                            }
+                            like ? false : setLike(true)
+                        }}>
                             <FcLike size={20} className={`text-third transition duration-300 ${like && 'hue-rotate-60 opacity-35'}`}/>
                         </button>               
                     </div>

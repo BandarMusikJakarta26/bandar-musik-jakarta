@@ -15,10 +15,12 @@ const MainKategori = function({ login }:{ login: boolean }){
     const [ loading, setLoading ] = useState<boolean>(true)
     const [searchParams] = useSearchParams()
 
+
     useEffect(()=>{
         setTimeout(()=>{
             getCategoryByName(setCategory,title!)
             if(searchParams.get('brand')) getProductByCategoryQueryBrand(setProducts, title!, searchParams.get('brand')!)
+            if(searchParams.get('minimal') && searchParams.get('maximal')) getProductByCategory(setProducts, title!, searchParams.get('minimal')!, searchParams.get('maximal')!)
             else getProductByCategory(setProducts, title!)
             setLoading(false)
         }, 1500)

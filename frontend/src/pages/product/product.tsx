@@ -1,4 +1,4 @@
-import { useParams } from "react-router"
+import { useNavigate, useParams } from "react-router"
 import { FaWhatsapp } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { getProductByName, setCurrency } from "../../action/produk.action";
@@ -17,8 +17,12 @@ import ZoomImage from "./ZoomImage";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { BsCheckCircle } from "react-icons/bs";
 import { TbSquareRoundedArrowRight } from "react-icons/tb";
+import { ReactSortable } from 'react-sortablejs'
+import axiosClient from "../../../libs/axiosConfig";
+import { IoMdEye } from "react-icons/io";
+import { MdDelete } from "react-icons/md";
 
-export default function Product(){
+export default function Product({ login }: { login: boolean }){
     const { name } = useParams()
     const [ screen, setScreen ] = useState<number>(window.innerWidth)
     // const [ nama, setNama ] = useState<string>('')
@@ -33,6 +37,8 @@ export default function Product(){
     const [ imageContent, showImageContent ] = useState<boolean>(false)
     const [ deskContent, showDeskContent ] = useState<boolean>(false)
 
+    const [views, setView] = useState<number>(0)
+
     useEffect(()=>{
         if(product) setProduct(product)
         else getProductByName(setProduct, name!)
@@ -46,14 +52,68 @@ export default function Product(){
         product && getBrandByName(setBrand, setLoadingan, product.brandId)
     }, [product])
 
+    useEffect(()=>{
+        // localStorage.clear()
+        let viewKey
+        if(product){
+            viewKey = `${product.name} Views`
+            let currentViews = parseInt(localStorage.getItem(viewKey)!) || 0
+            currentViews += 1
+            localStorage.setItem(viewKey!, currentViews.toLocaleString())
+
+            return setView(currentViews)
+        }
+    }, [product])
+
     console.log(loadingan)
 
-    function ShowMiniImages({productImages}: { productImages: any[] }){
-        return productImages.map((image: string, index: number)=>{
-            return <div className={`${active == `${host}/storage/${image}` || ( image == product.images[0] && !active ) ? 'brightness-100 border-third' : 'brightness-[0.8] scale-100 border-primary'} border-2  h-auto bg-primary hover:cursor-pointer`} onClick={()=>setActive(`${host}/storage/${image}`)} key={index}>
-                <img src={`${host}/storage/${image}`} className="md:h-[130px]"/>
-            </div>
-        })
+    function ShowMiniImages({productImages, url}: { productImages: any[], url: string}){
+        const [images, setImages] = useState<any[]>(productImages)
+        const [perubahan, setPerubahan] = useState<boolean>(false)
+        const navigate = useNavigate()
+
+        useEffect(()=>{
+            images.filter((image,index)=>{
+                if(image !== productImages[index]) return setPerubahan(true)
+                else { perubahan && setPerubahan(false) }
+            })
+        }, [images])
+        
+        async function updateGambar(url: string){
+            try{
+                const res = await axiosClient.post(`api/update/produk/images/${url}`, { images })
+                if(res.data.success) return navigate(0)
+            }catch(err){   
+                console.log(err)
+            }
+        }
+
+        async function hapusGambar(image: string, url: string){
+            const produk = await axiosClient.get(`api/update/produk/delete/image/${url}?image=${image}`)
+            console.log(produk)
+        }
+
+        return (
+            <>
+            <ReactSortable list={images} setList={setImages} animation={200} className={`gambarmini grid grid-cols-4 gap-x-2 px-10 mt-[-6px]`}>
+            { images.map((image: string, index: number)=>{
+                 return (
+                    <>
+
+                 <div className={`${active == `${host}/storage/${image}` || ( image == product.images[0] && !active ) ? 'brightness-100 border-third' : 'brightness-[0.8] scale-100 border-primary'} border-2  h-auto bg-primary hover:cursor-pointer relative`} onClick={()=>setActive(`${host}/storage/${image}`)} key={index}>
+                    <img src={`${host}/storage/${image}`} className="md:h-[130px]"/>
+                    {<button className="absolute bottom-0" onClick={()=>hapusGambar(image, url)}>
+                        <MdDelete size={30} className="text-primary rounded-full p-1 bg-red-500"/>
+                    </button>}
+                </div>
+
+                    </>
+                 )
+            }) }
+            </ReactSortable>
+            { ( login && perubahan ) && <button className="bg-white px-6 py-1 border-2 rounded-2xl border-third text-third mt-6 ml-10 hover:shadow-lg hover:scale-95 transition duration-300" onClick={()=>updateGambar(url)}>Simpan</button>}
+            </>
+        )
     }
 
     function forwardWhatsapp(url: string, harga: string){
@@ -131,20 +191,20 @@ export default function Product(){
             <div className="area-gambar w-[100%] md:w-[40%] relative z-10 mx-auto md:mx-0">
 
             <div className="gambar h-auto px-10 mb-3 relative">
-                <div className="group gambar-produk w-full h-full border-[1px] md:border-2 border-gray-300 md:border-gray-200 relative overflow-hidden">
+                <div className="group gambar-produk w-full h-full border-[1px] md:border-2 border-gray-300 md:border-gray-200 relative overflow-hidden z-10">
                     {product.images.length > 0 ? <ZoomImage src={active ? active : `${host}/storage/${product.images[0]}`} width="100%" height="100%" alt={product.name}/> : false}
                 </div>
                 <button onClick={()=>showImageContent(true)} className="top-0 -left-2 absolute md:top-[20px] md:left-[60px] rounded-full p-1 border-[1px] bg-white z-10">
                     <TiZoomInOutline size={screen <= 768 ? 28 : 40} className="text-third"/>
                 </button>
-                {screen <= 768 &&<img className="gambar h-full p-4 absolute z-0 top-0 left-[42px] opacity-20" src={watermark}/>}
+                {screen <= 768 && <img className="gambar h-full p-4 absolute z-0 top-0 left-[42px] opacity-20" src={watermark}/>}
             </div>
 
 
             <div className="minigambar w-full">
 
-            <div className={`gambarmini grid grid-cols-4 gap-x-2 px-10 mt-[-6px]`}>
-                <ShowMiniImages productImages={product.images}/>
+            <div>
+                <ShowMiniImages productImages={product.images} url={product.url}/>
             </div>
 
             </div>
@@ -169,6 +229,12 @@ export default function Product(){
                 </div>
                 <h1 className="text-[18px] md:text-[28px] font-bold mt-5 md:mt-0">{product.name}</h1>
                 <p className="text-justify h-[87px] overflow-hidden -mt-3 leading-[24px] md:leading-[30px] text-[13px] md:text-[16px]">{deskripsiSingkat} <a href="#deskripsi" className="underline italic font-semibold">Baca Selengkapnya</a></p>
+
+                <div className="text-gray-500 italic text-[12px] md:text-[14px] tracking-tight flex gap-x-1 items-center">
+                    <IoMdEye size={20} className="relative"/>
+                    {views} telah dilihat
+                </div>
+
                 <div className="pembelian flex flex-col md:flex-row justify-between w-full mt-2">
                     <div className="harga">
                         <div className={`price grid md:gap-x-6 grid-cols-2 gap-x-3 ${product.promo !== null ? 'md:grid-cols-[1fr_1fr_2fr]' : 'md:grid-cols-[1fr_2fr_1fr]' } w-full`}>
@@ -286,7 +352,7 @@ export default function Product(){
                 <div className="garis h-[2px] w-[122px] md:w-[190px] bg-third rounded-full opacity-65 mt-1"/>
                 <div className="text-[12px] md:text-[16px] leading-8 text-justify mt-2 md:mt-4">{generateDesk(product.description)}</div>
                 <iframe className="w-full h-[200px] md:h-[500px] rounded-xl md:rounded-3xl mt-20"
-                    src="https://www.youtube.com/embed/tgbNymZ7vqY?controls=1">
+                    src="https://www.youtube.com/embed/kAyUTMY2olM?si=7xnvZfqwGsswkXHv?autoplay=1&mute=0">
                 </iframe>
                 <div className="keatas flex justify-center pt-10 pb-4">
                     <a href="#produk">

@@ -10,7 +10,7 @@ export default function MobileUI({ products, according, deleteAction }: { produc
     return products.map((product, index)=>{
         let name = product.name
         if(name.length > limit){
-            name = name.slice(0, limit) + " ..."
+            name = name.slice(0, limit)
         }
         return (
             <ParentMobileUI product={product} index={index} according={according}>
@@ -25,9 +25,14 @@ export default function MobileUI({ products, according, deleteAction }: { produc
                 </div>
 
                 <div className={`${according == "admin" ? "pt-2" : "pt-4"} pb-4 w-full px-2`}>
-                    <h1 className="text-[11px] md:text-[16px] font-semibold h-[35px]">{name}</h1>
+                    <h1 className="text-[11px] md:text-[16px] font-semibold h-[18px]">{name}</h1>
+
+                    <div className="jasa flex gap-x-1 text-[6.5px] h-[20px] text-teal-700 items-center">
+                        {product.kirim == 1 && <p className="border-[1px] border-teal-700 px-2 py-[2px] rounded-xl italic">Gratis Kirim</p>}
+                        {product.pasang == 1 && <p className="border-[1px] border-teal-700 px-2 py-[2px] rounded-xl italic">Gratis Pasang</p>}
+                    </div>
+
                     <p className="text-[9px] font-normal opacity-70 italic mt-[2px]">{product.kategoriId}</p>
-                    
                     {product.stock && product.stock > 0 && product.promo ? <div className=" 
                  text-blue-600 text-[8px] italic font-semibold z-10">
                     Check Stock

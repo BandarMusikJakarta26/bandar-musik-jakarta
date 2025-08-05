@@ -9,9 +9,11 @@ import axiosClient from "../../../libs/axiosConfig";
 import axios from "axios";
 
 const UpdateProduct = function(){
+   
+
     const apiKey= "45c165ab4a045f50b07dfac796b661d704f06269"
     const { url } = useParams()
-    console.log(url)
+
     // const [ image, setImage ] = useState<number>(0)
     const [ brands, setBrand ] = useState<any[]>([])
     const [ urlName, setUrl ] = useState<string>('')

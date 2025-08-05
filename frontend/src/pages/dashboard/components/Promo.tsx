@@ -1,44 +1,28 @@
 import { LuCircleArrowRight } from "react-icons/lu";
-// import { RiDiscountPercentFill } from "react-icons/ri";
 
-// import banner from '/utils/Slide1.png'
-
-import JavaJazz from '../../../../public/utils/JavaJazzBG.png'
-import JavaJazzMobile from '../../../../public/utils/JavaJazz.png'
-import Walkin from '../../../../public/utils/walkin.png'
-import WalkinMobile from '../../../../public/utils/walkinmobile.png'
-import Kemerdekaan from '../../../../public/utils/kemerdekaan.png'
-import KemerdekaanMobile from '../../../../public/utils/kemerdekaanmobile.png'
-import CuciGudang from '../../../../public/utils/cucigudang.png'
-import CuciGudangMobile from '../../../../public/utils/cucigudangmobile.png'
-import AkhirTahun from '../../../../public/utils/akhirtahun.png'
-import AkhirTahunMobile from '../../../../public/utils/akhirtahunmobile.png'
 import { useEffect, useState } from "react";
 import responsivePage from "../../../action/screen.action";
-
-interface IPromo {
-    title: string, duration?: string, img: string, mobile: string
-}
-
-const promos: IPromo[] = [
-    {title: 'Java Jazz', duration: '29 Mei - 1 Juni', img: JavaJazz, mobile: JavaJazzMobile},
-    {title: 'Walk-In', img: Walkin, mobile: WalkinMobile},
-    {title: 'Kemerdekaan', img: Kemerdekaan, mobile: KemerdekaanMobile},
-    {title: 'Cuci Gudang', img: CuciGudang, mobile: CuciGudangMobile},
-    {title: 'Akhir Tahun', img: AkhirTahun, mobile: AkhirTahunMobile},
-]
+import { getPromos } from "../../../action/promo.action";
+import LoadingComponent from "../../../components/LoadingComponent";
+import { IPromo } from "../../promo/PromoPage";
+import { host } from "../../../../libs/config";
 
 export default function Promo(){
-    const headlinePromo = promos as IPromo[]
-
     const [screen, setScreen] = useState<number>(window.innerWidth)
-    useEffect(()=>{ responsivePage(setScreen) }, [])
+    const [promo, setPromo] = useState<any[]>([])
 
-    function PromoBanner(){
-        return headlinePromo.map((promo, index)=>{
+    useEffect(()=>{ 
+        responsivePage(setScreen)
+        getPromos(setPromo)
+    }, [])
+
+    console.log(screen)
+
+    function PromoBanner({ promo }: { promo: IPromo[] }){
+        return promo.map((p:IPromo, index: number)=>{
             return (
-                <a key={index+1} className={`rounded-2xl overflow-hidden ${index == 0 && 'md:row-span-2'} transition duration-500 hover:brightness-50 group`} href={`promo/${promo.title}`}>
-                    <img src={index == 0 || screen <= 768 ? promo.mobile : promo.img} alt={promo.title} className={`rounded-2xl group-hover:blur-[2px]`}/>
+                <a key={index+1} className={`rounded-2xl overflow-hidden ${index == 0 && 'md:row-span-2'} transition duration-500 hover:brightness-50 group`} href={`promo/${p.title}`}>
+                    <img src={`${host}/storage/${p.images[1]}`} alt={p.title} className={`rounded-2xl group-hover:blur-[2px]`}/>
                 </a>
             )
         })
@@ -50,7 +34,7 @@ export default function Promo(){
             <div className="koleksi-promo grid grid-cols-1 gap-y-4">
 
             <div className="grid md:grid-cols-2 gap-4 md:mx-0 mx-8">
-                <PromoBanner/>
+                {promo !== null && promo.length > 0 ? <PromoBanner promo={promo}/> : <LoadingComponent/>}
             </div>
             {/* <div className="promo grid grid-cols-2 md:grid-cols-[2fr_1fr] gap-x-3 md:gap-x-4 md:mr-10">
                 <a href="/promo" className="bg-white h-[140px] md:h-60 rounded-3xl hover:brightness-75 transition-all overflow-hidden relative">

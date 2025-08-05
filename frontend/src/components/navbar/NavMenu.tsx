@@ -10,6 +10,9 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { FaRegWindowClose } from "react-icons/fa";
 import responsivePage from "../../action/screen.action"
 import KategoriTab from "./KategoriTab"
+import { MdFavorite } from "react-icons/md"
+import FavoriteTab from "./FavoriteTab"
+import { wishlistStore } from "../../../libs/store"
 // import { changeCurrency } from "../../../libs/store";
 // import KategoriTab from "./KategoriTab"
 const NavSearch = lazy(()=>import('./NavSearch'))
@@ -22,6 +25,8 @@ const NavMenu = function({ login, currentLogin, convertUsd, setUsdConverter } : 
     const [ pages, showPages ] = useState<boolean>(false)
     const [ auth, setAuth ] = useState<boolean>(false)
     const [ kategoriTab, openKategoriTab ] = useState<boolean>(false)
+    const [ tabFavorite, setTabFavorite ] = useState<boolean>(false)
+    const wishlist = wishlistStore((state)=>state.wishlist)
 
     useEffect(()=>{ login || (!login && currentLogin) ? setAuth(true) : false })
     useEffect(()=>{ responsivePage(setScreen) }, [])
@@ -57,6 +62,13 @@ const NavMenu = function({ login, currentLogin, convertUsd, setUsdConverter } : 
 
                 </div>
             
+                <button className="favorit flex gap-x-1 items-center border-[1px] border-gray-200 py-1 px-3" onClick={()=>{tabFavorite ? setTabFavorite(false) : setTabFavorite(true)}}>
+                    <MdFavorite size={28}/>
+                    <p className="text-[18px] mt-[2px]">{ wishlist && wishlist }</p>
+                </button>
+
+                { tabFavorite && <FavoriteTab/> }
+
             </div>
             { auth && screen >= 768 ? <LogoutButton/> : false}
 

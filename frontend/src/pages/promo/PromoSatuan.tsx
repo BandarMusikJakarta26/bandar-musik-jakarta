@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import getProductByPromo from "../../action/produk.action";
 import ShowAllProducts from "../../components/ShowAllProducts";
-import { useParams } from "react-router";
+import { useParams, useSearchParams } from "react-router";
 
 export default function PromoSatuan(){
     const { title } = useParams<string>()
     const [ products, setProducts ] = useState<any[]>([])
-    useEffect(()=>{ 
-        getProductByPromo(products, setProducts, title)
+    const [searchParams] = useSearchParams()
+
+    useEffect(()=>{
+        if(searchParams.get('minimal') && searchParams.get('maximal')) getProductByPromo(products, setProducts, title!, searchParams.get('minimal')!, searchParams.get('maximal')!)
+        else getProductByPromo(products, setProducts, title)
      }, [])
 
     return (
